@@ -1,5 +1,5 @@
 const config = useRuntimeConfig();
-const baseUrl = process.server ? config.public.NUXT_API_BASE_URL:"http://63.33.237.96/api";
+const baseUrl = process.client ? config.public.NUXT_API_BASE_URL:"http://63.33.237.96/api";
 console.log('config',config);
 
 export const useAuthStore = defineStore('auth', {
