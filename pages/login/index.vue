@@ -28,9 +28,13 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 const auth = useAuthStore();
 
+const appConfig = useRuntimeConfig()
+onMounted(() => {
+  console.log('The initial count is',appConfig)
+})
 const form = reactive({
   email: '',
   password: ''
@@ -40,9 +44,7 @@ const errorMsg = ref('');
 
 const userLogin = async () => {
   try {
-    const { error } = await auth.signIn(form);
-    form.email.value = '';
-    form.password.value = '';
+    const { error,  } = await auth.signIn(form);
     if (error) throw error;
   } catch (error) {
     errorMsg.value = error.message;

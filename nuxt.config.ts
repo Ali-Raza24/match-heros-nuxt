@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   ssr : false,
   devtools: { enabled: true },
   modules: [
-    // '@element-plus/nuxt',
+    '@element-plus/nuxt',
     '@nuxtjs/tailwindcss',
     [
       '@pinia/nuxt',
@@ -22,9 +22,14 @@ export default defineNuxtConfig({
   css: ['public/assets/css/theme.css'],
   runtimeConfig: {
     public: {
-      NUXT_API_BASE_URL: process.env.API_BASE_URL,
+      NUXT_PUBLIC_API_BASE: process.env.NUXT_API_BASE_URL,
  
     },
   },
+  routeRules: {
+    'api/**': {
+        proxy: { to: "http://127.0.0.1:3000/api**", },
+    }
+  }
 
 })
