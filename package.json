@@ -19,6 +19,7 @@
   "dependencies": {
     "@element-plus/nuxt": "^1.0.5",
     "@nuxt/http": "^0.6.4",
-    "@pinia/nuxt": "^0.4.11"
+    "@pinia/nuxt": "^0.4.11",
+    "sass": "^1.69.2"
   }
 }

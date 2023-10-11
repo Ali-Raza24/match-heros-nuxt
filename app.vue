@@ -1,5 +1,9 @@
 <template>
     <NuxtPage />
-</template>
-
-
+  </template>
+  
+  <script>
+  export default {
+  };
+  </script>
+  
