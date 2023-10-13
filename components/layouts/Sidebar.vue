@@ -16,17 +16,15 @@
         background-color="rgb(30 38 70 / var(--tw-bg-opacity))"
         class="el-menu-vertical-demo"
         text-color="#fff"
-        @open="handleOpen"
-        @close="handleClose"
         :router="true"
       >
         <template :route="menu.route" v-for="menu in menus">
-          <el-sub-menu v-if="menu.children">
-            <template #title>
+          <el-sub-menu v-if="menu.children" >
+            <template #title :route="menu.route">
               <el-icon><img :src="`assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
               <span>{{ menu.label }}</span>
             </template>
-            <el-menu-item  v-for="child in menu.children">
+            <el-menu-item  v-for="child in menu.children" :index="child.route" :route="child.route"  >
               <template #title>{{ child.label }}</template>
               <!-- <el-menu-item :route="menu.route">{{ child.label }}</el-menu-item> -->
             </el-menu-item>
@@ -37,13 +35,6 @@
           </el-menu-item>
         </template>
       </el-menu>
-        <!-- <a href="dashboard.html" class="sidebar-nav active">
-          <div class="h-5 w-5">
-            <img src="assets/images/icon-dashboard.svg" class="h-full w-full object-contain" alt="" />
-          </div>
-          <span>Dashboard</span>
-        </a> -->
-        
         <a href="signin.html" class="sidebar-nav mt-auto">
           <div class="h-5 w-5">
             <img src="assets/images/icon-logout.svg" class="h-full w-full object-contain" alt="" />
@@ -60,9 +51,8 @@ const menus = [
   { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard'},
   { label: 'Players', route: '/players', icon: 'icon-players'},
   { label: 'Venues', route: '/venues', icon: 'icon-venues',children:[
-    {
-      label: 'Create Venue', route: '/create-venues'
-    }
+    { label: 'Venues', route: '/venues'},
+    { label: 'Create Venue', route: '/create-venue'},
   ]},
   { label: 'Credits Purchased', route: '/credits-purchased', icon: 'icon-credit'},
   { label: 'Games', route: '/games', icon: 'icon-games'},
