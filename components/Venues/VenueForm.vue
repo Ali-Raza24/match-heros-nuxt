@@ -1,84 +1,83 @@
 <template>
-    <NuxtLayout>
-        <el-form :model="form" label-position="top" :rules="basicRules" ref="ruleFormRef">
+        <el-form :model="store.form" label-position="top" :rules="basicRules" ref="ruleFormRef">
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item>
-                        <el-upload class="avatar-uploader" action="#" :show-file-list="false"
-                            :on-success="handleAvatarSuccess" accept="image/*">
-                            <el-avatar v-if="ProfileImage" :src="ProfileImage" :size="160" src="https://empty"
-                                class="avatar" />
+                        <el-upload class="avatar-uploader" action="#" :show-file-list="false" accept="image/*"
+                            :auto-upload="false" :on-change="handleAvatarSuccess">
+                            <el-avatar :src="displayedImage" :size="160" class="avatar" />
                             <img src="../../assets/images/camera.svg" class="h-4 w-auto" alt="" />
                         </el-upload>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-upload class="avatar-uploader" action="#" :show-file-list="false" :on-success="handleBannerSuccess"
-                        accept="image/*">
-                        <img v-if="BannerImage" :src="BannerImage" class="w-25" />
+                    <el-upload class="avatar-uploader" action="#" :show-file-list="false" :on-change="handleBannerSuccess"
+                        accept="image/*" :auto-upload="false">
+                        <!-- <img :src="displayedBanner" class="w-25" /> -->
+                        <el-avatar shape="square" :size="200" fit="fill" :src="displayedBanner" />
+
                         <img src="../../assets/images/plus.svg" class="h-4 w-auto" alt="" />
                     </el-upload>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="Venue Name" prop="name">
-                        <el-input v-model="form.name" /> </el-form-item></el-col>
+                        <el-input v-model="store.form.name" /> </el-form-item></el-col>
                 <el-col :span="12">
                     <el-form-item label="Country" prop="country_id">
-                        <el-input v-model="form.country_id" /> </el-form-item></el-col>
+                        <el-select v-model="store.form.country_id" class="m-2" placeholder="Select Country" size="large">
+                            <el-option v-for="item in CountriesData" :key="item.id" :label="item.name" :value="item.id" />
+                        </el-select>
+
+                    </el-form-item>
+                </el-col>
                 <el-col :span="12">
                     <el-form-item label="Venue Phone" prop="phone">
-                        <el-input v-model="form.phone" /> </el-form-item></el-col>
+                        <el-input v-model="store.form.phone" /> </el-form-item></el-col>
                 <el-col :span="12">
                     <el-form-item label="Town" prop="town">
-                        <el-input v-model="form.town" /> </el-form-item></el-col>
+                        <el-input v-model="store.form.town" /> </el-form-item></el-col>
                 <el-col :span="12">
                     <el-form-item label="Venue Email" prop="email">
-                        <el-input v-model="form.email" /> </el-form-item></el-col>
+                        <el-input v-model="store.form.email" /> </el-form-item></el-col>
                 <el-col :span="12">
                     <el-form-item label="€ Off Peak / On Peak" prop="off_on_peak">
-                        <el-input v-model="form.off_on_peak" /> </el-form-item></el-col>
+                        <el-input v-model="store.form.off_on_peak" /> </el-form-item></el-col>
                 <el-col :span="12">
                     <el-row :gutter="20">
                         <el-col :span="12">
                             <el-form-item label="Open Time" prop="open_time">
-                                <el-time-picker v-model="form.open_time" placeholder="Pick a time" />
+                                <el-time-picker v-model="store.form.open_time" placeholder="Pick a time" format="HH:mm"
+                                    value-format="HH:mm" />
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="Close Time" prop="close_time">
-                                <el-time-picker v-model="form.close_time" placeholder="Pick a time" />
+                                <el-time-picker v-model="store.form.close_time" placeholder="Pick a time" format="HH:mm"
+                                    value-format="HH:mm" />
                             </el-form-item></el-col>
                     </el-row>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="Add venue message" prop="venue_message">
-                        <el-input v-model="form.venue_message" /> </el-form-item></el-col>
+                        <el-input v-model="store.form.venue_message" /> </el-form-item></el-col>
             </el-row>
 
             <el-form-item>
-                <el-button type="success" @click="onSubmit(ruleFormRef)">CREATE A VENUE</el-button>
+                <el-button type="success" v-loading="loading" @click="onSubmit(ruleFormRef)">CREATE A VENUE</el-button>
             </el-form-item>
         </el-form>
-    </NuxtLayout>
 </template>
 
 <script setup>
 import { useVenueStore } from "../../stores/venues";
-
-const form = reactive({
-    name: "",
-    country_id: "",
-    phone: "",
-    town: "",
-    email: "",
-    off_on_peak: "",
-    open_time: "",
-    close_time: "",
-    venue_message: "",
-});
+const store = useVenueStore();
+// console.log("Dsa",store)
+// const form = reactive(store.form);
+const { form } = store
 const ProfileImage = ref("");
 const BannerImage = ref("");
 const ruleFormRef = ref()
+const loading = ref(false)
 
 const basicRules = ref({
     name: [
@@ -101,7 +100,7 @@ const basicRules = ref({
         {
             required: true,
             message: "The country field is required",
-            trigger: "blur",
+            trigger: "change",
         },
     ],
     phone: [
@@ -150,31 +149,66 @@ const basicRules = ref({
         },
     ],
 });
-const handleAvatarSuccess = (response, uploadFile) => {
-    ProfileImage.value = URL.createObjectURL(uploadFile.raw);
+
+
+
+const displayedImage = computed(() => {
+    if (ProfileImage.value) {
+        return ProfileImage.value;
+    } else if (store.form.photo) {
+        return store.form.photo;
+    } else {
+        return 'https://empty';
+    }
+});
+const displayedBanner = computed(() => {
+    if (BannerImage.value) {
+        return BannerImage.value;
+    } else if (store.form.banner) {
+        return store.form.banner;
+    } else {
+        return 'https://empty';
+    }
+});
+
+
+const handleAvatarSuccess = (raw, file) => {
+    store.form.photo = raw.raw
+    ProfileImage.value = URL.createObjectURL(raw.raw);
 };
-const handleBannerSuccess = (response, uploadFile) => {
-    BannerImage.value = URL.createObjectURL(uploadFile.raw);
+const handleBannerSuccess = (raw, file) => {
+    store.form.banner = raw.raw
+    BannerImage.value = URL.createObjectURL(raw.raw);
 };
-const store = useVenueStore();
+
+
+store.getCountry()
+
+const CountriesData = computed(() => {
+    return store.getCountries()
+});
 
 const onSubmit = (formEl) => {
-    form.photo= ProfileImage.value
-    // form.value.banner= BannerImage.value
-    
-    console.log('ddasdasda', ProfileImage)
-
+    // loading.value = true
+    // store.resetForm();
+    // return;
+    const formData = new FormData();
+    Object.keys(form).forEach((key) => {
+        console.log(form[key])
+        formData.append(key, form[key]);
+    })
     if (!formEl) return
     formEl.validate((valid, fields) => {
         if (valid) {
-            console.log('submit!')
+            store.createVenues(form);
+            // formEl.resetFields()
+            // ProfileImage.value=''
+            // BannerImage.value=''
+            loading.value = false
         } else {
-            console.log('error submit!', fields)
+            loading.value = false
+            return
         }
     })
-    store.createVenues(form);
-
-
-    console.log("submit!", form);
 };
 </script>

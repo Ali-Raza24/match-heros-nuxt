@@ -26,3 +26,7 @@ export const post = async(endpoint, params = {}) => {
   return await api(endpoint, 'post', params);
 };
 
+export const remove = async(endpoint, params = {}) => {
+  return await api(endpoint, 'delete', params);
+};
+

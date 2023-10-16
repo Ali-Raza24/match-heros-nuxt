@@ -21,7 +21,7 @@
         <template :route="menu.route" v-for="menu in menus">
           <el-sub-menu v-if="menu.children" >
             <template #title :route="menu.route">
-              <el-icon><img :src="`assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
+              <el-icon><img :src="`/assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
               <span>{{ menu.label }}</span>
             </template>
             <el-menu-item  v-for="child in menu.children" :index="child.route" :route="child.route"  >
@@ -30,14 +30,14 @@
             </el-menu-item>
           </el-sub-menu>
           <el-menu-item :index="menu.route" :route="menu.route" v-else>
-            <el-icon><img :src="`assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
+            <el-icon><img :src="`/assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
             <span>{{ menu.label }}</span>
           </el-menu-item>
         </template>
       </el-menu>
-        <a href="signin.html" class="sidebar-nav mt-auto">
+        <a class="sidebar-nav mt-auto" @click="logout()"> 
           <div class="h-5 w-5">
-            <img src="assets/images/icon-logout.svg" class="h-full w-full object-contain" alt="" />
+            <img src="/assets/images/icon-logout.svg" class="h-full w-full object-contain" alt="" />
           </div>
           <span>Logout</span>
         </a>
@@ -46,19 +46,34 @@
   </template>
   
 <script setup>
+const auth = useAuthStore();
 
 const menus = [
   { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard'},
   { label: 'Players', route: '/players', icon: 'icon-players'},
   { label: 'Venues', route: '/venues', icon: 'icon-venues',children:[
     { label: 'Venues', route: '/venues'},
-    { label: 'Create Venue', route: '/create-venue'},
+    { label: 'Create Venue', route: '/venues/new-venue'},
   ]},
   { label: 'Credits Purchased', route: '/credits-purchased', icon: 'icon-credit'},
   { label: 'Games', route: '/games', icon: 'icon-games'},
   { label: 'Teams', route: '/teams', icon: 'icon-teams'},
   { label: 'Notifications', route: '/notifications', icon: 'icon-notifications'},
 ]
+
+const errorMsg = ref('');
+
+const logout = async () => {
+  try {
+    const { error } = await auth.logout();
+    if (error) throw error;
+  } catch (error) {
+    errorMsg.value = error.message;
+    setTimeout(() => {
+      errorMsg.value = '';
+    }, 3000);
+  }
+};
 </script>
 
 <style lang="scss">

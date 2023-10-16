@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <el-table :data="venues" v-loading="loading">
+    <el-table :data="store.venues" v-loading="store.loading">
       <el-table-column label="Name" prop="name" />
       <el-table-column label="Email	" prop="contact.email" />
       <el-table-column label="Phone	" prop="contact.phone" />
@@ -11,9 +11,9 @@
       <el-table-column label="Amount In Account	" prop="balance" />
       <el-table-column label="Operations">
         <template #default="scope">
-           <el-button @click="handleComment(scope.$index, scope.row)"><img src="assets/images/comment.svg" /></el-button>
-           <el-button @click="handleEdit(scope.$index, scope.row)"><img src="assets/images/edit.svg" /></el-button>
-           <el-button @click="handleDelete(scope.$index, scope.row)"><img src="assets/images/delete.svg" /></el-button>
+          <el-button @click="handleComment(scope.row)"><img src="assets/images/comment.svg" /></el-button>
+          <NuxtLink :to="`/venues/${scope.row.id}`"><img src="assets/images/edit.svg" /></NuxtLink>
+          <el-button @click="handleDelete(scope.row.id)"><img src="assets/images/delete.svg" /></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -27,11 +27,12 @@ import { useVenueStore } from '../../stores/venues';
 import { ref, onMounted } from 'vue';
 
 const store = useVenueStore();
-const venues = ref([]);
+// const venues = ref([]);
+// const { venues } = store;
 const TotalVenues = ref(0);
 
 
-const handleDelete =() =>{
+const handleDelete = (id) => {
 
   ElMessageBox.confirm(
     'proxy will permanently delete the file. Continue?',
@@ -43,18 +44,14 @@ const handleDelete =() =>{
     }
   )
     .then(() => {
-      ElNotification({
-    title: 'Error',
-    message: 'This is an error message',
-    type: 'error',
-  })
+      store.DeleteVenue(id)
     })
     .catch(() => {
       ElNotification({
         title: 'Info',
-    message: 'This is an info message',
-    type: 'info',
-  })
+        message: 'This is an info message',
+        type: 'info',
+      })
     })
 }
 
@@ -71,11 +68,9 @@ onMounted(async () => {
 });
 
 const fetchData = async () => {
-  loading.value = true;
   await store.getVenues();
   TotalVenues.value = store.meta.total;
-  venues.value = store.venues;
-  loading.value = false;
+  // venues.value = store.venues;
 }
 
 </script>

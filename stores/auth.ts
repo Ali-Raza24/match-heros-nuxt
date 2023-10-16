@@ -12,7 +12,6 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         // since we rely on `this`, we cannot use an arrow function
       signIn(payload: any) {
-        console.log('form',payload);
         const { data } = useFetch('/auth/login', {
           method: 'post',
           baseURL: this.baseUrl,
@@ -37,6 +36,29 @@ export const useAuthStore = defineStore('auth', {
 
     
       },
+
+      logout() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          return;
+        }
+      
+        useFetch('/auth/logout', {
+          method: 'get',
+          baseURL: this.baseUrl,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          onResponse({ request, response, options }) {
+            if (response.status === 200) {
+              localStorage.removeItem('token');
+              navigateTo('/login');
+            }
+          },
+        });
+      }
     },
     getters: {
         getAuthToken: state => state.authToken,
