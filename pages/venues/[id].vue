@@ -9,6 +9,7 @@ import { useVenueStore } from "../../stores/venues";
  const store = useVenueStore();
  
 onMounted(()=>{
+ store.setText('UPDATE A VENUE')
  store.resetForm();
  store.getSingleVenues(useRoute().params.id);
 })

@@ -55,7 +55,7 @@ const menus = [
     { label: 'Venues', route: '/venues'},
     { label: 'Create Venue', route: '/venues/new-venue'},
   ]},
-  { label: 'Credits Purchased', route: '/credits-purchased', icon: 'icon-credit'},
+  { label: 'Credits Purchased', route: '/CreditsPurchased', icon: 'icon-credit'},
   { label: 'Games', route: '/games', icon: 'icon-games'},
   { label: 'Teams', route: '/teams', icon: 'icon-teams'},
   { label: 'Notifications', route: '/notifications', icon: 'icon-notifications'},

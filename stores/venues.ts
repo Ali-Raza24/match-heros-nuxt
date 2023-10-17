@@ -22,7 +22,8 @@ export const useVenueStore = defineStore('venues', {
     meta: {},
     currentPage: 1,
     countriesData:[],
-    form: reactive({...defaultForm})
+    form: reactive({...defaultForm}),
+    buttonText:''
     
   }),
 
@@ -88,6 +89,34 @@ export const useVenueStore = defineStore('venues', {
         // Handle any unexpected errors
       }
     },
+    async updateVenue(venueData:any,id:any) {
+      const config = useRuntimeConfig();
+      try {
+        await axios.patch(config.public.NUXT_PUBLIC_API_BASE + `/venues/${id}`, venueData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Set the content type for file uploads
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+          .then(res => {
+            if (res.status == 200) {
+              ElNotification({
+                message: 'Venue updated',
+                type: 'success',
+              })
+              navigateTo('/venues')
+            }
+          })
+          .catch(error => {
+            ElNotification({
+              message: 'Something went wrong',
+              type: 'error',
+            })
+
+          });
+      } catch (error) {
+      }
+    },
     async DeleteVenue(id:any) {
       try {
         const { data, error } = await remove(`/venues/${id}`);
@@ -121,9 +150,11 @@ export const useVenueStore = defineStore('venues', {
     },
     resetForm() {
       Object.keys(defaultForm).forEach(key => {
-        console.log(key, defaultForm[key]);
         this.form[key] = defaultForm[key];
       })
+    },
+    setText(text:any){
+      this.buttonText=text
     }
   },
 
