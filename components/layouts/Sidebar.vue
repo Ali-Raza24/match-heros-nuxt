@@ -21,7 +21,7 @@
         <template :route="menu.route" v-for="menu in menus">
           <el-sub-menu v-if="menu.children" >
             <template #title :route="menu.route">
-              <el-icon><img :src="`/assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
+              <el-icon><img :src="`../../assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
               <span>{{ menu.label }}</span>
             </template>
             <el-menu-item  v-for="child in menu.children" :index="child.route" :route="child.route"  >

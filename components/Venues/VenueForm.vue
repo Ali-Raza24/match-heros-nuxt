@@ -2,19 +2,19 @@
     <el-form :class="'xl:max-w-[700px] max-w-full xl:pr-20 block mx-auto'" :model="store.form" label-position="top"
         :rules="basicRules" ref="ruleFormRef">
         <el-row :gutter="30">
-            <el-col :span="8">
+            <el-col :class="'mx-auto'" :sm="8" :xs="12">
                 <el-form-item>
                     <el-upload class="avatar-uploader" action="#" :show-file-list="false" accept="image/*"
                         :auto-upload="false" :on-change="handleAvatarSuccess">
                         <el-avatar :src="displayedImage" class="avatar" />
                         <div
-                            class="overflow-hidden absolute bottom-0 right-4 h-11 w-11 rounded-[50px] bg-gradient-to-b from-[#0b8140] to-[#0a5229] inline-flex items-center justify-center z-20">
+                            class="overflow-hidden absolute bottom-6 right-2 h-11 w-11 rounded-[50px] bg-gradient-to-b from-[#0b8140] to-[#0a5229] inline-flex items-center justify-center z-20">
                             <img src="../../assets/images/camera.svg" class="h-4 w-auto" alt="" />
                         </div>
                     </el-upload>
                 </el-form-item>
             </el-col>
-            <el-col :span="16">
+            <el-col :sm="16" :xs="24">
                 <div class="relative">
                     <el-upload
                         class="avatar-uploader bg-[#1E2646] flex items-center justify-center rounded-md overflow-hidden mb-16 border border-white/5 aspect-[16/6]"
@@ -30,10 +30,10 @@
                     </el-upload>
                 </div>
             </el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Name" prop="name">
                     <el-input v-model="store.form.name" /> </el-form-item></el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-form-item label="Country" prop="country_id">
                     <el-select v-model="store.form.country_id" placeholder="Select Country" size="large">
                         <el-option v-for="item in CountriesData" :key="item.id" :label="item.name" :value="item.id" />
@@ -41,19 +41,19 @@
 
                 </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Phone" prop="phone">
                     <el-input v-model="store.form.phone" /> </el-form-item></el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-form-item label="Town" prop="town">
                     <el-input v-model="store.form.town" /> </el-form-item></el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Email" prop="email">
                     <el-input v-model="store.form.email" /> </el-form-item></el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-form-item label="€ Off Peak / On Peak" prop="off_on_peak">
                     <el-input v-model="store.form.off_on_peak" /> </el-form-item></el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="Open Time" prop="open_time">
@@ -68,13 +68,16 @@
                         </el-form-item></el-col>
                 </el-row>
             </el-col>
-            <el-col :span="12">
+            <el-col :sm="12" :xs="24">
                 <el-form-item label="Add venue message" prop="venue_message">
-                    <el-input v-model="store.form.venue_message" /> </el-form-item></el-col>
+                    <el-input v-model="store.form.venue_message" /> 
+                </el-form-item>
+            </el-col>
         </el-row>
 
         <el-form-item>
-            <el-button :class="'btn-theme'" type="success" v-loading="loading" @click="onSubmit(ruleFormRef)">CREATE A VENUE</el-button>
+            <el-button :class="'btn-theme'" type="success" v-loading="loading" @click="onSubmit(ruleFormRef)">CREATE A
+                VENUE</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -282,6 +285,7 @@ const onSubmit = (formEl) => {
 .el-input__prefix+.el-input__inner {
     padding: 0;
 }
+
 .btn-theme {
     @apply border-none inline-flex items-center justify-center whitespace-nowrap outline-none xl:h-[45px] lg:h-10 h-9 xl:px-7 lg:px-6 px-5 bg-gradient-to-b from-[#0b8140] to-[#0a5229] rounded-[50px] text-white xl:text-sm md:text-xs text-[11px] font-bold uppercase tracking-wide scale-100 active:scale-[.97] mt-5;
 }
