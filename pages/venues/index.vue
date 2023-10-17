@@ -179,9 +179,9 @@ const fetchData = async () => {
   margin-top: 20px;
 }
 
-.el-pagination.is-background .btn-prev:disabled {
-  color: #333845 !important;
-  background-color: #141b37 !important;
+.el-pagination.is-background .btn-prev:disabled, .el-pagination.is-background .btn-next:disabled {
+    color: #333845 !important;
+    background-color: #141b37 !important;
 }
 
 .el-pagination.is-background .el-pager li.is-active {

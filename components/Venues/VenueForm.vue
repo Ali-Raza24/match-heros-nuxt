@@ -264,6 +264,10 @@ const updateForm = (formEl) => {
 .avatar-uploader,
 .avatar-uploader .el-upload {
     width: 100%;
+    height: 100%;
+}
+.el-avatar.el-avatar--circle.avatar {
+    aspect-ratio: 1/1;
 }
 
 .el-form--label-top .el-form-item .el-form-item__label {
