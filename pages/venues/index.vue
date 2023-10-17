@@ -11,9 +11,12 @@
       <el-table-column label="Amount In Account	" prop="balance" />
       <el-table-column label="Operations">
         <template #default="scope">
-          <el-button @click="handleComment(scope.row)"><img src="assets/images/comment.svg" /></el-button>
-          <NuxtLink :to="`/venues/${scope.row.id}`"><img src="assets/images/edit.svg" /></NuxtLink>
-          <el-button @click="handleDelete(scope.row.id)"><img src="assets/images/delete.svg" /></el-button>
+          <el-button :class="'tableButton'" @click="handleComment(scope.row)"><img class="h-[18px] w-auto"
+              src="assets/images/comment.svg" /></el-button>
+          <NuxtLink :class="'tableButton'" :to="`/venues/${scope.row.id}`"><img class="h-[18px] w-auto"
+              src="assets/images/edit.svg" /></NuxtLink>
+          <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img class="h-[18px] w-auto"
+              src="assets/images/delete.svg" /></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,10 +82,110 @@ const fetchData = async () => {
 .el-table {
   background-color: transparent !important;
 
+  * {
+    border: none !important;
+  }
+
   tr,
   .el-table__cell {
     background-color: transparent !important;
+    backdrop-filter: blur(15px);
   }
+
+  td:last-child {
+    .cell {
+      @apply flex items-center;
+    }
+  }
+
+  .tableButton {
+    @apply bg-transparent border-none p-2 scale-100 hover:scale-125 ease-linear duration-100;
+  }
+
+  tr {
+    th {
+      padding: 0 !important;
+
+      &:first-child {
+        .cell {
+          @apply 2xl:pl-7 xl:pl-6 pl-5 rounded-tl-lg;
+        }
+      }
+
+      &:last-child {
+        .cell {
+          @apply 2xl:pr-7 xl:pr-6 pr-5 rounded-tr-lg;
+        }
+      }
+
+      .cell {
+        @apply text-white 2xl:px-5 px-3 h-14 text-[13px] text-left bg-[#1E2646] whitespace-nowrap flex items-center;
+      }
+    }
+  }
+
+  tr {
+    td {
+      padding: 0 !important;
+
+      &:first-child {
+        .cell {
+          @apply 2xl:pl-7 xl:pl-6 pl-5;
+        }
+      }
+
+      &:last-child {
+        .cell {
+          @apply 2xl:pr-7 xl:pr-6 pr-5;
+        }
+      }
+
+      .cell {
+        @apply text-white xl:h-14 h-12 2xl:px-5 px-3 text-sm text-left whitespace-nowrap flex items-center;
+      }
+    }
+  }
+
+  tbody tr td {
+    border-top: 1px solid #283054 !important;
+  }
+}
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell.is-leaf {
+  border-bottom: none;
+}
+
+.el-table--border .el-table__inner-wrapper::after,
+.el-table--border::after,
+.el-table--border::before,
+.el-table__inner-wrapper::before {
+  display: none;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  margin: 0 4px;
+  background-color: #1e2646;
+  color: #fff;
+}
+
+.el-loading-mask {
+  background-color: #1e2646;
+}
+
+.el-pagination {
+  margin-top: 20px;
+}
+
+.el-pagination.is-background .btn-prev:disabled {
+  color: #333845 !important;
+  background-color: #141b37 !important;
+}
+
+.el-pagination.is-background .el-pager li.is-active {
+  background: linear-gradient(181deg, #0b8140, #0a5229);
 }
 </style>
   
