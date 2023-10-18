@@ -1,5 +1,9 @@
 <template>
   <NuxtLayout>
+    <div class="flex lg:flex-row flex-col gap-4 mb-4 items-center justify-between">
+      <h6 class="text-white text-base font-regular">Team Admin 
+      </h6>
+    </div>
   <el-table :data="store.team" v-loading="store.loading">
     <el-table-column label="Group Name	" prop="user" />
     <el-table-column label="Group Captain	" prop="date_of_purchase" />
@@ -15,6 +19,10 @@
   import { useTeamStore } from '../../stores/team';
   import { ref, onMounted } from 'vue';
   
+  definePageMeta({
+  middleware: 'auth',
+})
+
   
   const store = useTeamStore();
   

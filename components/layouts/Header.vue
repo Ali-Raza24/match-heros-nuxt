@@ -31,7 +31,7 @@
                 <img src="/assets/images/person.jpg" class="rounded-[50px] h-7 min-w-[28px] object-cover" alt="">
                 <span class="text-white font-light text-xs block">John Smith</span>
               </div>
-              <el-dropdown-item v-for=" profile in profileDropdown">
+              <el-dropdown-item v-for=" profile in profileDropdown"  @click="handleItemClick(profile)" >
                 <el-icon><img :src="`/assets/images/${profile.icon}.svg`" class="h-full w-full object-contain"
                     alt="" /></el-icon>
                 <span>{{ profile.label }}</span>
@@ -45,6 +45,7 @@
 </template>
   
 <script setup>
+const auth = useAuthStore();
 
 const profileDropdown = [
   { label: 'Profile', icon: 'icon-players', route: '/profile' },
@@ -52,6 +53,16 @@ const profileDropdown = [
   { label: 'Logout', icon: 'icon-logout', route: '/logout' },
 ]
 
+const handleItemClick = (profile) => {
+      if (profile.label === 'Logout') {
+        logout();
+      } else {
+      }
+    }
+
+const logout = async () => {
+    await auth.logout();
+}
 </script>
 <style lang="scss">
 .el-dropdown-menu,

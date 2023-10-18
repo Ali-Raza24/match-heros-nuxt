@@ -34,14 +34,15 @@
 <script setup>
 import { useGameStore } from '../../stores/games';
 import { ref, onMounted } from 'vue';
-
 import { formatDate, formatTime } from '~/utils/TimeFilter';
+
+definePageMeta({
+  middleware: 'auth',
+})
 
 
 const store = useGameStore();
-
 const currentPage = () => store.getCurrentPage();
-
 const activeTab = ref('Friendly Match')
 
 const handleClick = (TabName) => {

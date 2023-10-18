@@ -6,21 +6,22 @@ export const useNotificationsStore = defineStore('notifications', {
     links: {},
     meta: {},
     currentPage: 1,
-    TotalNotifications:0
+    TotalNotifications:0,
+    loading:false
   }),
 
   actions: {
     async getNotifications() {
       try {
+        this.loading=true
         const { data, error } = await get('/notifications', {
           page: this.currentPage,
         });
 
         if (error.value) {
           // Handle the error
-        } else {
-          console.log("resss",data.value);
-          
+        } else {  
+          this.loading=false        
           this.Notifications = data.value.data;
           this.TotalNotifications = data.value.pagination.total
           // this.links = data.value.links;

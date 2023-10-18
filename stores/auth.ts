@@ -30,7 +30,6 @@ export const useAuthStore = defineStore('auth', {
               navigateTo('/dashboard')
 
             }
-            // Process the response data
           },
         })
 
@@ -57,6 +56,12 @@ export const useAuthStore = defineStore('auth', {
               navigateTo('/login');
             }
           },
+          onResponseError({ request, response, options }) {
+            ElNotification({
+              message: 'Something Went Wrong',
+              type: 'error',
+            })    
+          }
         });
       }
     },

@@ -7,9 +7,11 @@
     </NuxtLayout>
   </template>
   
-  <script>
-  export default {
-    name: 'DashboardPage',
-  };
+  <script setup>
+
+definePageMeta({
+  middleware: 'auth',
+})
+
   </script>
   

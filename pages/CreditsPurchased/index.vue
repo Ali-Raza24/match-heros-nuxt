@@ -17,10 +17,13 @@
     </NuxtLayout>
 </template>
 <script setup>
-
 import Purchases from '~/components/CreditsAndPurchased/purchases.vue';
 import CashOut from '~/components/CreditsAndPurchased/CashOut.vue';
 import GameFree from '~/components/CreditsAndPurchased/GameFree.vue';
+
+definePageMeta({
+  middleware: 'auth',
+})
 
 const activeName = ref('first')
 

@@ -1,5 +1,9 @@
 <template>
   <NuxtLayout>
+    <div class="flex lg:flex-row flex-col gap-4 mb-4 items-center justify-between">
+      <h6 class="text-white text-base font-regular">Total Number of players signed up 
+      </h6>
+    </div>
     <el-table :data="players" v-loading="loading">
       <el-table-column label="Name" prop="name" />
       <el-table-column label="Sign up date	" prop="signup_date" />
@@ -25,6 +29,10 @@
 <script setup>
 import { usePlayerStore } from '../../stores/players';
 import { ref, onMounted } from 'vue';
+
+definePageMeta({
+  middleware: 'auth',
+})
 
 const store = usePlayerStore();
 const players = ref([]);

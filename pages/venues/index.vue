@@ -1,5 +1,9 @@
 <template>
   <NuxtLayout>
+    <div class="flex lg:flex-row flex-col gap-4 items-center justify-between">
+          <h6 class="text-white text-base font-regular">Total Number of Venues</h6>
+          <NuxtLink class="btn-theme" :to="`/venues/new-venue`">Create a Venue</NuxtLink>
+        </div>
     <el-table :data="store.venues" v-loading="store.loading">
       <el-table-column label="Name" prop="name" />
       <el-table-column label="Email	" prop="contact.email" />
@@ -28,6 +32,11 @@
 <script setup>
 import { useVenueStore } from '../../stores/venues';
 import { ref, onMounted } from 'vue';
+
+definePageMeta({
+  middleware: 'auth',
+})
+
 
 const store = useVenueStore();
 // const venues = ref([]);

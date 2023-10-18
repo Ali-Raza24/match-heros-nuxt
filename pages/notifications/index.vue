@@ -1,5 +1,9 @@
 <template>
   <NuxtLayout>
+    <div class="flex lg:flex-row flex-col gap-4 mb-4 items-center justify-between">
+      <h6 class="text-white text-base font-regular">Create Notifications 
+      </h6>
+    </div>
   <el-table :data="store.Notifications" v-loading="store.loading">
     <el-table-column label="Name	" prop="related.name" />
     <el-table-column label="Related Typet">
@@ -19,7 +23,10 @@
   import { useNotificationsStore } from '../../stores/notifications';
   import { ref, onMounted } from 'vue';
   
-  
+  definePageMeta({
+  middleware: 'auth',
+})
+
   const store = useNotificationsStore();
   
   const currentPage = () => store.getCurrentPage();

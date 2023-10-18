@@ -1,4 +1,11 @@
 <template>
+    <div class="flex lg:flex-row flex-col gap-4 items-center">
+        <NuxtLink  :to="`/venues`" class="text-white text-base font-bold inline-flex items-center gap-2 py-1 mb-3 outline-none"><img 
+            class=" max-h-[14px] w-auto" src="/assets/images/backArrow.svg" /> Back</NuxtLink>
+     <h3 class="text-white text-[25px] font-regular mb-11">{{ capitalizeFirstLetter(store.buttonText) }}</h3>
+
+    </div>
+
     <el-form :class="'xl:max-w-[700px] max-w-full xl:pr-20 block mx-auto'" :model="store.form" label-position="top"
         :rules="basicRules" ref="ruleFormRef">
         <el-row :gutter="30">
@@ -74,10 +81,10 @@
                 </el-form-item>
             </el-col>
         </el-row>
-
         <el-form-item>
-            <el-button :class="'btn-theme'" type="success" v-loading="loading" @click="onSubmit(ruleFormRef)">CREATE A
-                VENUE</el-button>
+            <el-button :class="'btn-theme'" type="success" v-loading="store.loading"
+                @click=" store.buttonText === 'UPDATE A VENUE' ? updateForm(ruleFormRef) : onSubmit(ruleFormRef)"> {{ store.buttonText
+                }} </el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -185,7 +192,9 @@ const displayedBanner = computed(() => {
     }
 });
 
-
+const capitalizeFirstLetter =(string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
 const handleAvatarSuccess = (raw, file) => {
     store.form.photo = raw.raw
     ProfileImage.value = URL.createObjectURL(raw.raw);

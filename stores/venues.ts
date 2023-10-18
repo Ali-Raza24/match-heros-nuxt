@@ -48,6 +48,7 @@ export const useVenueStore = defineStore('venues', {
       }
     },
     async createVenues(venueData: any) {
+      this.loading=true
       const config = useRuntimeConfig();
       try {
         await axios.post(config.public.NUXT_PUBLIC_API_BASE + '/venues', venueData, {
@@ -58,6 +59,7 @@ export const useVenueStore = defineStore('venues', {
         })
           .then(res => {
             if (res.status == 201) {
+              this.loading=false
 
               ElNotification({
                 message: 'Venue added',
@@ -67,6 +69,7 @@ export const useVenueStore = defineStore('venues', {
             }
           })
           .catch(error => {
+            this.loading=false
             ElNotification({
               message: 'Something went wrong',
               type: 'error',
@@ -90,6 +93,7 @@ export const useVenueStore = defineStore('venues', {
       }
     },
     async updateVenue(venueData:any,id:any) {
+      this.loading=true
       const config = useRuntimeConfig();
       try {
         await axios.patch(config.public.NUXT_PUBLIC_API_BASE + `/venues/${id}`, venueData, {
@@ -100,6 +104,8 @@ export const useVenueStore = defineStore('venues', {
         })
           .then(res => {
             if (res.status == 200) {
+              this.loading=false
+
               ElNotification({
                 message: 'Venue updated',
                 type: 'success',
@@ -108,6 +114,7 @@ export const useVenueStore = defineStore('venues', {
             }
           })
           .catch(error => {
+            this.loading=false
             ElNotification({
               message: 'Something went wrong',
               type: 'error',

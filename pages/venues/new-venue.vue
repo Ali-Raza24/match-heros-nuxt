@@ -5,6 +5,11 @@
 </template>
 
 <script setup>
+
+definePageMeta({
+  middleware: 'auth',
+})
+
 import { useVenueStore } from "../../stores/venues";
  const store = useVenueStore();
 onMounted(()=>{

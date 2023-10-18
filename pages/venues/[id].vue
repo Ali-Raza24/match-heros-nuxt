@@ -6,6 +6,10 @@
 <script setup>
 import { useVenueStore } from "../../stores/venues";
 
+definePageMeta({
+  middleware: 'auth',
+})
+
  const store = useVenueStore();
  
 onMounted(()=>{
