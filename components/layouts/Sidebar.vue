@@ -2,12 +2,12 @@
     <!-- Sidebar -->
     <div id="sideBar" class="bg-[#1E2646] w-[200px] flex flex-col items-center lg:relative absolute z-50 h-[100vh] smooth lg:translate-x-0 -translate-x-full">
       <!-- Brand -->
-      <a href="dashboard.html" class="flex justify-between py-7">
-        <img src="assets/images/logo.svg" class="max-h-[70px] w-auto" alt="" />
-      </a>
+      <NuxtLink :to="'/dashboard'" class="flex justify-between py-7">
+        <img src="/assets/images/logo.svg" class="max-h-[70px] w-auto" alt="" />
+      </NuxtLink>
       <!-- Sidebar Closer -->
       <button id="sidebarCloser" class="h-10 min-w-[40px] rounded-full bg-white lg:hidden inline-flex items-center justify-center absolute top-3 right-0 invisible opacity-0 translate-x-full smooth">
-        <img src="assets/images/backArrow.svg" class="relative right-[1px]" alt="">
+        <img src="/assets/images/backArrow.svg" class="relative right-[1px]" alt="">
       </button>
       <!-- Sidebar Navs -->
       <div class="grow flex flex-col w-full items-start">

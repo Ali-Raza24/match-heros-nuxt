@@ -16,11 +16,11 @@
       <el-table-column label="Operations">
         <template #default="scope">
           <el-button :class="'tableButton'" @click="handleComment(scope.row)"><img class="h-[18px] w-auto"
-              src="assets/images/comment.svg" /></el-button>
+              src="/assets/images/comment.svg" /></el-button>
           <NuxtLink :class="'tableButton'" :to="`/venues/${scope.row.id}`"><img class="h-[18px] w-auto"
-              src="assets/images/edit.svg" /></NuxtLink>
+              src="/assets/images/edit.svg" /></NuxtLink>
           <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img class="h-[18px] w-auto"
-              src="assets/images/delete.svg" /></el-button>
+              src="/assets/images/delete.svg" /></el-button>
         </template>
       </el-table-column>
     </el-table>
