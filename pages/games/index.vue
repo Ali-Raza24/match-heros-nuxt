@@ -83,5 +83,5 @@ const fetchData = async (activeTab) => {
 }
 .el-tabs {
     --el-tabs-header-height: unset;
-} 
+}  
 </style>

@@ -1,8 +1,8 @@
 <template>
   <NuxtLayout>
-    <div class="flex lg:flex-row flex-col gap-4 items-center justify-between">
+    <div class="flex lg:flex-row flex-col gap-4 items-center justify-between mb-4">
           <h6 class="text-white text-base font-regular">Total Number of Venues</h6>
-          <NuxtLink class="btn-theme" :to="`/venues/new-venue`">Create a Venue</NuxtLink>
+          <NuxtLink class="btn-theme !mt-0" :to="`/venues/new-venue`">Create a Venue</NuxtLink>
         </div>
     <el-table :data="store.venues" v-loading="store.loading">
       <el-table-column label="Name" prop="name" />
@@ -15,11 +15,11 @@
       <el-table-column label="Amount In Account	" prop="balance" />
       <el-table-column label="Operations">
         <template #default="scope">
-          <el-button :class="'tableButton'" @click="handleComment(scope.row)"><img class="h-[18px] w-auto"
+          <el-button :class="'tableButton'" @click="handleComment(scope.row)"><img class="!min-h-[18px] w-auto min-w-[19px]"
               src="assets/images/comment.svg" /></el-button>
-          <NuxtLink :class="'tableButton'" :to="`/venues/${scope.row.id}`"><img class="h-[18px] w-auto"
+          <NuxtLink :class="'tableButton'" :to="`/venues/${scope.row.id}`"><img class="!min-h-[18px] w-auto min-w-[18px]"
               src="assets/images/edit.svg" /></NuxtLink>
-          <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img class="h-[18px] w-auto"
+          <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img class="!min-h-[18px] w-auto min-w-[15px]"
               src="assets/images/delete.svg" /></el-button>
         </template>
       </el-table-column>
