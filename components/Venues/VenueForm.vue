@@ -1,14 +1,17 @@
 <template>
-    <div class="flex lg:flex-row flex-col gap-4 items-center">
+    <div class="flex lg:flex-row flex-col gap-4 items-start">
         <NuxtLink  :to="`/venues`" class="text-white text-base font-bold inline-flex items-center gap-2 py-1 mb-3 outline-none"><img 
             class=" max-h-[14px] w-auto" src="/assets/images/backArrow.svg" /> Back</NuxtLink>
-     <h3 class="text-white text-[25px] font-regular mb-11">{{ capitalizeFirstLetter(store.buttonText) }}</h3>
+     
 
     </div>
 
     <el-form :class="'xl:max-w-[700px] max-w-full xl:pr-20 block mx-auto'" :model="store.form" label-position="top"
         :rules="basicRules" ref="ruleFormRef">
         <el-row :gutter="30">
+            <el-col :span="24">
+                <h3 class="text-white text-[25px] font-regular mb-11 lg:text-left text-center xl:-mt-10">{{ capitalizeFirstLetter(store.buttonText) }}</h3>
+            </el-col>
             <el-col :class="'mx-auto'" :sm="8" :xs="12">
                 <el-form-item>
                     <el-upload class="avatar-uploader" action="#" :show-file-list="false" accept="image/*"
@@ -16,7 +19,7 @@
                         <el-avatar :src="displayedImage" class="avatar" />
                         <div
                             class="overflow-hidden absolute bottom-6 right-2 h-11 w-11 rounded-[50px] bg-gradient-to-b from-[#0b8140] to-[#0a5229] inline-flex items-center justify-center z-20">
-                            <img src="../../assets/images/camera.svg" class="h-4 w-auto" alt="" />
+                            <img src="/assets/images/camera.svg" class="h-4 w-auto" alt="" />
                         </div>
                     </el-upload>
                 </el-form-item>
@@ -32,7 +35,7 @@
                         <div class="text-sm text-white absolute">Add Banner Photo</div>
                         <div
                             class="absolute left-[50%] bottom-0 -translate-x-[50%] translate-y-[50%] h-11 w-11 rounded-[50px] bg-gradient-to-b from-[#0b8140] to-[#0a5229] inline-flex items-center justify-center z-20 after:content-['Optional'] after:absolute after:top-full after:pt-2 after:text-xs after:font-regular after:text-white">
-                            <img src="../../assets/images/plus.svg" class="h-4 w-auto" alt="">
+                            <img src="/assets/images/plus.svg" class="h-4 w-auto" alt="">
                         </div>
                     </el-upload>
                 </div>
@@ -325,5 +328,12 @@ const updateForm = (formEl) => {
 
 .btn-theme {
     @apply border-none inline-flex items-center justify-center whitespace-nowrap outline-none xl:h-[45px] lg:h-10 h-9 xl:px-7 lg:px-6 px-5 bg-gradient-to-b from-[#0b8140] to-[#0a5229] rounded-[50px] text-white xl:text-sm md:text-xs text-[11px] font-bold uppercase tracking-wide scale-100 active:scale-[.97] mt-5;
+}
+@media(min-width:992px)
+{
+    .lg\:text-left
+    {
+        text-align: left;
+    }
 }
 </style>

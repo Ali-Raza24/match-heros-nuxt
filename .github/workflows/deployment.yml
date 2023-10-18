@@ -27,7 +27,7 @@ jobs:
         fetch-depth: 0
         submodules: true
     - run: npm ci
-    - run: npm run build
+    - run: npx nuxi generate
 
     - name: install ssh keys
       env:
