@@ -6,6 +6,7 @@ const defaultForm = {
   country_id: "",
   phone: "",
   town: "",
+  address: "",
   email: "",
   off_on_peak: "",
   open_time: "",
@@ -94,9 +95,11 @@ export const useVenueStore = defineStore('venues', {
     },
     async updateVenue(venueData:any,id:any) {
       this.loading=true
+      
       const config = useRuntimeConfig();
       try {
-        await axios.patch(config.public.NUXT_PUBLIC_API_BASE + `/venues/${id}`, venueData, {
+        venueData['_method'] = 'PATCH';
+        await axios.post(config.public.NUXT_PUBLIC_API_BASE + `/venues/${id}`, venueData, {
           headers: {
             'Content-Type': 'multipart/form-data', // Set the content type for file uploads
             Authorization: `Bearer ${localStorage.getItem('token')}`

@@ -55,8 +55,8 @@
                 <el-form-item label="Venue Phone" prop="phone">
                     <el-input v-model="store.form.phone" /> </el-form-item></el-col>
             <el-col :sm="12" :xs="24">
-                <el-form-item label="Town" prop="town">
-                    <el-input v-model="store.form.town" /> </el-form-item></el-col>
+                <el-form-item label="Town" prop="address">
+                    <el-input v-model="store.form.address" /> </el-form-item></el-col>
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Email" prop="email">
                     <el-input v-model="store.form.email" /> </el-form-item></el-col>
@@ -135,11 +135,11 @@ const basicRules = ref({
             trigger: "blur",
         },
     ],
-    town: [
+    address: [
         {
             type: "text",
             required: true,
-            message: "The town field is required",
+            message: "The address field is required",
             trigger: "blur",
         },
     ],
