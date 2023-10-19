@@ -41,8 +41,8 @@ jobs:
 
     - name: connect and pull
       run: |
-       scp -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no -r internationalDev/*  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/www/wwwroot/interantionalDev/
+       scp -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no -r .output/*  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/fiveaside-admin/
        ssh -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-       cd /www/wwwroot/interantionalDev
-       chown -R www:www ."
+       cd /var/www/fiveaside-admin
+       chown -R www-data:www-data ."
 
