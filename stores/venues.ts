@@ -135,7 +135,7 @@ export const useVenueStore = defineStore('venues', {
           // Handle the error
         } else {
           ElNotification({
-            message: 'This is an error message',
+            message: 'Successful',
             type: 'success',
           })      
         this.getVenues()

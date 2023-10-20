@@ -47,7 +47,7 @@ const TotalVenues = ref(0);
 const handleDelete = (id) => {
 
   ElMessageBox.confirm(
-    'proxy will permanently delete the file. Continue?',
+    'Are you sure, you want to delete?',
     'Warning',
     {
       confirmButtonText: 'OK',
@@ -61,7 +61,7 @@ const handleDelete = (id) => {
     .catch(() => {
       ElNotification({
         title: 'Info',
-        message: 'This is an info message',
+        message: 'Operation successful',
         type: 'info',
       })
     })
