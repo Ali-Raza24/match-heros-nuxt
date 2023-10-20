@@ -17,12 +17,12 @@
                 </div>
             </div>
             <button @click="userLogin" class="btn-theme w-full">Sign In</button>
-            <div class="text-center mt-5 xl:mb-12 lg:mb-10 mb-5">
+            <!-- <div class="text-center mt-5 xl:mb-12 lg:mb-10 mb-5">
                 <a href="#" class="inline-block text-[#6D92CA] font-bold text-sm p-2 smooth hover:text-white">Forgot Password?</a>
-            </div>
-            <div class="block text-center xl:mt-12 lg:mt-10 mt-8">
+            </div> -->
+            <!-- <div class="block text-center xl:mt-12 lg:mt-10 mt-8">
                 <a href="#" class="inline-flex items-center gap-3 text-white text-base font-bold">Register <img src="/assets/images/arrow-right-green.svg" alt=""></a>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
