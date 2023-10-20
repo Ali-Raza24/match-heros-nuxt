@@ -57,7 +57,7 @@ const menus = [
   ]},
   { label: 'Credits Purchased', route: '/CreditsPurchased', icon: 'icon-credit'},
   { label: 'Games', route: '/games', icon: 'icon-games'},
-  { label: 'Teams', route: '/teams', icon: 'icon-teams'},
+  // { label: 'Teams', route: '/teams', icon: 'icon-teams'},
   { label: 'Notifications', route: '/notifications', icon: 'icon-notifications'},
 ]
 

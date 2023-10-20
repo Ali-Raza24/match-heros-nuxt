@@ -48,8 +48,8 @@
 const auth = useAuthStore();
 
 const profileDropdown = [
-  { label: 'Profile', icon: 'icon-players', route: '/profile' },
-  { label: 'Settings', icon: 'icon-dashboard', route: '/settings' },
+  // { label: 'Profile', icon: 'icon-players', route: '/profile' },
+  // { label: 'Settings', icon: 'icon-dashboard', route: '/settings' },
   { label: 'Logout', icon: 'icon-logout', route: '/logout' },
 ]
 
