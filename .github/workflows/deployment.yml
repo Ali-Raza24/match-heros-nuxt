@@ -44,5 +44,5 @@ jobs:
        scp -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no -r .output/*  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/fiveaside-admin/
        ssh -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
        cd /var/www/fiveaside-admin
-       sudo chown -R www-data:www-data ."
+       sudo chown -R ubuntu:www-data ."
 
