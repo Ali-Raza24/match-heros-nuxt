@@ -13,19 +13,23 @@ export const useGameStore = defineStore('game', {
   actions: {
     async getGame(type:any) {
       try {
-        this.loading=true
-        const { data, error } = await get(`/games?game_type=${type}`, {
-          page: this.currentPage,
-        });
+        if(type != undefined)
+        {
 
-        if (error.value) {
-          // Handle the error
-        } else {
-            this.game = data.value.data;
-            this.TotalGame = data.value.total
-            this.loading=false
-          // this.links = data.value.links;
-          // this.meta = data.value.meta;
+          this.loading=true
+          const { data, error } = await get(`/games?game_type=${type}`, {
+            page: this.currentPage,
+          });
+  
+          if (error.value) {
+            // Handle the error
+          } else {
+              this.game = data.value.data;
+              this.TotalGame = data.value.total
+              this.loading=false
+            // this.links = data.value.links;
+            // this.meta = data.value.meta;
+          }
         }
       } catch (error) {
         // Handle any unexpected errors

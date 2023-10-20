@@ -43,19 +43,19 @@ definePageMeta({
 
 const store = useGameStore();
 const currentPage = () => store.getCurrentPage();
-const activeTab = ref('Friendly Match')
-
+const activeName = ref('')
 const handleClick = (TabName) => {
   fetchData(TabName)
 }
 
 const handleCurrentChange = async (page) => {
   store.setCurrentPage(page);
-  fetchData()
+  fetchData(activeName.value)
 };
 
 onMounted(async () => {
-  fetchData(activeTab.value)
+  activeName.value = 'Friendly Match';
+  fetchData(activeName.value);
 });
 
 const fetchData = async (activeTab) => {

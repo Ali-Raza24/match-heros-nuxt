@@ -8,7 +8,7 @@
       <el-table-column label="Name" prop="name" />
       <el-table-column label="Email	" prop="contact.email" />
       <el-table-column label="Phone	" prop="contact.phone" />
-      <el-table-column label="Country	" prop="address.country.name" />
+      <el-table-column label="Country	" prop="country" />
       <el-table-column label="Town" prop="address" />
       <el-table-column label="Open Time" prop="open_time" />
       <el-table-column label="Close Time" prop="close_time" />

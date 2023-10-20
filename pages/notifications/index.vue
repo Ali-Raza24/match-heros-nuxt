@@ -5,7 +5,7 @@
       </h6>
     </div>
   <el-table :data="store.Notifications" v-loading="store.loading">
-    <el-table-column label="Name	" prop="related.name" />
+    <el-table-column label="Name	" prop="related_user.name" />
     <el-table-column label="Related Typet">
       <template #default="scope">{{ invitedTeammate(scope.row.related_type)}}</template>
     </el-table-column>
