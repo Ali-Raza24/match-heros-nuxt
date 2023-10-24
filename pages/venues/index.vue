@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="TotalVenues" :current-page="currentPage()"
+    <el-pagination background layout="prev, pager, next" :total="store.totalVenues" :current-page="currentPage()"
       @current-change="handleCurrentChange" />
   </NuxtLayout>
 </template>
@@ -41,7 +41,7 @@ definePageMeta({
 const store = useVenueStore();
 // const venues = ref([]);
 // const { venues } = store;
-const TotalVenues = ref(0);
+// const TotalVenues = ref(0);
 
 
 const handleDelete = (id) => {
@@ -81,7 +81,7 @@ onMounted(async () => {
 
 const fetchData = async () => {
   await store.getVenues();
-  TotalVenues.value = store.meta.total;
+  // TotalVenues.value = store.meta.total;
   // venues.value = store.venues;
 }
 

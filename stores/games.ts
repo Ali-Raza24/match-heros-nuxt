@@ -2,42 +2,51 @@ import { get } from '~/api/api';
 
 export const useGameStore = defineStore('game', {
   state: () => ({
-    loading:false,
+    loading: false,
     game: [],
     links: {},
     meta: {},
     currentPage: 1,
-    TotalGame:0
+    TotalGame: 0,
+    searchQuery:'',
+    activeName:'Friendly Match'
+
   }),
 
   actions: {
-    async getGame(type:any) {
+    async getGame(query = null) {
       try {
-        if(type != undefined)
-        {
+        // if (type != undefined) {
 
-          this.loading=true
-          const { data, error } = await get(`/games?game_type=${type}`, {
+          this.loading = true
+          const { data, error } = await get(`/games?game_type=${this.activeName}`, {
             page: this.currentPage,
+            query:this.searchQuery
           });
-  
           if (error.value) {
             // Handle the error
           } else {
-              this.game = data.value.data;
-              this.TotalGame = data.value.total
-              this.loading=false
-            // this.links = data.value.links;
-            // this.meta = data.value.meta;
+            this.setValues(data.value)
+            this.loading = false
           }
-        }
+        // }
       } catch (error) {
         // Handle any unexpected errors
       }
     },
+    setValues(data: any) {
+      this.game = data.data;
+      this.TotalGame = data.total
+    },
 
-    setCurrentPage(page) {
+    setCurrentPage(page: any) {
       this.currentPage = page;
+    },
+    setSearchQuery(query: any) {
+      this.searchQuery = query
+    },
+    setActiveTab(query: any) {
+      this.activeName = query
     },
   },
 
@@ -45,3 +54,4 @@ export const useGameStore = defineStore('game', {
     getCurrentPage: (state) => () => state.currentPage, // Make the getter return a function
   },
 });
+

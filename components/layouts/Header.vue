@@ -8,12 +8,13 @@
     <h6 class="text-white text-base font-bold lg:block hidden">Welcom Back!</h6>
     <div class="inline-flex items-center ml-auto">
       <div class="flex items-center xl:mr-5 border border-[#283054] rounded-3xl px-5 lg:w-[400px] w-auto">
-        <input type="text"
+        <!-- <input type="text"
           class="bg-transparent border-none outline-none h-10 text-white placeholder:text-white text-xs font-regular w-full"
-          placeholder="Search">
-        <button class="h-10 ml-3">
+          placeholder="Search"> -->
+        <el-input class="h-search" v-model="searchQuery" placeholder="Search..." @input="searchData" />
+        <!-- <button class="h-10 ml-3">
           <img src="/assets/images/search.svg" alt="">
-        </button>
+        </button> -->
       </div>
       <button class="h-10 w-10 bg-white xl:inline-flex hidden items-center justify-center rounded-[50px] border-none">
         <img src="/assets/images/bell.svg" class="max-h-5 w-auto" alt="">
@@ -31,7 +32,7 @@
                 <img src="/assets/images/person.jpg" class="rounded-[50px] h-7 min-w-[28px] object-cover" alt="">
                 <span class="text-white font-light text-xs block">John Smith</span>
               </div>
-              <el-dropdown-item v-for=" profile in profileDropdown"  @click="handleItemClick(profile)" >
+              <el-dropdown-item v-for=" profile in profileDropdown" @click="handleItemClick(profile)">
                 <el-icon><img :src="`/assets/images/${profile.icon}.svg`" class="h-full w-full object-contain"
                     alt="" /></el-icon>
                 <span>{{ profile.label }}</span>
@@ -45,7 +46,15 @@
 </template>
   
 <script setup>
+
 const auth = useAuthStore();
+const playerStore = usePlayerStore();
+const venueStore = useVenueStore();
+const gameStore = useGameStore();
+
+
+const searchQuery = ref('')
+const delayTimer = ref(null)
 
 const profileDropdown = [
   // { label: 'Profile', icon: 'icon-players', route: '/profile' },
@@ -54,14 +63,44 @@ const profileDropdown = [
 ]
 
 const handleItemClick = (profile) => {
-      if (profile.label === 'Logout') {
-        logout();
-      } else {
-      }
+  if (profile.label === 'Logout') {
+    logout();
+  } else {
+  }
+}
+const callApiMethod = () => {
+  
+  setTimeout(() => {
+    // store.getSearchData(searchQuery.value)
+    // const data = store.returnSearchData()
+    if (useRoute().name == 'players') {
+      playerStore.setSearchQuery(searchQuery.value)
+      playerStore.setCurrentPage(1)
+      playerStore.getPlayers(searchQuery.value);
+    } else if (useRoute().name == 'games') {
+      gameStore.setSearchQuery(searchQuery.value)
+      gameStore.setCurrentPage(1)
+      gameStore.getGame(searchQuery.value)
+    } else if (useRoute().name == 'venues') {
+      venueStore.setSearchQuery(searchQuery.value)
+      venueStore.setCurrentPage(1)
+      venueStore.getVenues(searchQuery.value);
     }
 
+  }, 0);
+}
+const searchData = () => {
+  if (delayTimer.value) {
+    clearTimeout(delayTimer.value);
+  }
+  delayTimer.value = setTimeout(() => {
+    callApiMethod();
+  }, 500);
+}
+
+
 const logout = async () => {
-    await auth.logout();
+  await auth.logout();
 }
 </script>
 <style lang="scss">
@@ -94,6 +133,19 @@ const logout = async () => {
 
 .el-popper__arrow {
   display: none;
+}
+.h-search
+{
+  .el-input__wrapper
+  {
+    background-color: transparent;
+    box-shadow: none;
+    input
+    {
+      min-height: 40px;
+      color:#fff;
+    }
+  }
 }
 </style>
   

@@ -3,7 +3,7 @@
     <div class="flex lg:flex-row flex-col gap-4 mb-4 items-center justify-between">
       <h6 class="text-white text-base font-regular">Total Games</h6>
     </div>
-    <el-tabs v-model="activeName" type="card" @tab-change="handleClick">
+    <el-tabs v-model="store.activeName" type="card" @tab-change="handleClick">
       <el-tab-pane label="Friendly Match" name="Friendly Match">
       </el-tab-pane>
       <el-tab-pane label="Futsal" name="Futsal">
@@ -43,23 +43,23 @@ definePageMeta({
 
 const store = useGameStore();
 const currentPage = () => store.getCurrentPage();
-const activeName = ref('')
 const handleClick = (TabName) => {
+  store.setActiveTab(TabName)
+  store.setCurrentPage(1);
   fetchData(TabName)
 }
 
 const handleCurrentChange = async (page) => {
   store.setCurrentPage(page);
-  fetchData(activeName.value)
+  fetchData()
 };
 
 onMounted(async () => {
-  activeName.value = 'Friendly Match';
-  fetchData(activeName.value);
+  fetchData();
 });
 
-const fetchData = async (activeTab) => {
-  await store.getGame(activeTab);
+const fetchData = async () => {
+  await store.getGame();
 }
 
 </script>

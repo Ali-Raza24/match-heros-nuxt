@@ -1,4 +1,4 @@
-import { get, post,remove } from '~/api/api';
+import { get, post, remove } from '~/api/api';
 import axios from 'axios';
 
 const defaultForm = {
@@ -17,39 +17,41 @@ const defaultForm = {
 }
 export const useVenueStore = defineStore('venues', {
   state: () => reactive({
-    loading:false,
+    loading: false,
     venues: [],
     links: {},
     meta: {},
     currentPage: 1,
-    countriesData:[],
-    form: reactive({...defaultForm}),
-    buttonText:''
-    
+    countriesData: [],
+    form: reactive({ ...defaultForm }),
+    buttonText: '',
+    searchQuery:'',
+    totalVenues:''
+
+
   }),
 
   actions: {
-    async getVenues() {
+    async getVenues(query = '') {
       try {
-        this.loading= true
+        this.loading = true
         const { data, error } = await get('/venues', {
           page: this.currentPage,
+          query:this.searchQuery
         });
 
         if (error.value) {
           // Handle the error
         } else {
-          this.venues = data.value.data;
-          this.links = data.value.links;
-          this.meta = data.value.meta;
-          this.loading=false
+          this.setValues(data.value)
+          this.loading = false
         }
       } catch (error) {
         // Handle any unexpected errors
       }
     },
     async createVenues(venueData: any) {
-      this.loading=true
+      this.loading = true
       const config = useRuntimeConfig();
       try {
         await axios.post(config.public.NUXT_PUBLIC_API_BASE + '/venues', venueData, {
@@ -60,7 +62,7 @@ export const useVenueStore = defineStore('venues', {
         })
           .then(res => {
             if (res.status == 201) {
-              this.loading=false
+              this.loading = false
 
               ElNotification({
                 message: 'Venue added',
@@ -70,7 +72,7 @@ export const useVenueStore = defineStore('venues', {
             }
           })
           .catch(error => {
-            this.loading=false
+            this.loading = false
             ElNotification({
               message: 'Something went wrong',
               type: 'error',
@@ -80,7 +82,7 @@ export const useVenueStore = defineStore('venues', {
       } catch (error) {
       }
     },
-    async getSingleVenues(id:any) {
+    async getSingleVenues(id: any) {
       try {
         const { data, error } = await get(`/venues/${id}`);
 
@@ -93,9 +95,9 @@ export const useVenueStore = defineStore('venues', {
         // Handle any unexpected errors
       }
     },
-    async updateVenue(venueData:any,id:any) {
-      this.loading=true
-      
+    async updateVenue(venueData: any, id: any) {
+      this.loading = true
+
       const config = useRuntimeConfig();
       try {
         venueData['_method'] = 'PATCH';
@@ -107,7 +109,7 @@ export const useVenueStore = defineStore('venues', {
         })
           .then(res => {
             if (res.status == 200) {
-              this.loading=false
+              this.loading = false
 
               ElNotification({
                 message: 'Venue updated',
@@ -117,7 +119,7 @@ export const useVenueStore = defineStore('venues', {
             }
           })
           .catch(error => {
-            this.loading=false
+            this.loading = false
             ElNotification({
               message: 'Something went wrong',
               type: 'error',
@@ -127,7 +129,7 @@ export const useVenueStore = defineStore('venues', {
       } catch (error) {
       }
     },
-    async DeleteVenue(id:any) {
+    async DeleteVenue(id: any) {
       try {
         const { data, error } = await remove(`/venues/${id}`);
 
@@ -137,15 +139,15 @@ export const useVenueStore = defineStore('venues', {
           ElNotification({
             message: 'Successful',
             type: 'success',
-          })      
-        this.getVenues()
+          })
+          this.getVenues()
         }
       } catch (error) {
         // Handle any unexpected errors
       }
     },
 
-    async getCountry(){
+    async getCountry() {
 
       const { data, error } = await post('/countries')
       if (error.value) {
@@ -155,7 +157,7 @@ export const useVenueStore = defineStore('venues', {
       }
 
     },
-    setCurrentPage(page:any) {
+    setCurrentPage(page: any) {
       this.currentPage = page;
     },
     resetForm() {
@@ -163,9 +165,19 @@ export const useVenueStore = defineStore('venues', {
         this.form[key] = defaultForm[key];
       })
     },
-    setText(text:any){
-      this.buttonText=text
-    }
+    setText(text: any) {
+      this.buttonText = text
+    },
+    setValues(data: any) {
+      this.venues = data.data;
+      this.links = data.links;
+      this.meta = data.meta;
+      this.totalVenues=data.meta.total
+    },
+    setSearchQuery(query: any) {
+      this.searchQuery = query
+    },
+
   },
 
   getters: {

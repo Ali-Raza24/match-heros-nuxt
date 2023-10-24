@@ -2,32 +2,48 @@ import { get } from '~/api/api';
 
 export const usePlayerStore = defineStore('players', {
   state: () => ({
+    loading:false,
     players: [],
     links: {},
     meta: {},
     currentPage: 1,
+    totalPlayers: 0,
+    searchQuery:''
+
   }),
 
   actions: {
-    async getPlayers() {
+    async getPlayers(query = '') {
       try {
+                
+        this.loading=true
         const { data, error } = await get('/players', {
           page: this.currentPage,
+          query:this.searchQuery
         });
 
         if (error.value) {
           // Handle the error
         } else {
-          this.players = data.value.data;
-          this.links = data.value.links;
-          this.meta = data.value.meta;
+          this.setValues(data.value)
+          this.loading=false
         }
       } catch (error) {
         // Handle any unexpected errors
       }
     },
 
-    setCurrentPage(page) {
+    setValues(data: any) {
+      this.players = data.data;
+      this.links = data.links;
+      this.meta = data.meta;
+      this.totalPlayers=data.meta.total
+    },
+    setSearchQuery(query: any) {
+      this.searchQuery = query
+    },
+
+    setCurrentPage(page: any) {
       this.currentPage = page;
     },
   },

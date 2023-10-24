@@ -4,7 +4,7 @@
       <h6 class="text-white text-base font-regular">Total Number of players signed up
       </h6>
     </div>
-    <el-table :data="players" v-loading="loading">
+    <el-table :data="store.players" v-loading="store.loading">
       <el-table-column label="Name" prop="name" />
       <el-table-column label="Sign up date	" prop="signup_date" />
       <el-table-column label="Email	" prop="email" />
@@ -31,7 +31,7 @@
   </el-table-column>
       <el-table-column label="Amount In Account	" prop="balance" width="150" />
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="totalPlayers" :current-page="currentPage()"
+    <el-pagination background layout="prev, pager, next" :total="store.totalPlayers" :current-page="currentPage()"
       @current-change="handleCurrentChange" />
   </NuxtLayout>
 </template>
@@ -45,12 +45,7 @@ definePageMeta({
 })
 
 const store = usePlayerStore();
-const players = ref([]);
-const totalPlayers = ref(0);
-
 const currentPage = () => store.getCurrentPage();
-const loading = ref(false);
-
 const handleCurrentChange = async (page) => {
   store.setCurrentPage(page);
   fetchData()
@@ -61,11 +56,7 @@ onMounted(async () => {
 });
 
 const fetchData = async () => {
-  loading.value = true;
   await store.getPlayers();
-  totalPlayers.value = store.meta.total;
-  players.value = store.players;
-  loading.value = false;
 }
 
 </script>
