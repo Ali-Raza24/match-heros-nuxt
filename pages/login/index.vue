@@ -16,7 +16,8 @@
                     <button class="absolute top-[50%] -translate-y-[50%] right-4 z-10 p-1"><img src="/assets/images/eyeSlash.svg" alt=""></button>
                 </div>
             </div>
-            <button @click="userLogin" class="btn-theme w-full">Sign In</button>
+            <el-button  class="btn-theme w-full" round  @click="userLogin" v-bind:loading="auth.loading">Sign In</el-button>
+            <!-- <button @click="userLogin" class="btn-theme w-full">Sign In</button> -->
             <!-- <div class="text-center mt-5 xl:mb-12 lg:mb-10 mb-5">
                 <a href="#" class="inline-block text-[#6D92CA] font-bold text-sm p-2 smooth hover:text-white">Forgot Password?</a>
             </div> -->
@@ -54,3 +55,8 @@ const userLogin = async () => {
   }
 };
 </script>
+<style>
+.btn-theme {
+    @apply border-none inline-flex items-center justify-center whitespace-nowrap outline-none xl:h-[45px] lg:h-10 h-9 xl:px-7 lg:px-6 px-5 bg-gradient-to-b from-[#0b8140] to-[#0a5229] rounded-[50px] text-white xl:text-sm md:text-xs text-[11px] font-bold uppercase tracking-wide scale-100 active:scale-[.97] mt-5;
+}
+</style>

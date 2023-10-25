@@ -9,12 +9,14 @@ export const useAuthStore = defineStore('auth', {
       authUser:{
         name:'',
         image:''
-      }
+      },
+      loading:false
     }),
     
     actions: {
         // since we rely on `this`, we cannot use an arrow function
       signIn(payload: any) {
+        this.loading=true
         const state= this;
 
         const { data } = useFetch('/auth/login', {
@@ -31,9 +33,10 @@ export const useAuthStore = defineStore('auth', {
           onResponse({ request, response, options }) {
             if (response._data.authorization.access_token) {
               localStorage.setItem('token', response._data.authorization.access_token)
-
+              
               state.authUser.name = response._data.user.name
               state.authUser.image = response._data.user?.images?.avatar
+              state.loading=false
               navigateTo('/dashboard')
 
             }
