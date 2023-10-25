@@ -1607,6 +1607,26 @@ table tbody tr+tr {
   border-color: rgb(255 255 255 / 0.05);
 }
 
+.el-tabs--card>.el-tabs__header,
+.el-tabs--card>.el-tabs__header .el-tabs__item,
+.el-tabs--card>.el-tabs__header .el-tabs__nav {
+  border: none !important;
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__item {
+  @apply relative cursor-pointer py-3 px-3 lg:text-[13px] text-xs  text-white bg-[#1E2646] rounded-t-lg bg-gradient-to-b from-[#1E2646] to-[#1E2646] lg:min-w-[170px] min-w-0 text-center sm:col-span-4 col-span-6;
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+  @apply from-[#0b8140] to-[#0a5229];
+}
+.el-tabs__nav
+{
+  @apply lg:flex lg:justify-start grid grid-cols-12 gap-1 relative w-full;
+}
+.el-tabs {
+    --el-tabs-header-height: unset;
+} 
 .border-b-\[\#283054\] {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(40 48 84 / var(--tw-border-opacity));

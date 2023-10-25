@@ -46,7 +46,7 @@ const currentPage = () => store.getCurrentPage();
 const handleClick = (TabName) => {
   store.setActiveTab(TabName)
   store.setCurrentPage(1);
-  fetchData(TabName)
+  fetchData()
 }
 
 const handleCurrentChange = async (page) => {
@@ -63,25 +63,29 @@ const fetchData = async () => {
 }
 
 </script>
-<style lang="scss">
-.el-tabs--card>.el-tabs__header,
-.el-tabs--card>.el-tabs__header .el-tabs__item,
-.el-tabs--card>.el-tabs__header .el-tabs__nav {
-  border: none !important;
+<style lang="scss"> 
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  margin: 0 4px;
+  background-color: #1e2646;
+  color: #fff;
 }
 
-.el-tabs--card>.el-tabs__header .el-tabs__item {
-  @apply relative cursor-pointer py-3 px-3 lg:text-[13px] text-xs  text-white bg-[#1E2646] rounded-t-lg bg-gradient-to-b from-[#1E2646] to-[#1E2646] lg:min-w-[170px] min-w-0 text-center sm:col-span-4 col-span-6;
+.el-loading-mask {
+  background-color: #1e2646;
 }
 
-.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
-  @apply from-[#0b8140] to-[#0a5229];
+.el-pagination {
+  margin-top: 20px;
 }
-.el-tabs__nav
-{
-  @apply lg:flex lg:justify-start grid grid-cols-12 gap-1 relative w-full;
+
+.el-pagination.is-background .btn-prev:disabled {
+  color: #333845 !important;
+  background-color: #141b37 !important;
 }
-.el-tabs {
-    --el-tabs-header-height: unset;
-}  
+
+.el-pagination.is-background .el-pager li.is-active {
+  background: linear-gradient(181deg, #0b8140, #0a5229);
+}
 </style>

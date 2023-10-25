@@ -11,7 +11,7 @@
     </el-table-column>
     <el-table-column label="Title" prop="title" />
     <el-table-column label="Created At">
-      <template #default="scope">{{ convertDateStringToYearMonthDate(scope.row.created_at)}}</template>
+      <template #default="scope">{{ formatDate(scope.row.created_at)}}  {{  formatTime(scope.row.created_at) }}</template>
     </el-table-column>
   </el-table>
   <el-pagination background layout="prev, pager, next" :total="store.TotalNotifications" :current-page="currentPage()"
@@ -36,14 +36,6 @@
     fetchData()
   };
   
-  function convertDateStringToYearMonthDate(dateString) {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-  const day = date.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
 function invitedTeammate(str) {
   const words = str.split('_');
   const formattedName = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
@@ -59,4 +51,29 @@ function invitedTeammate(str) {
   }
   
   </script>
-    
+    <style>
+  .el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  margin: 0 4px;
+  background-color: #1e2646;
+  color: #fff;
+}
+
+.el-loading-mask {
+  background-color: #1e2646;
+}
+
+.el-pagination {
+  margin-top: 20px;
+}
+
+.el-pagination.is-background .btn-prev:disabled {
+  color: #333845 !important;
+  background-color: #141b37 !important;
+}
+
+.el-pagination.is-background .el-pager li.is-active {
+  background: linear-gradient(181deg, #0b8140, #0a5229);
+}
+  </style>

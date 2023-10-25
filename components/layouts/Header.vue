@@ -51,6 +51,7 @@ const auth = useAuthStore();
 const playerStore = usePlayerStore();
 const venueStore = useVenueStore();
 const gameStore = useGameStore();
+const notificationsStore = useNotificationsStore();
 
 
 const searchQuery = ref('')
@@ -86,6 +87,11 @@ const callApiMethod = () => {
       venueStore.setCurrentPage(1)
       venueStore.getVenues(searchQuery.value);
     }
+     else if (useRoute().name == 'notifications') {
+      notificationsStore.setSearchQuery(searchQuery.value)
+      notificationsStore.setCurrentPage(1)
+      notificationsStore.getNotifications(searchQuery.value);
+    }
 
   }, 0);
 }
@@ -97,7 +103,6 @@ const searchData = () => {
     callApiMethod();
   }, 500);
 }
-
 
 const logout = async () => {
   await auth.logout();

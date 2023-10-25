@@ -7,7 +7,9 @@ export const useNotificationsStore = defineStore('notifications', {
     meta: {},
     currentPage: 1,
     TotalNotifications:0,
-    loading:false
+    loading:false,
+    searchQuery:'',
+
   }),
 
   actions: {
@@ -16,6 +18,8 @@ export const useNotificationsStore = defineStore('notifications', {
         this.loading=true
         const { data, error } = await get('/notifications', {
           page: this.currentPage,
+          query:this.searchQuery
+
         });
 
         if (error.value) {
@@ -23,7 +27,7 @@ export const useNotificationsStore = defineStore('notifications', {
         } else {  
           this.loading=false        
           this.Notifications = data.value.data;
-          this.TotalNotifications = data.value.pagination.total
+          this.TotalNotifications = data.value.meta.total
           // this.links = data.value.links;
           // this.meta = data.value.meta;
         }
@@ -32,8 +36,11 @@ export const useNotificationsStore = defineStore('notifications', {
       }
     },
 
-    setCurrentPage(page) {
+    setCurrentPage(page:any) {
       this.currentPage = page;
+    },
+    setSearchQuery(query: any) {
+      this.searchQuery = query
     },
   },
 

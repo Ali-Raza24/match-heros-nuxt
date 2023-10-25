@@ -21,7 +21,8 @@ export const useGameStore = defineStore('game', {
           this.loading = true
           const { data, error } = await get(`/games?game_type=${this.activeName}`, {
             page: this.currentPage,
-            query:this.searchQuery
+            query:this.searchQuery,
+            type:'admin'
           });
           if (error.value) {
             // Handle the error
@@ -36,7 +37,7 @@ export const useGameStore = defineStore('game', {
     },
     setValues(data: any) {
       this.game = data.data;
-      this.TotalGame = data.total
+      this.TotalGame = data.meta.total
     },
 
     setCurrentPage(page: any) {
