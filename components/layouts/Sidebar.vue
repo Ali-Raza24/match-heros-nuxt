@@ -16,10 +16,12 @@
         background-color="rgb(30 38 70 / var(--tw-bg-opacity))"
         class="el-menu-vertical-demo"
         text-color="#fff"
+        :default-active="activeMenu"
+        :unique-opened="true"
         :router="true"
       >
         <template :route="menu.route" v-for="menu in menus">
-          <el-sub-menu v-if="menu.children" >
+          <el-sub-menu v-if="menu.children" :index="menu.route">
             <template #title :route="menu.route">
               <el-icon><img :src="`../../assets/images/${menu.icon}.svg`" class="h-full w-full object-contain" alt="" /></el-icon>
               <span>{{ menu.label }}</span>
@@ -63,6 +65,10 @@ const menus = [
 
 const errorMsg = ref('');
 
+const activeMenu = computed(() => {
+  return useRoute().path;  
+})
+
 const logout = async () => {
   try {
     const { error } = await auth.logout();
@@ -92,20 +98,48 @@ const logout = async () => {
   border-right: none !important;
   width: 100%;
   font-family: 'Regular';
-  .is-active {
+  .is-active:not(.el-sub-menu .el-menu-item) {
     --tw-bg-opacity: 1;
     background-color: rgb(17 23 45 / 1);
     background-color: rgb(17 23 45 / var(--tw-bg-opacity));
 
+      &::before {
+        @include menu-hover-border;
+      }
+  }
+  .el-menu-item:not(.el-sub-menu .el-menu-item):hover {
     &::before {
       @include menu-hover-border;
     }
   }
-  .el-menu-item:hover {
-    &::before {
-      @include menu-hover-border;
-    }
-  }
+}
+.el-sub-menu.is-active
+{
+  @apply relative;
+}
+.el-sub-menu .el-menu-item
+{
+  @apply flex text-white px-5 text-xs py-3 h-auto bg-transparent hover:bg-[#11172d]/60;
+}
+.el-sub-menu.is-active .el-sub-menu__title{
+  --tw-bg-opacity: 1;
+    background-color: rgb(17 23 45 / 1) !important;
+    background-color: rgb(17 23 45 / var(--tw-bg-opacity));
+
+      &::before {
+        @include menu-hover-border;
+      }
+}
+.el-sub-menu .el-menu-item.is-active
+{
+  @apply bg-[#11172d]/60;
+}
+.el-menu-item,
+.el-sub-menu .el-sub-menu__title
+{
+  border-top-width: 1px;
+  border-top-color: rgb(40 48 84 / var(--tw-border-opacity));
+  --tw-border-opacity: 1;
 }
 </style>
   
