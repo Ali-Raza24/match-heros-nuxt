@@ -7,7 +7,7 @@
 <script setup>
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth','profile'],
 })
 
 import { useVenueStore } from "../../stores/venues";

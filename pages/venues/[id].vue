@@ -7,7 +7,7 @@
 import { useVenueStore } from "../../stores/venues";
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth','profile'],
 })
 
  const store = useVenueStore();

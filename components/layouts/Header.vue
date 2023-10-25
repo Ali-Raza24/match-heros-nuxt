@@ -22,8 +22,8 @@
       <div class="xl:ml-10 ml-3 relative">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link" style="display: flex; align-items: center;">
-            <span class="mr-2 text-white font-bold text-base xl:block hidden">John Smith</span>
-            <el-avatar src="/assets/images/person.jpg"></el-avatar>
+            <span class="mr-2 text-white font-bold text-base xl:block hidden">{{ auth.authUser.name }}</span>
+            <el-avatar :src="auth.authUser.image"></el-avatar>
             <img src="/assets/images/caret-down.svg" class="h-[6px] w-auto ml-2" alt="">
           </span>
           <template #dropdown>
@@ -46,7 +46,6 @@
 </template>
   
 <script setup>
-
 const auth = useAuthStore();
 const playerStore = usePlayerStore();
 const venueStore = useVenueStore();

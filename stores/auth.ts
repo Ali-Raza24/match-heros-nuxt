@@ -1,17 +1,22 @@
-import { RefSymbol } from "@vue/reactivity";
+import { get } from '~/api/api';
 
 const config = useRuntimeConfig();
-console.log('config',config);
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
       authToken: localStorage.getItem('authToken'),
-      baseUrl: config.public.NUXT_PUBLIC_API_BASE
+      baseUrl: config.public.NUXT_PUBLIC_API_BASE,
+      authUser:{
+        name:'',
+        image:''
+      }
     }),
     
     actions: {
         // since we rely on `this`, we cannot use an arrow function
       signIn(payload: any) {
+        const state= this;
+
         const { data } = useFetch('/auth/login', {
           method: 'post',
           baseURL: this.baseUrl,
@@ -24,9 +29,11 @@ export const useAuthStore = defineStore('auth', {
             "Content-Type": "application/json",
           },
           onResponse({ request, response, options }) {
-            console.log('response', response._data.authorization.access_token);
             if (response._data.authorization.access_token) {
               localStorage.setItem('token', response._data.authorization.access_token)
+
+              state.authUser.name = response._data.user.name
+              state.authUser.image = response._data.user?.images?.avatar
               navigateTo('/dashboard')
 
             }
@@ -63,7 +70,21 @@ export const useAuthStore = defineStore('auth', {
             })    
           }
         });
-      }
+      },
+
+      async getProfile() {
+        try {
+  
+            const { data, error } = await get('/profile');
+            if (error.value) {
+            } else {
+              this.authUser.name = data.value.name
+              this.authUser.image = data.value?.images?.avatar              
+            }
+        } catch (error) {
+          // Handle any unexpected errors
+        }
+      },
     },
     getters: {
         getAuthToken: state => state.authToken,

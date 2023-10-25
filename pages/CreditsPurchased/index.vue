@@ -22,7 +22,7 @@ import CashOut from '~/components/CreditsAndPurchased/CashOut.vue';
 import GameFree from '~/components/CreditsAndPurchased/GameFree.vue';
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth','profile'],
 })
 
 const activeName = ref('first')

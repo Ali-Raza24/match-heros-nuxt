@@ -37,7 +37,7 @@ import { ref, onMounted } from 'vue';
 import { formatDate, formatTime } from '~/utils/TimeFilter';
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth','profile'],
 })
 
 

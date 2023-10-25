@@ -34,7 +34,7 @@ import { useVenueStore } from '../../stores/venues';
 import { ref, onMounted } from 'vue';
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth','profile'],
 })
 
 

@@ -41,7 +41,7 @@ import { usePlayerStore } from '../../stores/players';
 import { ref, onMounted } from 'vue';
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: ['auth','profile'],
 })
 
 const store = usePlayerStore();
