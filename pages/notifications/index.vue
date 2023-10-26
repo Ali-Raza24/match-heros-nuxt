@@ -6,7 +6,7 @@
     </div>
   <el-table :data="store.Notifications" v-loading="store.loading">
     <el-table-column label="Name	" prop="related_user.name" />
-    <el-table-column label="Related Typet">
+    <el-table-column label="Related Type">
       <template #default="scope">{{ invitedTeammate(scope.row.related_type)}}</template>
     </el-table-column>
     <el-table-column label="Title" prop="title" />
