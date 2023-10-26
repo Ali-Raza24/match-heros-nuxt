@@ -6,7 +6,8 @@ export const useTeamStore = defineStore('Team', {
     links: {},
     meta: {},
     currentPage: 1,
-    TotalTeam:0
+    TotalTeam:0,
+    perPage:0
   }),
 
   actions: {
@@ -21,6 +22,7 @@ export const useTeamStore = defineStore('Team', {
         } else {
           this.Team = data.value.data;
           this.TotalTeam = data.value.pagination.total
+          this.perPage = data.value.pagination.perPage
           // this.links = data.value.links;
           // this.meta = data.value.meta;
         }

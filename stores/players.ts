@@ -8,7 +8,8 @@ export const usePlayerStore = defineStore('players', {
     meta: {},
     currentPage: 1,
     totalPlayers: 0,
-    searchQuery:''
+    searchQuery:'',
+    perPage:0
 
   }),
 
@@ -38,6 +39,8 @@ export const usePlayerStore = defineStore('players', {
       this.links = data.links;
       this.meta = data.meta;
       this.totalPlayers=data.meta.total
+      this.perPage = data.meta.per_page
+
     },
     setSearchQuery(query: any) {
       this.searchQuery = query

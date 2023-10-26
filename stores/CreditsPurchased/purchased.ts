@@ -6,7 +6,9 @@ export const usePurchasedStore = defineStore('purchased', {
     links: {},
     meta: {},
     currentPage: 1,
-    TotalPurchases:0
+    TotalPurchases:0,
+    perPage:0
+
   }),
 
   actions: {
@@ -21,6 +23,8 @@ export const usePurchasedStore = defineStore('purchased', {
         } else {
           this.Purchased = data.value.data;
           this.TotalPurchases = data.value.pagination.total
+          this.perPage = data.value.pagination.perPage
+
           // this.links = data.value.links;
           // this.meta = data.value.meta;
         }

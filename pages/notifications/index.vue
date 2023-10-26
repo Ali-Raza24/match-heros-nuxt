@@ -14,7 +14,7 @@
       <template #default="scope">{{ formatDate(scope.row.created_at)}}  {{  formatTime(scope.row.created_at) }}</template>
     </el-table-column>
   </el-table>
-  <el-pagination background layout="prev, pager, next" :total="store.TotalNotifications" :current-page="currentPage()"
+  <el-pagination background layout="prev, pager, next" :total="store.TotalNotifications" :page-size="store.perPageNotifications" :current-page="currentPage"
   @current-change="handleCurrentChange" />
   </NuxtLayout>
   </template>

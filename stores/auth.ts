@@ -24,16 +24,24 @@ export const useAuthStore = defineStore('auth', {
           baseURL: this.baseUrl,
           body: JSON.stringify({
             email: payload.email,
-            password: payload.password
+            password: payload.password,
+            type:'admin'
           }),
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
           onResponse({ request, response, options }) {
-            if (response._data.authorization.access_token) {
+            if(response.status  == 401)
+            {
+              state.loading=false 
+               ElNotification({
+                message: response._data.message,
+                type: 'error',
+              })
+            }            
+            else if(response._data.authorization.access_token) {
               localStorage.setItem('token', response._data.authorization.access_token)
-              
               state.authUser.name = response._data.user.name
               state.authUser.image = response._data.user?.images?.avatar
               state.loading=false
@@ -41,6 +49,7 @@ export const useAuthStore = defineStore('auth', {
 
             }
           },
+
         })
 
     

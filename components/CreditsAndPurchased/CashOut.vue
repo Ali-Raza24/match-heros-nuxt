@@ -6,7 +6,7 @@
     <el-table-column label="Cash Out Amount" prop="purchase_amount" />
     <el-table-column label="Completed" prop="completed" />
   </el-table>
-  <el-pagination background layout="prev, pager, next" :total="store.TotalCashOut" :current-page="currentPage()"
+  <el-pagination background layout="prev, pager, next" :page-size="store.perPage"  :total="store.TotalCashOut" :current-page="currentPage()"
     @current-change="handleCurrentChange" />
 </template>
   

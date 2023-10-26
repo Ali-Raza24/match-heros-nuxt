@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="store.totalVenues" :current-page="currentPage()"
+    <el-pagination background layout="prev, pager, next" :total="store.totalVenues" :page-size="store.perPage"  :current-page="currentPage()"
       @current-change="handleCurrentChange" />
   </NuxtLayout>
 </template>

@@ -44,16 +44,8 @@ const form = reactive({
 const errorMsg = ref('');
 
 const userLogin = async () => {
-  try {
-    const { error,  } = await auth.signIn(form);
-    if (error) throw error;
-  } catch (error) {
-    errorMsg.value = error.message;
-    setTimeout(() => {
-      errorMsg.value = '';
-    }, 3000);
-  }
-};
+    await auth.signIn(form);
+}
 </script>
 <style>
 .btn-theme {

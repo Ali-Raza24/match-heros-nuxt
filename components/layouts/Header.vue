@@ -23,13 +23,13 @@
         <el-dropdown trigger="click">
           <span class="el-dropdown-link" style="display: flex; align-items: center;">
             <span class="mr-2 text-white font-bold text-base xl:block hidden">{{ auth.authUser.name }}</span>
-            <el-avatar :src="auth.authUser.image"></el-avatar>
+            <el-avatar src="/assets/images/person.jpg"></el-avatar>
             <img src="/assets/images/caret-down.svg" class="h-[6px] w-auto ml-2" alt="">
           </span>
           <template #dropdown>
             <el-dropdown-menu>
               <div class="flex items-center gap-3 py-3 border-b border-b-white/10 mb-2 px-4">
-                <img :src="auth.authUser.image" class="rounded-[50px] h-7 min-w-[28px] object-cover" alt="">
+                <img src="/assets/images/person.jpg" class="rounded-[50px] h-7 min-w-[28px] object-cover" alt="">
                 <span class="text-white font-light text-xs block">{{ auth.authUser.name }}</span>
               </div>
               <el-dropdown-item v-for=" profile in profileDropdown" @click="handleItemClick(profile)">

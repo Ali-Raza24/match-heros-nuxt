@@ -26,7 +26,8 @@ export const useVenueStore = defineStore('venues', {
     form: reactive({ ...defaultForm }),
     buttonText: '',
     searchQuery:'',
-    totalVenues:''
+    totalVenues:0,
+    perPage:0
 
 
   }),
@@ -173,6 +174,7 @@ export const useVenueStore = defineStore('venues', {
       this.links = data.links;
       this.meta = data.meta;
       this.totalVenues=data.meta.total
+      this.perPage=data.meta.per_page
     },
     setSearchQuery(query: any) {
       this.searchQuery = query

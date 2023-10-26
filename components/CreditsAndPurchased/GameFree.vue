@@ -6,7 +6,7 @@
       <el-table-column label="Time of Transfer	" prop="purchase_amount" />
       <el-table-column label="Completed" prop="completed" />
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="store.TotalGameFree" :current-page="currentPage()"
+    <el-pagination background layout="prev, pager, next" :total="store.TotalGameFree" :page-size="store.perPage"  :current-page="currentPage()"
       @current-change="handleCurrentChange" />
   </template>
     

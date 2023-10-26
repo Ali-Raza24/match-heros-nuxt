@@ -31,7 +31,7 @@
   </el-table-column>
       <el-table-column label="Amount In Account	" prop="balance" width="150" />
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="store.totalPlayers" :current-page="currentPage()"
+    <el-pagination background layout="prev, pager, next" :total="store.totalPlayers" :page-size="store.perPage" :current-page="currentPage()"
       @current-change="handleCurrentChange" />
   </NuxtLayout>
 </template>

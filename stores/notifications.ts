@@ -7,6 +7,7 @@ export const useNotificationsStore = defineStore('notifications', {
     meta: {},
     currentPage: 1,
     TotalNotifications:0,
+    perPageNotifications:0,
     loading:false,
     searchQuery:'',
 
@@ -27,7 +28,9 @@ export const useNotificationsStore = defineStore('notifications', {
         } else {  
           this.loading=false        
           this.Notifications = data.value.data;
+          this.perPageNotifications=data.value.meta.per_page
           this.TotalNotifications = data.value.meta.total
+
           // this.links = data.value.links;
           // this.meta = data.value.meta;
         }

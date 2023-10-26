@@ -6,7 +6,8 @@ export const useGameFreeStore = defineStore('GameFree', {
     links: {},
     meta: {},
     currentPage: 1,
-    TotalGameFree:0
+    TotalGameFree:0,
+    perPage:0
   }),
 
   actions: {
@@ -19,9 +20,10 @@ export const useGameFreeStore = defineStore('GameFree', {
         if (error.value) {
           // Handle the error
         } else {
-          console.log("res",data.value)
           this.GameFree = data.value.data;
           this.TotalGameFree = data.value.pagination.total
+          this.perPage = data.value.pagination.perPage
+
           // this.links = data.value.links;
           // this.meta = data.value.meta;
         }

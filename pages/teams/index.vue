@@ -10,7 +10,7 @@
     <el-table-column label="County" prop="purchase_amount" />
     <el-table-column label="Amount of players in Group" prop="purchase_amount" />
   </el-table>
-  <el-pagination background layout="prev, pager, next" :total="store.TotalTeam" :current-page="currentPage()"
+  <el-pagination background layout="prev, pager, next" :total="store.TotalTeam"  :page-size="store.perPage"  :current-page="currentPage()"
   @current-change="handleCurrentChange" />
   </NuxtLayout>
   </template>

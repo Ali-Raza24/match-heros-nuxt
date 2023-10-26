@@ -7,7 +7,7 @@
     </el-table-column>
     <el-table-column label="Purchase Amount" prop="purchase_amount" />
   </el-table>
-  <el-pagination background layout="prev, pager, next" :total="store.TotalPurchases" :current-page="currentPage()"
+  <el-pagination background layout="prev, pager, next" :total="store.TotalPurchases" :page-size="store.perPage" :current-page="currentPage()"
     @current-change="handleCurrentChange" />
 </template>
   

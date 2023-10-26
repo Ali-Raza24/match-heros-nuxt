@@ -6,7 +6,8 @@ export const useCashOutStore = defineStore('CashOut', {
     links: {},
     meta: {},
     currentPage: 1,
-    TotalCashOut:0
+    TotalCashOut:0,
+    perPage:0
   }),
 
   actions: {
@@ -19,9 +20,9 @@ export const useCashOutStore = defineStore('CashOut', {
         if (error.value) {
           // Handle the error
         } else {
-          console.log("res",data.value)
           this.CashOut = data.value.data;
           this.TotalCashOut = data.value.pagination.total
+          this.perPage = data.value.pagination.perPage
           // this.links = data.value.links;
           // this.meta = data.value.meta;
         }

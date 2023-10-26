@@ -26,7 +26,7 @@
         <el-table-column label="Game Cost" prop="game_fee" />
         <el-table-column label="Paid by" prop="paid_by" />
       </el-table>
-      <el-pagination background layout="prev, pager, next" :total="store.TotalGame" :current-page="currentPage()"
+      <el-pagination background layout="prev, pager, next" :total="store.TotalGame" :page-size="store.perPage" :current-page="currentPage()"
         @current-change="handleCurrentChange" />
     </div>
   </NuxtLayout>

@@ -9,7 +9,8 @@ export const useGameStore = defineStore('game', {
     currentPage: 1,
     TotalGame: 0,
     searchQuery:'',
-    activeName:'Friendly Match'
+    activeName:'Friendly Match',
+    perPage:0
 
   }),
 
@@ -38,6 +39,7 @@ export const useGameStore = defineStore('game', {
     setValues(data: any) {
       this.game = data.data;
       this.TotalGame = data.meta.total
+      this.perPage = data.meta.per_page
     },
 
     setCurrentPage(page: any) {
