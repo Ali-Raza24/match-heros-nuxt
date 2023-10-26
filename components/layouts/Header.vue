@@ -29,8 +29,8 @@
           <template #dropdown>
             <el-dropdown-menu>
               <div class="flex items-center gap-3 py-3 border-b border-b-white/10 mb-2 px-4">
-                <img src="/assets/images/person.jpg" class="rounded-[50px] h-7 min-w-[28px] object-cover" alt="">
-                <span class="text-white font-light text-xs block">John Smith</span>
+                <img :src="auth.authUser.image" class="rounded-[50px] h-7 min-w-[28px] object-cover" alt="">
+                <span class="text-white font-light text-xs block">{{ auth.authUser.name }}</span>
               </div>
               <el-dropdown-item v-for=" profile in profileDropdown" @click="handleItemClick(profile)">
                 <el-icon><img :src="`/assets/images/${profile.icon}.svg`" class="h-full w-full object-contain"
