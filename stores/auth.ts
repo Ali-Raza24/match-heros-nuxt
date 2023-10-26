@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', {
         this.loading=true
         const state= this;
 
-        const { data } = useFetch('/auth/login', {
+        const { data } = useFetch('/auth/admin/login', {
           method: 'post',
           baseURL: this.baseUrl,
           body: JSON.stringify({
