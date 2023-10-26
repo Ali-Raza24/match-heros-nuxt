@@ -24,8 +24,7 @@ export const useAuthStore = defineStore('auth', {
           baseURL: this.baseUrl,
           body: JSON.stringify({
             email: payload.email,
-            password: payload.password,
-            type:'admin'
+            password: payload.password
           }),
           headers: {
             Accept: "application/json",
