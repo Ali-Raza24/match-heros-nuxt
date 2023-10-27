@@ -5,7 +5,38 @@
       </h6>
     </div>
   <el-table :data="store.Notifications" v-loading="store.loading">
-    <el-table-column label="Name	" prop="related_user.name" />
+    <!-- <el-table-column label="Name" prop="related_user.name" /> -->
+
+    <el-table-column label="Name">
+    <template #default="scope">
+      <span v-if="scope.row.related_type === 'invited_teammate'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+      <span v-else-if="scope.row.related_type === 'accept_teammate'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+      <span v-else-if="scope.row.related_type === 'decline_teammate'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+      <span v-else-if="scope.row.related_type === 'join_game'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+      <span v-else-if="scope.row.related_type === 'accept_game'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+      <span v-else-if="scope.row.related_type === 'decline_game'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+      <span v-else-if="scope.row.related_type === 'invite_game'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+      <span v-else-if="scope.row.related_type === 'delete_game'">
+        {{ scope.row.related_team_user.name }}
+      </span>
+     
+    </template>
+  </el-table-column>
+  
     <el-table-column label="Related Type">
       <template #default="scope">{{ invitedTeammate(scope.row.related_type)}}</template>
     </el-table-column>
