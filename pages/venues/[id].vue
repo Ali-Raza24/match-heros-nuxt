@@ -1,6 +1,6 @@
 <template>
 <NuxtLayout>
-    <VenuesVenueForm></VenuesVenueForm>
+    <VenuesVenueForm :isEditSubmit="true" ></VenuesVenueForm>
 </NuxtLayout>
 </template>
 <script setup>

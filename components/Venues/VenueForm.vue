@@ -43,20 +43,26 @@
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Name" prop="name">
                     <el-input v-model="store.form.name" /> </el-form-item></el-col>
-            <el-col :sm="12" :xs="24">
+            <!-- <el-col :sm="12" :xs="24">
                 <el-form-item label="Country" prop="country_id">
                     <el-select v-model="store.form.country_id" placeholder="Select Country" size="large">
                         <el-option v-for="item in CountriesData" :key="item.id" :label="item.name" :value="item.id" />
                     </el-select>
 
                 </el-form-item>
-            </el-col>
+            </el-col> -->
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Phone" prop="phone">
                     <el-input v-model="store.form.phone" /> </el-form-item></el-col>
-            <el-col :sm="12" :xs="24">
+            <!-- <el-col :sm="12" :xs="24">
                 <el-form-item label="Town" prop="address">
-                    <el-input v-model="store.form.address" /> </el-form-item></el-col>
+                    <el-input v-model="store.form.address" /> </el-form-item></el-col> -->
+            <el-col :span="24" :sm="24" :xs="24">
+                <el-form-item label="Add Vanue Location" prop="venue_location" @click="!isSubmit ? handleOpenMapModal() : null">
+                    <el-input :class="[isSubmit ? 'hasValue':null]" class="locationField" v-model="store.form.address" placeholder="Add Venue Location" size="large" :prefix-icon="Location" /> 
+                    <el-button :class="'btn-link absolute top-2 right-5'" type="text" @click="handleOpenMapModal">Change</el-button>
+                </el-form-item>
+            </el-col>
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Email" prop="email">
                     <el-input v-model="store.form.email" /> </el-form-item></el-col>
@@ -84,16 +90,27 @@
                 </el-form-item>
             </el-col>
         </el-row>
+        
         <el-form-item>
             <el-button :class="'btn-theme'" type="success" v-loading="store.loading"
                 @click=" store.buttonText === 'UPDATE A VENUE' ? updateForm(ruleFormRef) : onSubmit(ruleFormRef)"> {{ store.buttonText
                 }} </el-button>
         </el-form-item>
     </el-form>
+    <ModalsGoogleMapModal :address="address" :visible="visible" @close="closeDialog" @input-address="getAddress"/>
 </template>
 
 <script setup>
 import { useVenueStore } from "../../stores/venues";
+import { Location, Search } from '@element-plus/icons-vue';
+import { onMounted, defineProps } from "vue";
+
+const props = defineProps({
+    isEditSubmit: {
+        type: Boolean,
+        default: false
+    }
+});
 const store = useVenueStore();
 // console.log("Dsa",store)
 // const form = reactive(store.form);
@@ -102,6 +119,9 @@ const ProfileImage = ref("");
 const BannerImage = ref("");
 const ruleFormRef = ref()
 const loading = ref(false)
+const visible = ref(false)
+const isSubmit = ref(false)
+const address = ref("")
 
 const basicRules = ref({
     name: [
@@ -175,7 +195,9 @@ const basicRules = ref({
 });
 
 
-
+onMounted(() =>{
+    isSubmit.value = props.isEditSubmit;
+})
 const displayedImage = computed(() => {
     if (ProfileImage.value) {
         return ProfileImage.value;
@@ -207,6 +229,26 @@ const handleBannerSuccess = (raw, file) => {
     BannerImage.value = URL.createObjectURL(raw.raw);
 };
 
+const handleOpenMapModal = () => {
+    visible.value = true;
+    if (isSubmit && store.form.address != "") {
+        address.value = store.form.address;
+    }
+};
+
+const closeDialog = () => {
+    visible.value = false;
+};
+
+const getAddress = (addressData) => {
+    store.form.latitude = addressData.latLng.value.lat();
+    store.form.longitude = addressData.latLng.value.lng();
+    store.form.address = addressData.address.value;
+    if (store.form.address) {
+        isSubmit.value = true;
+        visible.value = false;
+    }
+};
 
 store.getCountry()
 
@@ -220,7 +262,6 @@ const onSubmit = (formEl) => {
     // return;
     const formData = new FormData();
     Object.keys(form).forEach((key) => {
-        console.log(form[key])
         formData.append(key, form[key]);
     })
     if (!formEl) return
@@ -245,7 +286,7 @@ const updateForm = (formEl) => {
     Object.keys(store.form).forEach((key) => {
         formData.append(key, store.form[key]);
     })
-   console.log("form", store.form)
+
     if (!formEl) return
     formEl.validate((valid, fields) => {
         if (valid) {
@@ -328,6 +369,57 @@ const updateForm = (formEl) => {
 
 .btn-theme {
     @apply border-none inline-flex items-center justify-center whitespace-nowrap outline-none xl:h-[45px] lg:h-10 h-9 xl:px-7 lg:px-6 px-5 bg-gradient-to-b from-[#0b8140] to-[#0a5229] rounded-[50px] text-white xl:text-sm md:text-xs text-[11px] font-bold uppercase tracking-wide scale-100 active:scale-[.97] mt-5;
+}
+.locationField .el-input__wrapper
+{
+    @apply flex justify-center items-center;
+}
+.locationField .el-input__wrapper .el-input__inner
+{
+    @apply grow-0 w-auto placeholder-[#0b8140] font-medium relative -top-[2px];
+}
+.locationField .el-input__wrapper .el-input__prefix .el-input__prefix-inner
+{
+    @apply text-2xl;
+}
+.el-overlay {
+    z-index: 100 !important;
+}
+// HAs value style
+
+.locationField.hasValue .el-input__wrapper
+{
+    @apply justify-start px-5;
+}
+.locationField + .btn-link
+{
+    @apply hidden;
+}
+.locationField.hasValue + .btn-link
+{
+    @apply block;
+}
+.locationField.hasValue + .btn-link span
+{
+    @apply text-[#0A7F3F]
+}
+.locationField .el-input__wrapper .el-input__inner
+{
+    @apply grow-0 w-auto placeholder-[#0b8140] font-medium relative -top-[2px];
+}
+.locationField .el-input__wrapper .el-input__prefix .el-input__prefix-inner
+{
+    @apply text-2xl;
+}
+.locationField.hasValue .el-input__wrapper .el-input__prefix .el-input__prefix-inner
+{
+    @apply hidden;
+}
+
+.locationField.hasValue .el-input__wrapper .el-input__inner
+{
+    max-width: calc(100% - 100px);
+    width: 100%;
 }
 @media(min-width:992px)
 {

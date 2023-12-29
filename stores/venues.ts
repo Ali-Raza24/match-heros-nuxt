@@ -13,7 +13,10 @@ const defaultForm = {
   close_time: "",
   venue_message: "",
   photo: '',
-  banner: ''
+  banner: '',
+  venue_location: '',
+  latitude: null,
+  longitude: null,
 }
 export const useVenueStore = defineStore('venues', {
   state: () => reactive({

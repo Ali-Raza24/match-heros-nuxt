@@ -5,15 +5,21 @@
           <NuxtLink class="btn-theme !mt-0" :to="`/venues/new-venue`">Create a Venue</NuxtLink>
         </div>
     <el-table :data="store.venues" v-loading="store.loading">
-      <el-table-column label="Name" prop="name" />
-      <el-table-column label="Email	" prop="contact.email" />
-      <el-table-column label="Phone	" prop="contact.phone" />
-      <el-table-column label="Country	" prop="country" />
-      <el-table-column label="Town" prop="address" />
-      <el-table-column label="Open Time" prop="open_time" />
-      <el-table-column label="Close Time" prop="close_time" />
-      <el-table-column label="Amount In Account	" prop="balance" />
-      <el-table-column label="Operations">
+      <el-table-column label="Name" prop="name" width="150" />
+      <el-table-column label="Email	" prop="contact.email" width="150" />
+      <el-table-column label="Phone	" prop="contact.phone" width="150" />
+      <!-- <el-table-column label="Country	" prop="country" /> -->
+      <el-table-column label="Address" prop="address" width="200">
+        <template v-slot="{ row }">
+          <el-tooltip class="item" effect="dark" :content="row.address" placement="top">
+            <span>{{ row.address }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="Open Time" prop="open_time" width="85" />
+      <el-table-column label="Close Time" prop="close_time" width="85" />
+      <el-table-column label="Amount	" prop="balance" width="80" />
+      <el-table-column label="Operations" width="170">
         <template #default="scope">
           <el-button :class="'tableButton'" @click="handleComment(scope.row)"><img class="!min-h-[18px] w-auto min-w-[19px]"
               src="/assets/images/comment.svg" /></el-button>

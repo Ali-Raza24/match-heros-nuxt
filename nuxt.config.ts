@@ -20,9 +20,17 @@ export default defineNuxtConfig({
   },
   // elementPlus: { /** Options */ },
   css: ['public/assets/css/theme.css'],
+  app: {
+    head: {
+      script: [
+        { src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyD8M1_FlTzwkv2ZdRBcRUXal39wUSHzSq8&libraries=places" }
+      ],
+    },
+  },
   runtimeConfig: {
     public: {
       NUXT_PUBLIC_API_BASE: process.env.NUXT_API_BASE_URL,
+      GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY,
  
     },
   },
