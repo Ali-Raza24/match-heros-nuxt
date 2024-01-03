@@ -14,7 +14,7 @@
         
             <GoogleMapsCustomeAddress @address="getAddress($event)" :draggedAddress="address"  />
 
-            <GoogleMapsCustomeMap :location="formatedAddress" @draggedAddress="getDraggedAddress" />
+            <GoogleMapsCustomeMap :placeId="placeId" :location="formatedAddress" @draggedAddress="getDraggedAddress" />
 
             <div class="text-right">
                 <el-button @click="submitAddress" :class="'btn-theme test-capitalize'" type="success">
@@ -46,6 +46,7 @@ const formatedAddress = ref("");
 const address = ref("");
 const geometryLocation = ref({});
 const dragCount = ref(null);
+const placeId = ref(null);
 
 onMounted(() => {
     console.log('onMounted', props.address);
@@ -56,27 +57,21 @@ const getDraggedAddress = (draggedAddress) => {
     if (props.address !== "" && dragCount.value <= 1) {
         address.value = props.address;
     }else{
+        console.log('getDraggedAddress',getDraggedAddress);
         address.value = draggedAddress;
     }
 };
 
 const getAddress = (event) => {
+    console.log('event',event);
     formatedAddress.value = event.formatted_address;
+    placeId.value = event.place_id;
     geometryLocation.value = event.geometry.location;
 }
 
 const submitAddress = () => {
     emit('input-address',  { address: formatedAddress, latLng: geometryLocation }) 
 }
-
-// watch(() => props.address, (newVal) => {
-//     if (newVal) {
-//         address.value = newVal;
-//         console.log('props.address',address.value);
-//         formatedAddress.value = newVal;
-//         console.log('formatedAddress.value',formatedAddress.value);
-//     }
-// });
 
 </script>
   
