@@ -1,5 +1,5 @@
 <template>
-    <input class="googleLocationSearch" ref="autocompleteInput" type="text" placeholder="Enter address">
+    <input class="googleLocationSearch !pr-16" ref="autocompleteInput" type="text" placeholder="Enter address">
 </template>
 
 <script setup>
@@ -47,8 +47,7 @@ const getPlaceFromAddress = (address) => {
 };
 
 watch(() => props.draggedAddress, (newVal) => {
-    console.log('draggedAddress=>newVal', newVal); 
-    if (newVal !== "") {
+  if (newVal !== "") { 
         autocompleteInput.value.value = newVal;
         getPlaceFromAddress(newVal);
     }

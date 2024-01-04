@@ -45,7 +45,6 @@ const emit = defineEmits(['close', 'input-address']);
 const formatedAddress = ref("");
 const address = ref("");
 const geometryLocation = ref({});
-const dragCount = ref(null);
 const placeId = ref(null);
 
 onMounted(() => {
@@ -53,19 +52,13 @@ onMounted(() => {
 });
 
 const getDraggedAddress = (draggedAddress) => {
-    dragCount.value++;
-    if (props.address !== "" && dragCount.value <= 1) {
-        address.value = props.address;
-    }else{
-        console.log('getDraggedAddress',getDraggedAddress);
-        address.value = draggedAddress;
-    }
+    address.value = draggedAddress;
 };
 
 const getAddress = (event) => {
-    console.log('event',event);
     formatedAddress.value = event.formatted_address;
     placeId.value = event.place_id;
+    address.value = "";
     geometryLocation.value = event.geometry.location;
 }
 

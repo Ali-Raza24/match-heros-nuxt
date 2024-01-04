@@ -43,24 +43,13 @@
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Name" prop="name">
                     <el-input v-model="store.form.name" /> </el-form-item></el-col>
-            <!-- <el-col :sm="12" :xs="24">
-                <el-form-item label="Country" prop="country_id">
-                    <el-select v-model="store.form.country_id" placeholder="Select Country" size="large">
-                        <el-option v-for="item in CountriesData" :key="item.id" :label="item.name" :value="item.id" />
-                    </el-select>
-
-                </el-form-item>
-            </el-col> -->
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Venue Phone" prop="phone">
                     <el-input v-model="store.form.phone" /> </el-form-item></el-col>
-            <!-- <el-col :sm="12" :xs="24">
-                <el-form-item label="Town" prop="address">
-                    <el-input v-model="store.form.address" /> </el-form-item></el-col> -->
             <el-col :span="24" :sm="24" :xs="24">
                 <el-form-item label="Add Vanue Location" prop="venue_location" @click="!isSubmit ? handleOpenMapModal() : null">
                     <el-input :class="[isSubmit ? 'hasValue':null]" class="locationField" v-model="store.form.address" placeholder="Add Venue Location" size="large" :prefix-icon="Location" /> 
-                    <el-button :class="'btn-link absolute top-2 right-5'" type="text" @click="handleOpenMapModal">Change</el-button>
+                    <el-button :class="'btn-link absolute top-2 right-5 !bg-transparent !border-0 !px-0'" type="success" @click="handleOpenMapModal">Change</el-button>
                 </el-form-item>
             </el-col>
             <el-col :sm="12" :xs="24">
