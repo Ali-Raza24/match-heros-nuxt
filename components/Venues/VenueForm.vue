@@ -56,8 +56,11 @@
                 <el-form-item label="Venue Email" prop="email">
                     <el-input v-model="store.form.email" /> </el-form-item></el-col>
             <el-col :sm="12" :xs="24">
-                <el-form-item label="€ Off Peak / On Peak" prop="off_on_peak">
-                    <el-input v-model="store.form.off_on_peak" /> </el-form-item></el-col>
+                <el-form-item label="€ Off Peak" prop="off_peak">
+                    <el-input @input="onlyNumbers($event, 'off_peak')" v-model="store.form.off_peak" /> </el-form-item></el-col>
+                    <el-col :sm="12" :xs="24">
+            <el-form-item label="€ On Peak" prop="on_peak">
+                <el-input @input="onlyNumbers($event, 'on_peak')" v-model="store.form.on_peak" /> </el-form-item></el-col>
             <el-col :sm="12" :xs="24">
                 <el-row :gutter="20">
                     <el-col :span="12">
@@ -129,13 +132,6 @@ const basicRules = ref({
             trigger: "blur",
         },
     ],
-    country_id: [
-        {
-            required: true,
-            message: "The country field is required",
-            trigger: "change",
-        },
-    ],
     phone: [
         {
             type: "text",
@@ -152,10 +148,17 @@ const basicRules = ref({
             trigger: "blur",
         },
     ],
-    off_on_peak: [
+    off_peak: [
         {
             required: true,
-            message: "The off and on peak field is required",
+            message: "The off peak field is required",
+            trigger: "blur",
+        },
+    ],
+    on_peak: [
+        {
+            required: true,
+            message: "The on peak field is required",
             trigger: "blur",
         },
     ],
@@ -176,7 +179,7 @@ const basicRules = ref({
     venue_message: [
         {
             type: "text",
-            required: true,
+            required: false,
             message: "The venue message field is required",
             trigger: "blur",
         },
@@ -236,6 +239,15 @@ const getAddress = (addressData) => {
     if (store.form.address) {
         isSubmit.value = true;
         visible.value = false;
+    }
+};
+
+const onlyNumbers = (str, field) => {
+    if (field === 'off_peak') {
+        store.form.off_peak = str.replace(/[^0-9_-]/g, ''); 
+    }
+    if (field === 'on_peak') {
+        store.form.on_peak = str.replace(/[^0-9_-]/g, ''); 
     }
 };
 

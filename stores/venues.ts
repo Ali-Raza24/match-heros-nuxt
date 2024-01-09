@@ -8,7 +8,8 @@ const defaultForm = {
   town: "",
   address: "",
   email: "",
-  off_on_peak: "",
+  off_peak: "",
+  on_peak: "",
   open_time: "",
   close_time: "",
   venue_message: "",
@@ -75,10 +76,10 @@ export const useVenueStore = defineStore('venues', {
               navigateTo('/venues')
             }
           })
-          .catch(error => {
+          .catch((error) => {
             this.loading = false
             ElNotification({
-              message: 'Something went wrong',
+              message: error.message,
               type: 'error',
             })
 
