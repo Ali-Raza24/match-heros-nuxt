@@ -118,7 +118,6 @@ const address = ref("")
 const basicRules = ref({
     name: [
         {
-            type: "text",
             required: true,
             message: "The name field is required",
             trigger: "blur",
@@ -134,7 +133,6 @@ const basicRules = ref({
     ],
     phone: [
         {
-            type: "text",
             required: true,
             message: "The phone field is required",
             trigger: "blur",
