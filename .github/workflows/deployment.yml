@@ -27,7 +27,7 @@ jobs:
         fetch-depth: 0
         submodules: true
     - run: npm ci
-    - run: NUXT_API_BASE_URL='https://api.matchhero.ie/api' npx nuxi generate
+    - run: NUXT_API_BASE_URL='http://api.dev.matchheroapp.ie/api' npx nuxi generate
 
     - name: install ssh keys
       env:
@@ -41,8 +41,8 @@ jobs:
 
     - name: connect and pull
       run: |
-       scp -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no -r .output/*  ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/fiveaside-admin/
-       ssh -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-       cd /var/www/fiveaside-admin
-       sudo chown -R ubuntu:www-data ."
+        scp -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no -r .output/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/admin.matchhero.ie/
+        ssh -i ~/.ssh/github_action.key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+        cd /var/www/admin.matchhero.ie
+        sudo chown -R ubuntu:www-data ."
 
