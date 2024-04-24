@@ -1,7 +1,7 @@
 
 <template>
     <div>
-        <el-dialog class="pt-[35px] px-[30px] pb-[20px] relative" v-model="props.visible" :show-close="false" :append-to-body="true" center style="width: 740px; margin: 2.5rem auto; background:white;">
+        <el-dialog  :close-on-click-modal="false" class="pt-[35px] px-[30px] pb-[20px] relative" v-model="props.visible" :show-close="false" :append-to-body="true" center style="width: 740px; margin: 2.5rem auto; background:white;">
             <template #header="{ close, titleId, titleClass }">
                 <div class="my-header float-right">
                     <el-button @click="emit('close')" class="absolute top-3 right-5 !border-0 !bg-transparent !p-0">
