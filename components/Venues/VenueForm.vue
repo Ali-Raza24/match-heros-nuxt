@@ -96,6 +96,7 @@
 import { useVenueStore } from "../../stores/venues";
 import { Location, Search } from '@element-plus/icons-vue';
 import { onMounted, defineProps } from "vue";
+import { ElMessage } from 'element-plus';
 
 const props = defineProps({
     isEditSubmit: {
@@ -209,14 +210,27 @@ const displayedBanner = computed(() => {
 
 const capitalizeFirstLetter =(string) => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
+};
+
+const beforeAvatarUpload = (rawFile) => {
+    if (rawFile.size / 1024 / 1024 > 5) {
+        ElMessage.error('Picture size cannot exceed 5MB!');
+        return false;
+    }
+    return true;
+};
+
 const handleAvatarSuccess = (raw, file) => {
-    store.form.photo = raw.raw
-    ProfileImage.value = URL.createObjectURL(raw.raw);
+    if (beforeAvatarUpload(raw)) {
+        store.form.photo = raw.raw;
+        ProfileImage.value = URL.createObjectURL(raw.raw);
+    }
 };
 const handleBannerSuccess = (raw, file) => {
-    store.form.banner = raw.raw
-    BannerImage.value = URL.createObjectURL(raw.raw);
+    if (beforeAvatarUpload(raw)) {
+        store.form.banner = raw.raw
+        BannerImage.value = URL.createObjectURL(raw.raw);
+    }
 };
 
 const handleOpenMapModal = () => {
