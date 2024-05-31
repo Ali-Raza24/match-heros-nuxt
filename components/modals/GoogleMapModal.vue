@@ -48,6 +48,7 @@ const geometryLocation = ref({});
 const placeId = ref(null);
 
 onMounted(() => {
+    requestUserLocation();
     console.log('onMounted', props.address);
 });
 
@@ -65,6 +66,25 @@ const getAddress = (event) => {
 const submitAddress = () => {
     emit('input-address',  { address: formatedAddress, latLng: geometryLocation }) 
 }
+
+const requestUserLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        geometryLocation.value = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        formatedAddress.value = 'Current Location';
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+      }
+    );
+  } else {
+    console.error('Geolocation is not supported by this browser.');
+  }
+};
 
 </script>
   
