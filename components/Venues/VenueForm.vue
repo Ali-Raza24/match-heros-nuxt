@@ -224,8 +224,8 @@ const capitalizeFirstLetter =(string) => {
 };
 
 const beforeAvatarUpload = (rawFile) => {
-    if (rawFile.size / 1024 / 1024 > 1) {
-        ElMessage.error('Picture size cannot exceed 1MB!');
+    if (rawFile.size / 1024 / 1024 > 2) {
+        ElMessage.error('Picture size cannot exceed 2MB!');
         return false;
     }
     return true;
