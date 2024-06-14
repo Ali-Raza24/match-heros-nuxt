@@ -79,7 +79,8 @@ export const useVenueStore = defineStore('venues', {
           .catch((error) => {
             this.loading = false
             ElNotification({
-              message: error.message,
+              dangerouslyUseHTMLString: true,
+              message: `<strong>${error.response.data.error['message']}</strong>`,
               type: 'error',
             })
 
@@ -126,7 +127,9 @@ export const useVenueStore = defineStore('venues', {
           .catch(error => {
             this.loading = false
             ElNotification({
-              message: 'Something went wrong',
+
+              dangerouslyUseHTMLString: true,
+              message: `<strong>${error.response.data.error['message']}</strong>`,
               type: 'error',
             })
 

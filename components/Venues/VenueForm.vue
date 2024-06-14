@@ -47,7 +47,7 @@
                 <el-form-item label="Venue Phone" prop="phone">
                     <el-input v-model="store.form.phone" /> </el-form-item></el-col>
             <el-col :span="24" :sm="24" :xs="24">
-                <el-form-item label="Add Vanue Location" prop="venue_location" @click="!isSubmit ? handleOpenMapModal() : null">
+                <el-form-item label="Add Vanue Location" prop="address" @click="!isSubmit ? handleOpenMapModal() : null">
                     <el-input :class="[isSubmit ? 'hasValue':null]" class="locationField" v-model="store.form.address" placeholder="Add Venue Location" size="large" :prefix-icon="Location" /> 
                     <el-button :class="'btn-link absolute top-2 right-5 !bg-transparent !border-0 !px-0'" type="success" @click="handleOpenMapModal">Change</el-button>
                 </el-form-item>
