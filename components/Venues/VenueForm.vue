@@ -48,7 +48,7 @@
                     <el-input v-model="store.form.phone" /> </el-form-item></el-col>
             <el-col :span="24" :sm="24" :xs="24">
                 <el-form-item label="Add Vanue Location" prop="venue_location" @click="!isSubmit ? handleOpenMapModal() : null">
-                    <el-input :class="[isSubmit ? 'hasValue':null]" class="locationField" v-model="store.form.venue_location" placeholder="Add Venue Location" size="large" :prefix-icon="Location" /> 
+                    <el-input :class="[isSubmit ? 'hasValue':null]" class="locationField" v-model="store.form.address" placeholder="Add Venue Location" size="large" :prefix-icon="Location" /> 
                     <el-button :class="'btn-link absolute top-2 right-5 !bg-transparent !border-0 !px-0'" type="success" @click="handleOpenMapModal">Change</el-button>
                 </el-form-item>
             </el-col>
@@ -123,12 +123,21 @@ const basicRules = ref({
             message: "The name field is required",
             trigger: "blur",
         },
+        {
+            pattern: /^[A-Za-z\s]+$/,
+            message: "The name field must contain only letters",
+            trigger: "blur",
+        },
     ],
     email: [
         {
-            type: "email",
             required: true,
             message: "The email field is required",
+            trigger: "blur",
+        },
+        {
+            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: "The email field must be a valid email address",
             trigger: "blur",
         },
     ],
@@ -136,6 +145,11 @@ const basicRules = ref({
         {
             required: true,
             message: "The phone field is required",
+            trigger: "blur",
+        },
+        {
+            pattern: /^\+?[0-9\s]+$/,
+            message: "The phone field must contain only numbers (e.g., +123 456 7890)",
             trigger: "blur",
         },
     ],
@@ -177,9 +191,13 @@ const basicRules = ref({
     ],
     venue_message: [
         {
-            type: "text",
             required: false,
             message: "The venue message field is required",
+            trigger: "blur",
+        },
+        {
+            pattern: /^[A-Za-z\s]+$/,
+            message: "The venur message  field must contain only letters",
             trigger: "blur",
         },
     ],
