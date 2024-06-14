@@ -123,11 +123,6 @@ const basicRules = ref({
             message: "The name field is required",
             trigger: "blur",
         },
-        {
-            pattern: /^[A-Za-z\s]+$/,
-            message: "The name field must contain only letters",
-            trigger: "blur",
-        },
     ],
     email: [
         {
@@ -148,8 +143,8 @@ const basicRules = ref({
             trigger: "blur",
         },
         {
-            pattern: /^\+?[0-9\s]+$/,
-            message: "The phone field must contain only numbers (e.g., +123 456 7890)",
+            pattern: /^[^a-zA-Z]*$/,
+            message: "The phone field must not contain alphabetic characters",
             trigger: "blur",
         },
     ],
@@ -193,11 +188,6 @@ const basicRules = ref({
         {
             required: false,
             message: "The venue message field is required",
-            trigger: "blur",
-        },
-        {
-            pattern: /^[A-Za-z\s]+$/,
-            message: "The venur message  field must contain only letters",
             trigger: "blur",
         },
     ],
