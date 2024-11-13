@@ -44,7 +44,7 @@
     </div>
   </div>
 </template>
-  
+
 <script setup>
 const auth = useAuthStore();
 const playerStore = usePlayerStore();
@@ -69,7 +69,7 @@ const handleItemClick = (profile) => {
   }
 }
 const callApiMethod = () => {
-  
+
   setTimeout(() => {
     // store.getSearchData(searchQuery.value)
     // const data = store.returnSearchData()
@@ -86,10 +86,15 @@ const callApiMethod = () => {
       venueStore.setCurrentPage(1)
       venueStore.getVenues(searchQuery.value);
     }
-     else if (useRoute().name == 'notifications') {
+    else if (useRoute().name == 'notifications') {
       notificationsStore.setSearchQuery(searchQuery.value)
       notificationsStore.setCurrentPage(1)
       notificationsStore.getNotifications(searchQuery.value);
+    }
+    else if (useRoute().name == 'reports') {
+      useReportStore().setSearchQuery(searchQuery.value)
+      useReportStore().setCurrentPage(1)
+      useReportStore().getReports(searchQuery.value);
     }
 
   }, 0);
@@ -138,18 +143,16 @@ const logout = async () => {
 .el-popper__arrow {
   display: none;
 }
-.h-search
-{
-  .el-input__wrapper
-  {
+
+.h-search {
+  .el-input__wrapper {
     background-color: transparent;
     box-shadow: none;
-    input
-    {
+
+    input {
       min-height: 40px;
-      color:#fff;
+      color: #fff;
     }
   }
 }
 </style>
-  
