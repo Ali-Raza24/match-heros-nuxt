@@ -8,23 +8,25 @@ export const useReportStore = defineStore('reports', {
     meta: {},
     currentPage: 1,
     totalReports: 0,
-    activeName:'game',
-    perPage:0
+    searchQuery: '',
+    activeName: 'game',
+    perPage: 0
 
   }),
 
   actions: {
     async getReports() {
       try {
-          this.loading = true
-          const { data, error } = await get(`/reports?type=${this.activeName}`, {
-            page: this.currentPage,
-          });
-          if (error.value) {
-          } else {
-            this.setValues(data.value)
-            this.loading = false
-          }
+        this.loading = true
+        const { data, error } = await get(`/reports?type=${this.activeName}`, {
+          query: this.searchQuery,
+          page: this.currentPage,
+        });
+        if (error.value) {
+        } else {
+          this.setValues(data.value)
+          this.loading = false
+        }
       } catch (error) {
       }
     },
@@ -33,7 +35,9 @@ export const useReportStore = defineStore('reports', {
       this.totalReports = data.meta.total
       this.perPage = data.meta.per_page
     },
-
+    setSearchQuery(query: any) {
+      this.searchQuery = query
+    },
     setCurrentPage(page: any) {
       this.currentPage = page;
     },

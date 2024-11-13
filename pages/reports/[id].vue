@@ -15,6 +15,12 @@
                         </div>
                     </template>
                 </el-table-column>
+                <el-table-column label="Count" width="120">
+                    <template #default="scope">
+                        {{ scope.row.reportCount }}
+                    </template>
+                </el-table-column>
+
                 <el-table-column label="Report Date & Time" width="180">
                     <template #default="scope">
                         {{ formatDate(scope.row.created_at) }} : {{ formatTime(scope.row.created_at) }}
@@ -53,16 +59,21 @@ onMounted(() => {
 });
 
 const latestReports = computed(() => {
-    const latestMap = {};
+    const reportMap = {};
 
     reports.value.forEach(report => {
         const userId = report.user_id;
-        if (!latestMap[userId] || new Date(report.created_at) > new Date(latestMap[userId].created_at)) {
-            latestMap[userId] = report;
+        if (!reportMap[userId] || new Date(report.created_at) > new Date(reportMap[userId].created_at)) {
+            reportMap[userId] = {
+                ...report,
+                reportCount: 1,
+            };
+        } else {
+            reportMap[userId].reportCount++;
         }
     });
 
-    return Object.values(latestMap);
+    return Object.values(reportMap);
 });
 
 function hasMultipleReports(userId) {
