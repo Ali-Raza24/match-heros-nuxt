@@ -7,7 +7,7 @@
             </div>
             <el-table :data="latestReports" :align="'center'" class="reports-table">
                 <el-table-column prop="user_id" label="User ID" width="80" />
-                <el-table-column prop="name" label="Name" width="120" />
+                <el-table-column prop="name" label="Name" width="150" />
                 <el-table-column label="Reason" class-name="report-trxt-class" :align="'center'">
                     <template #default="scope">
                         <div class="reason-text">
@@ -73,7 +73,7 @@ const latestReports = computed(() => {
         }
     });
 
-    return Object.values(reportMap);
+    return Object.values(reportMap).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 });
 
 function hasMultipleReports(userId) {
