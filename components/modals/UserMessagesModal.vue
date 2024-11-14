@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="props.modelValue" :show-close="false" :close-on-click-modal="false" title="Messages" width="50%"
     style="background-color: #11172d !important;">
-    <el-table :data="userMessages" :align="'center'">
+    <el-table :data="userMessages" :align="'center'" class="reports-modal-table" >
       <el-table-column label="Reason" width="530" :align="'center'" class-name="report-trxt-class">
         <template #default="scope">
           <div class="reason-text">
@@ -40,22 +40,14 @@ function close() {
 }
 </script>
 <style>
-td.el-table_2_column_6.report-trxt-class.el-table__cell .cell {
-    padding: 8px 0px 8px 0px !important;
+.reports-modal-table .report-trxt-class {
     height: auto !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
-table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell .cell {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell,
-table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell .cell {
-        height: auto !important;
-    }
-    @media (min-width: 1200px) {
-    
-    table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell,
-    table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell .cell {
+
+@media (min-width: 1200px) {
+    .reports-modal-table .report-trxt-class {
         height: auto !important;
     }
 }
