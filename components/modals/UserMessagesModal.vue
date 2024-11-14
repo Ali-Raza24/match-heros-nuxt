@@ -44,4 +44,19 @@ td.el-table_2_column_6.report-trxt-class.el-table__cell .cell {
     padding: 8px 0px 8px 0px !important;
     height: auto !important;
 }
+table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell .cell {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell,
+table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell .cell {
+        height: auto !important;
+    }
+    @media (min-width: 1200px) {
+    
+    table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell,
+    table tr td.el-table_2_column_7.is-center.report-trxt-class.el-table__cell .cell {
+        height: auto !important;
+    }
+}
 </style>
