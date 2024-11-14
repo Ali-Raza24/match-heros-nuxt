@@ -30,7 +30,7 @@
                     <template #default="scope">
                         <el-button v-if="hasMultipleReports(scope.row.user_id)" type="primary" size="small"
                             @click="openModal(scope.row.user_id)">
-                            View Messages
+                            View All Reports
                         </el-button>
                     </template>
                 </el-table-column>
