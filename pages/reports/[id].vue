@@ -5,7 +5,7 @@
                 <el-button :icon="ArrowLeft" @click="goBack" :color="'#0e6d40'">Back</el-button>
                 <h6 class="text-white text-base font-regular">Report Details</h6>
             </div>
-            <el-table :data="latestReports" :align="'center'">
+            <el-table :data="latestReports" :align="'center'" class="reports-table">
                 <el-table-column prop="user_id" label="User ID" width="80" />
                 <el-table-column prop="name" label="Name" width="120" />
                 <el-table-column label="Reason" class-name="report-trxt-class" :align="'center'">
@@ -93,22 +93,19 @@ function goBack() {
 
 <style>
 .reason-text {
-    /* height: 100%; */
     white-space: normal;
     overflow-wrap: break-word;
 }
 
-td.el-table_1_column_3.report-trxt-class.el-table__cell .cell {
-    padding: 8px 0px 8px 0px !important;
+.reports-table .report-trxt-class {
     height: auto !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
-table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell,
-.el-table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell .cell {
-    height: auto !important;
-}
+
+
 @media (min-width: 1200px) {
-    table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell,
-    .el-table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell .cell {
+    .reports-table .report-trxt-class {
         height: auto !important;
     }
 }

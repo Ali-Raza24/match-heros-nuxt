@@ -61,7 +61,7 @@ export const useAuthStore = defineStore('auth', {
         }
       
         useFetch('/auth/logout', {
-          method: 'get',
+          method: 'post',
           baseURL: this.baseUrl,
           headers: {
             Authorization: `Bearer ${token}`,
