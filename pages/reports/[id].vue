@@ -102,4 +102,14 @@ td.el-table_1_column_3.report-trxt-class.el-table__cell .cell {
     padding: 8px 0px 8px 0px !important;
     height: auto !important;
 }
+table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell,
+.el-table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell .cell {
+    height: auto !important;
+}
+@media (min-width: 1200px) {
+    table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell,
+    .el-table tr td.el-table_4_column_21.is-center.report-trxt-class.el-table__cell .cell {
+        height: auto !important;
+    }
+}
 </style>
