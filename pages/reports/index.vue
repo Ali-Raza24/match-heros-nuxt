@@ -14,6 +14,15 @@
       <el-table :data="store.reports" v-loading="store.loading">
         <el-table-column label="Reported Player Name" prop="name" v-if="store.activeName === 'user'" />
         <el-table-column label="Game Type" prop="game_type" v-if="store.activeName === 'game'" />
+        <el-table-column label="Status" width="150" v-if="store.activeName === 'game'">
+          <template #default="scope">
+            <el-tag v-if="scope.row.deleted_game" type="danger" size="small">
+              Deleted Game
+            </el-tag>
+            <span v-else><el-tag type="success" size="small">
+                Active </el-tag></span>
+          </template>
+        </el-table-column>
         <el-table-column label="Organizer Name" prop="organizer_name" v-if="store.activeName === 'game'" />
         <el-table-column label="Venue Name" prop="venue_name" v-if="store.activeName === 'game'" />
         <el-table-column label="Date of Game" v-if="store.activeName === 'game'">
