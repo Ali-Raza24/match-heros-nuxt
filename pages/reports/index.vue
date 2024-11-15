@@ -28,7 +28,7 @@
         <el-table-column label="Date of Game" v-if="store.activeName === 'game'">
           <template #default="scope">{{ formatDate(scope.row.starts_at) }}</template>
         </el-table-column>
-        <el-table-column label="Start Time Of Game" v-if="store.activeName === 'game'">
+        <el-table-column label="Start Time" v-if="store.activeName === 'game'">
           <template #default="scope">{{ formatTime(scope.row.starts_at) }}</template>
         </el-table-column>
         <el-table-column label="Is Recurring" v-if="store.activeName === 'game'">
@@ -37,7 +37,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="store.activeName === 'game' ? 'Total Reported Match' : 'Total Reported Players'">
+        <el-table-column :label="store.activeName === 'game' ? 'Total Reported' : 'Total Reported Players'">
           <template #default="scope">
             {{ scope.row.reports.length }}
           </template>
