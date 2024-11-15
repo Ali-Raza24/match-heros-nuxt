@@ -8,6 +8,15 @@
             <el-table :data="latestReports" :align="'center'" class="reports-table">
                 <el-table-column prop="user_id" label="User ID" width="80" />
                 <el-table-column prop="name" label="Name" width="150" />
+                <el-table-column label="Status" width="150">
+                    <template #default="scope">
+                        <el-tag v-if="scope.row.deleted_user" type="danger" size="small">
+                            Deleted User
+                        </el-tag>
+                        <span v-else><el-tag type="success" size="small">
+                                Active </el-tag></span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="Reason" class-name="report-trxt-class" :align="'center'">
                     <template #default="scope">
                         <div class="reason-text">

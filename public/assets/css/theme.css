@@ -2198,3 +2198,7 @@ td.report-trxt-class.el-table__cell .cell {
   padding: 8px 0px 8px 0px !important;
   height: auto !important;
 }
+
+.el-tag--danger {
+  font-weight: bold;
+}
