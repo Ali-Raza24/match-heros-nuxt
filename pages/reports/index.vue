@@ -37,7 +37,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="store.activeName === 'game' ? 'Total Reported' : 'Total Reported Players'">
+        <el-table-column label="Total Reports">
           <template #default="scope">
             {{ scope.row.reports.length }}
           </template>
