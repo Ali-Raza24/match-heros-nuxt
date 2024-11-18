@@ -30,6 +30,21 @@ export const useReportStore = defineStore('reports', {
       } catch (error) {
       }
     },
+    async getSingleReports(id: any, reportable_type: string) {
+      try {
+        this.loading = true
+        const { data, error } = await get(`/reports/${id}`, { reportable_type: reportable_type, page: this.currentPage, query: this.searchQuery });
+        if (error.value) {
+        } else {
+          this.reports = data.value.data;
+          this.totalReports = data.value.total
+          this.perPage = data.value.per_page
+          this.loading = false
+
+        }
+      } catch (error) {
+      }
+    },
     setValues(data: any) {
       this.reports = data.data;
       this.totalReports = data.meta.total

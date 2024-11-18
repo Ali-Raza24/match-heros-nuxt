@@ -81,9 +81,6 @@ const handleClick = (TabName) => {
 const viewReportDetails = (row) => {
   router.push({
     path: `/reports/${row.id}`,
-    query: {
-      reports: JSON.stringify(row.reports),
-    },
   });
 }
 
