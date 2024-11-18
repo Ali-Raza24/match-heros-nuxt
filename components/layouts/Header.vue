@@ -96,6 +96,11 @@ const callApiMethod = () => {
       useReportStore().setCurrentPage(1)
       useReportStore().getReports(searchQuery.value);
     }
+    else if (useRoute().name == 'reports-id') {
+      useReportStore().setSearchQuery(searchQuery.value)
+      useReportStore().setCurrentPage(1)
+      useReportStore().getSingleReports(useRoute().params.id, useReportStore().activeName);
+    }
 
   }, 0);
 }
