@@ -84,7 +84,7 @@
         </el-row>
         
         <el-form-item>
-            <el-button :class="'btn-theme'" type="success" v-loading="store.loading"
+            <el-button :class="'btn-theme'" type="success" :disabled="store.loading" v-loading="store.loading"
                 @click=" store.buttonText === 'UPDATE A VENUE' ? updateForm(ruleFormRef) : onSubmit(ruleFormRef)"> {{ store.buttonText
                 }} </el-button>
         </el-form-item>
@@ -283,9 +283,7 @@ const CountriesData = computed(() => {
 });
 
 const onSubmit = (formEl) => {
-    // loading.value = true
-    // store.resetForm();
-    // return;
+
     const formData = new FormData();
     Object.keys(form).forEach((key) => {
         formData.append(key, form[key]);
@@ -294,9 +292,6 @@ const onSubmit = (formEl) => {
     formEl.validate((valid, fields) => {
         if (valid) {
             store.createVenues(form);
-            // formEl.resetFields()
-            // ProfileImage.value=''
-            // BannerImage.value=''
             loading.value = false
         } else {
             loading.value = false
