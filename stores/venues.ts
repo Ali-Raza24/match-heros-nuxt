@@ -142,15 +142,19 @@ export const useVenueStore = defineStore('venues', {
         const { data, error } = await remove(`/venues/${id}`);
 
         if (error.value) {
-          // Handle the error
-        } else {
+          ElNotification({
+            message: error?.value?.data?.message,
+            type: 'error',
+          })
+          
+        } else {          
           ElNotification({
             message: 'Successful',
             type: 'success',
           })
           this.getVenues()
         }
-      } catch (error) {
+      } catch (error) {        
         // Handle any unexpected errors
       }
     },
