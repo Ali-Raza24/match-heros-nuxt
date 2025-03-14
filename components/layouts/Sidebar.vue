@@ -62,6 +62,7 @@ const menus = [
   // { label: 'Teams', route: '/teams', icon: 'icon-teams'},
   { label: 'Notifications', route: '/notifications', icon: 'icon-notifications'},
   { label: 'Reports', route: '/reports', icon: 'icon-notifications'},
+  { label: 'Settings', route: '/settings', icon: 'icon-notifications'},
 ]
 
 const errorMsg = ref('');
