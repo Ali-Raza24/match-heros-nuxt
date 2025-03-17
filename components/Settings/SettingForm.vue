@@ -14,11 +14,12 @@
             </el-col>
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Key" prop="key">
-                    <el-input v-model="store.form.key" :disabled="store.buttonText === 'UPDATE A SETTING'" /></el-form-item></el-col>
+                    <el-input v-model="store.form.key"
+                        :disabled="store.buttonText === 'UPDATE A SETTING'" /></el-form-item></el-col>
 
             <el-col :sm="12" :xs="24">
                 <el-form-item label="Value" prop="value">
-                    <el-input v-model="store.form.value" /> </el-form-item></el-col>    
+                    <el-input v-model="store.form.value" type="number" /> </el-form-item></el-col>
 
         </el-row>
 
@@ -69,8 +70,8 @@ onMounted(() => {
     isSubmit.value = props.isEditSubmit;
 })
 
-const capitalizeFirstLetter =(string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 };
 
 const onSubmit = (formEl) => {

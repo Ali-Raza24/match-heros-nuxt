@@ -2,7 +2,7 @@
     <NuxtLayout>
         <div class="flex lg:flex-row flex-col gap-4 items-center justify-between mb-4">
             <h6 class="text-white text-base font-regular">Total Number of Settings ({{ store.totalSettings }})</h6>
-            <NuxtLink class="btn-theme !mt-0" :to="`/settings/new-setting`">Create a Setting</NuxtLink>
+            <!-- <NuxtLink class="btn-theme !mt-0" :to="`/settings/new-setting`">Create a Setting</NuxtLink> -->
         </div>
         <el-table :data="store.settings" v-loading="store.loading" style="width: 100%;">
             <el-table-column label="Key" prop="key"/>
@@ -17,8 +17,8 @@
 
                     <NuxtLink :class="'tableButton'" :to="`/settings/${scope.row.id}`"><img
                             class="!min-h-[18px] w-auto min-w-[18px]" src="/assets/images/edit.svg" /></NuxtLink>
-                    <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img
-                            class="!min-h-[18px] w-auto min-w-[15px]" src="/assets/images/delete.svg" /></el-button>
+                    <!-- <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img
+                            class="!min-h-[18px] w-auto min-w-[15px]" src="/assets/images/delete.svg" /></el-button> -->
                 </template>
             </el-table-column>
         </el-table>
