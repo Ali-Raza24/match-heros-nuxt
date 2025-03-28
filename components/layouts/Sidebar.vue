@@ -1,6 +1,6 @@
 <template>
     <!-- Sidebar -->
-    <div id="sideBar" class="bg-[#1E2646] w-[200px] flex flex-col items-center lg:relative absolute z-50 h-[100vh] smooth lg:translate-x-0 -translate-x-full">
+    <div id="sideBar" class="bg-[#1E2646] w-[230px] flex flex-col items-center lg:relative absolute z-50 h-[100vh] smooth lg:translate-x-0 -translate-x-full">
       <!-- Brand -->
       <NuxtLink :to="'/dashboard'" class="flex justify-between py-7">
         <img src="/assets/images/logo.svg" class="max-h-[70px] w-auto" alt="" />
@@ -63,6 +63,7 @@ const menus = [
   { label: 'Notifications', route: '/notifications', icon: 'icon-notifications'},
   { label: 'Reports', route: '/reports', icon: 'icon-notifications'},
   { label: 'Settings', route: '/settings', icon: 'icon-notifications'},
+  { label: 'Broadcast Notifications', route: '/broadcasts', icon: 'icon-notifications'},
 ]
 
 const errorMsg = ref('');
