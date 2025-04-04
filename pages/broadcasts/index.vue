@@ -14,6 +14,12 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
+            <el-table-column label="Scheduled" prop="broadcast_timing" width="100">
+                <template v-slot="{ row }">
+                    <el-tag v-if="row.broadcast_timing === 'now'" type="success">False</el-tag>
+                    <el-tag v-else type="warning">True</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="Notification Types" prop="notification_types" width="300">
                 <template v-slot="{ row }">
                     <div>
@@ -23,7 +29,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="Category" prop="category" width="300">
+            <el-table-column label="Category" prop="category" width="120">
                 <template v-slot="{ row }">
                     <el-tag>
                         {{ row.category }}
@@ -31,8 +37,17 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="Start Date" prop="broadcast_start_date" />
-            <el-table-column label="End Date" prop="broadcast_end_date" />
+            <el-table-column label="Start Date" prop="broadcast_start_date">
+                <template v-slot="{ row }">
+                        {{ row.broadcast_start_date ?? '---' }} 
+                </template>
+            </el-table-column>
+
+            <el-table-column label="End Date" prop="broadcast_end_date">
+                <template v-slot="{ row }">
+                    {{ row.broadcast_end_date ?? '---' }}
+                </template>
+            </el-table-column>
 
         </el-table>
         <el-pagination background layout="prev, pager, next" :total="store.totalBroadcasts" :page-size="store.perPage"
