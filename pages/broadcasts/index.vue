@@ -1,15 +1,16 @@
 <template>
     <NuxtLayout>
         <div class="flex lg:flex-row flex-col gap-4 items-center justify-between mb-4">
-            <h6 class="text-white text-base font-regular">Total Number of Broadcasts Notifications ({{ store.totalBroadcasts }})</h6>
+            <h6 class="text-white text-base font-regular">Total Number of Broadcasts Notifications ({{
+                store.totalBroadcasts }})</h6>
             <NuxtLink class="btn-theme !mt-0" :to="`/broadcasts/new-broadcast`">Create a Broadcast</NuxtLink>
         </div>
         <el-table :data="store.broadcasts" v-loading="store.loading" style="width: 100%;">
-            <el-table-column label="Message" prop="message" width="300">
+            <el-table-column label="Message" prop="message" width="170">
                 <template v-slot="{ row }">
                     <el-tooltip class="item" effect="dark" :content="row.message" placement="top">
                         <span>
-                            {{ row.message.length > 35 ? row.message.substring(0, 35) + "..." : row.message }}
+                            {{ row.message.length > 20 ? row.message.substring(0, 20) + "..." : row.message }}
                         </span>
                     </el-tooltip>
                 </template>
@@ -39,7 +40,7 @@
 
             <el-table-column label="Start Date" prop="broadcast_start_date">
                 <template v-slot="{ row }">
-                        {{ row.broadcast_start_date ?? '---' }} 
+                    {{ row.broadcast_start_date ?? '---' }}
                 </template>
             </el-table-column>
 
@@ -48,7 +49,32 @@
                     {{ row.broadcast_end_date ?? '---' }}
                 </template>
             </el-table-column>
-
+            <el-table-column label="Users" prop="recipients" width="100">
+                <template v-slot="{ row }">
+                    <div>
+                        <el-popover v-if="row.recipients && row.recipients.length > 0" placement="top" trigger="hover"
+                            width="180">
+                            <template #reference>
+                                <el-tag type="primary">Individual</el-tag>
+                            </template>
+                            <div>
+                                <ul class="list-disc ml-4">
+                                    <li v-for="(user, index) in row.recipients" :key="index">
+                                        {{ user.name }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </el-popover>
+                        <el-tag v-else type="success">All</el-tag>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="Operations" width="100">
+        <template #default="scope">
+          <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img class="!min-h-[18px] w-auto min-w-[15px]"
+              src="/assets/images/delete.svg" /></el-button>
+        </template>
+      </el-table-column>
         </el-table>
         <el-pagination background layout="prev, pager, next" :total="store.totalBroadcasts" :page-size="store.perPage"
             :current-page="currentPage()" @current-change="handleCurrentChange" />
@@ -78,6 +104,28 @@ onMounted(async () => {
 
 const fetchData = async () => {
     await store.getBroadcasts();
+}
+
+const handleDelete = (id) => {
+    ElMessageBox.confirm(
+        'Are you sure, you want to delete?',
+        'Warning',
+        {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+        }
+    )
+        .then(() => {
+            store.DeleteBroadcast(id)
+        })
+        .catch(() => {
+            ElNotification({
+                title: 'Info',
+                message: 'Operation successful',
+                type: 'info',
+            })
+        })
 }
 
 </script>
