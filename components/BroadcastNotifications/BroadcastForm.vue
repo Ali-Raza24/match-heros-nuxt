@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="24">
                 <el-form-item label="Message" prop="message">
-                    <el-input v-model="store.form.message" />
+                    <el-input v-model="store.form.message"  maxlength="255" />
                 </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -57,15 +57,15 @@
                 </el-form-item>
             </el-col>
             <el-col :span="24">
-                <el-form-item label="Users" prop="filter_users">
-                    <el-select v-model="store.selectFilterUsers">
+                <el-form-item label="Select User" prop="slection_type">
+                    <el-select v-model="store.form.slection_type">
                         <el-option v-for="recipient in store.filterUsers" :key="recipient.value"
                             :label="recipient.label" :value="recipient.value" />
-                    </el-select>
+                    </el-select>    
                 </el-form-item>
             </el-col>
-            <el-col :span="24" v-if="store.selectFilterUsers === 'specific'">
-                <el-form-item label="Users" prop="users">
+            <el-col :span="24" v-if="store.form.slection_type === 'specific'">
+                <el-form-item label="Users" prop="recipients">
                     <el-select v-model="store.form.recipients" multiple filterable>
                         <el-option v-for="user in store.users" :key="user.id" :label="user.name" :value="user.id">
                             <template #default>
@@ -78,11 +78,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-
-
-
         </el-row>
-
         <el-form-item>
             <el-button :class="'btn-theme'" type="success" :disabled="store.loading" v-loading="store.loading"
                 @click=" store.buttonText === 'UPDATE A SETTING' ? updateForm(ruleFormRef) : onSubmit(ruleFormRef)"> {{

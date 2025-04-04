@@ -10,7 +10,8 @@ const defaultForm = {
     broadcast_start_date: '',
     broadcast_end_date: '',
     recipients: [],
-    broadcast_timing: 'now'
+    broadcast_timing: 'now',
+    slection_type: '',
 }
 export const useBroadcastStore = defineStore('broadcast', {
     state: () => reactive({
@@ -74,21 +75,21 @@ export const useBroadcastStore = defineStore('broadcast', {
                 {
                     required: true,
                     message: "The message field is required",
-                    trigger: "blur",
+                    trigger: "change",
                 },
             ],
             notification_types: [
                 {
                     required: true,
                     message: "The notification types field is required",
-                    trigger: "blur",
+                    trigger: "change",
                 },
             ],
             category: [
                 {
                     required: true,
                     message: "The category field is required",
-                    trigger: "blur",
+                    trigger: "change",
                 },
             ],
             schedule_start_date: [
@@ -105,11 +106,25 @@ export const useBroadcastStore = defineStore('broadcast', {
                     trigger: "blur",
                 },
             ],
-            broadcastTiming: [
+            broadcast_timing: [
                 {
                     required: true,
                     message: "The broadcast timing field is required",
                     trigger: "blur",
+                },
+            ],
+            slection_type: [
+                {
+                    required: true,
+                    message: "The filter users field is required",
+                    trigger: 'change',
+                },
+            ],
+            recipients: [
+                {
+                    required: true,
+                    message: "The users field is required",
+                    trigger: "change",
                 },
             ],
         },
@@ -181,6 +196,26 @@ export const useBroadcastStore = defineStore('broadcast', {
             }
         },
 
+        async DeleteBroadcast(id: any) {
+            try {
+              const { data, error } = await remove(`/broadcasting-notifications/${id}`);
+      
+              if (error.value) {
+                ElNotification({
+                  message: error?.value?.data?.message,
+                  type: 'error',
+                })
+                
+              } else {          
+                ElNotification({
+                  message: 'Broadcast deleted successfully',
+                  type: 'success',
+                })
+                this.getBroadcasts()
+              }
+            } catch (error) {        
+            }
+          },
 
 
         setCurrentPage(page: any) {
