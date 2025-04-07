@@ -241,7 +241,9 @@ export const useBroadcastStore = defineStore('broadcast', {
         },
 
         disablePastDates: (date: any) => {
-            return date < new Date();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return date < today;
         },
 
     },

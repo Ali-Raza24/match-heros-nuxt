@@ -1,6 +1,6 @@
 <template>
     <div class="flex lg:flex-row flex-col gap-4 items-start">
-        <NuxtLink :to="`/settings`"
+        <NuxtLink :to="`/broadcasts`"
             class="text-white text-base font-bold inline-flex items-center gap-2 py-1 mb-3 outline-none"><img
                 class=" max-h-[14px] w-auto" src="/assets/images/backArrow.svg" /> Back</NuxtLink>
     </div>
@@ -29,13 +29,6 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <!-- <el-col :span="12">
-                <el-form-item label="Broadcast Start Date & Time" prop="broadcast_start_date">
-                    <el-date-picker class="custom-date-picker" disabled v-model="store.form.broadcast_start_date"
-                        format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" type="datetime"
-                        :disabled-date="store.disablePastDates" />
-                </el-form-item>
-            </el-col> -->
             <el-col :span="12" v-if="store.form.notification_types.includes('broadcast')">
                 <el-form-item label="Broadcast End Date & Time" prop="broadcast_end_date">
                     <el-date-picker v-model="store.form.broadcast_end_date" format="YYYY-MM-DD HH:mm:ss"
