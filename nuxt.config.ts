@@ -23,7 +23,6 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        { src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyD8M1_FlTzwkv2ZdRBcRUXal39wUSHzSq8&libraries=places" }
       ],
     },
   },
