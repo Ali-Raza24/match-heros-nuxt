@@ -116,7 +116,6 @@ const onSubmit = (formEl) => {
             loading.value = false
         } else {
             loading.value = false
-            return
         }
     })
 };
@@ -129,7 +128,7 @@ const handleBroadcastTimingChange = () => {
 <style lang="scss">
 
 .el-textarea__inner {
-    @apply bg-transparent p-5 border-none ring-0 outline-none shadow-none rounded-md overflow-hidden bg-[#1E2646] text-white text-[16px] ;
+    @apply bg-transparent p-5 border-none ring-0 outline-none shadow-none rounded-md overflow-hidden bg-[#1E2646] text-white text-[12px] hover:border-none ;
 } 
 .el-picker-panel__body .el-date-picker__time-header .el-date-picker__editor-wrap .el-input__wrapper input {
     color: black !important;

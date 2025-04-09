@@ -75,7 +75,7 @@ export const useBroadcastStore = defineStore('broadcast', {
                 {
                     required: true,
                     message: "The message field is required",
-                    trigger: "change",
+                    trigger: "blur",
                 },
             ],
             notification_types: [
@@ -179,8 +179,8 @@ export const useBroadcastStore = defineStore('broadcast', {
                                 message: 'Broadcast added',
                                 type: 'success',
                             })
-                            this.resetForm()
                             navigateTo('/broadcasts')
+                            this.resetForm()
                         }
                     })
                     .catch((error) => {
