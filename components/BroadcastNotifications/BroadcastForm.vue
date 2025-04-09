@@ -116,7 +116,6 @@ const onSubmit = (formEl) => {
             loading.value = false
         } else {
             loading.value = false
-            return
         }
     })
 };
