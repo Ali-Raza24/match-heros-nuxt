@@ -40,7 +40,7 @@
 
             <el-table-column label="Start Date" prop="broadcast_start_date">
                 <template v-slot="{ row }">
-                    {{ row.broadcast_start_date ?? '---' }}
+                    {{ row.schedule_start_date ?? row.broadcast_start_date ?? '---' }}
                 </template>
             </el-table-column>
 
