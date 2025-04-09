@@ -17,23 +17,23 @@
             </el-table-column>
             <el-table-column label="Scheduled" prop="broadcast_timing" width="100">
                 <template v-slot="{ row }">
-                    <el-tag v-if="row.broadcast_timing === 'now'" type="success">False</el-tag>
-                    <el-tag v-else type="warning">True</el-tag>
+                    <el-tag v-if="row.broadcast_timing === 'now'" type="success"> <span class="font-bold">False</span> </el-tag>
+                    <el-tag v-else type="warning"><span class="font-bold">True</span></el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="Notification Types" prop="notification_types" width="300">
                 <template v-slot="{ row }">
                     <div>
                         <el-tag v-for="(type, index) in row.notification_types" :key="index" type="info" class="mr-1">
-                            {{ type }}
+                            <span class="font-bold">{{ type }}</span>
                         </el-tag>
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="Category" prop="category" width="120">
+            <el-table-column label="Category" prop="category" width="130">
                 <template v-slot="{ row }">
                     <el-tag>
-                        {{ row.category }}
+                        <span class="font-bold">{{ row.category }}</span> 
                     </el-tag>
                 </template>
             </el-table-column>
@@ -55,7 +55,7 @@
                         <el-popover v-if="row.recipients && row.recipients.length > 0" placement="top" trigger="hover"
                             width="180">
                             <template #reference>
-                                <el-tag type="primary">Individual</el-tag>
+                                <el-tag type="primary"><span class="font-bold">Individual</span></el-tag>
                             </template>
                             <div>
                                 <ul class="list-disc ml-4">
@@ -65,7 +65,7 @@
                                 </ul>
                             </div>
                         </el-popover>
-                        <el-tag v-else type="success">All</el-tag>
+                        <el-tag v-else type="success"><span class="font-bold">All</span></el-tag>
                     </div>
                 </template>
             </el-table-column>
