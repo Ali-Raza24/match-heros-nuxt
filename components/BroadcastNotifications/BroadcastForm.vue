@@ -18,7 +18,8 @@
             </el-col>
             <el-col :span="24">
                 <el-form-item label="Message" prop="message">
-                    <el-input v-model="store.form.message"  maxlength="255" />
+                    <el-input v-model="store.form.message"  maxlength="255" type="textarea"  :autosize="{ minRows:4}"
+                    />
                 </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -126,6 +127,10 @@ const handleBroadcastTimingChange = () => {
 
 </script>
 <style lang="scss">
+
+.el-textarea__inner {
+    @apply bg-transparent p-5 border-none ring-0 outline-none shadow-none rounded-md overflow-hidden bg-[#1E2646] text-white text-[16px] ;
+} 
 .el-picker-panel__body .el-date-picker__time-header .el-date-picker__editor-wrap .el-input__wrapper input {
     color: black !important;
 }
