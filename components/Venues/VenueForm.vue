@@ -153,14 +153,13 @@ const basicRules = ref({
             trigger: "blur",
         },
         {
-            pattern: /^[^a-zA-Z]*$/,
-            message: "The phone field must not contain alphabetic characters",
+            pattern: /^\+?\d{7,15}$/,
+            message: "Enter a valid phone number (e.g. +1234567890) — 7 to 15 digits, digits only, optional '+' at the beginning.",
             trigger: "blur",
         },
     ],
     address: [
         {
-            type: "text",
             required: true,
             message: "The address field is required",
             trigger: "blur",

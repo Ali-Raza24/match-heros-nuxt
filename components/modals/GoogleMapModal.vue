@@ -21,7 +21,8 @@
                 <el-radio label="address">Full Address</el-radio>
             </el-radio-group>
 
-            <el-form :model="form" :rules="rules" ref="formRef" label-position="top" class="mb-4">
+            <el-form :model="form" :rules="rules" ref="formRef" label-position="top" class="mb-4"
+                @submit.native.prevent>
                 <div v-if="searchType === 'coordinates'">
                     <el-form-item label="Latitude" prop="latitude">
                         <el-input v-model="form.latitude" placeholder="Enter latitude" />
@@ -39,7 +40,8 @@
 
                 <div v-else>
                     <el-form-item label="Full Address" prop="addressInput">
-                        <el-input v-model="form.addressInput" placeholder="Enter full address" />
+                        <el-input v-model="form.addressInput" placeholder="Enter full address"
+                            @keyup.enter.prevent="validateAndSearchAddress" />
                     </el-form-item>
 
                     <el-form-item>
@@ -99,8 +101,22 @@ const form = reactive({
 })
 
 const rules = reactive({
-    latitude: [{ required: true, message: 'Latitude is required', trigger: 'blur' }],
-    longitude: [{ required: true, message: 'Longitude is required', trigger: 'blur' }],
+    latitude: [
+        { required: true, message: 'Latitude is required', trigger: 'blur' },
+        {
+            pattern: /^(-?(90(\.0+)?|([1-8]?\d(\.\d+)?)))$/,
+            message: 'Latitude must be a number between -90.0000000 and 90.0000000',
+            trigger: 'blur',
+        },
+    ],
+    longitude: [
+        { required: true, message: 'Longitude is required', trigger: 'blur' },
+        {
+            pattern: /^(-?(180(\.0+)?|(1[0-7]\d(\.\d+)?|[1-9]?\d(\.\d+)?)))$/,
+            message: 'Longitude must be a number between -180.0000000 and 180.0000000',
+            trigger: 'blur',
+        },
+    ],
     addressInput: [{ required: true, message: 'Address is required', trigger: 'blur' }],
 })
 
@@ -232,34 +248,34 @@ onMounted(() => {
 })
 
 watch(() => props.visible, async (newVal) => {
-  if (newVal && window.google?.maps) {
-    await nextTick();
+    if (newVal && window.google?.maps) {
+        await nextTick();
 
-    if (props.lat && props.lng) {
-      // EDIT MODE - use DB values
-      form.latitude = props.lat;
-      form.longitude = props.lng;
-      form.addressInput = props.address || '';
+        if (props.lat && props.lng) {
+            // EDIT MODE - use DB values
+            form.latitude = props.lat;
+            form.longitude = props.lng;
+            form.addressInput = props.address || '';
 
-      await fetchAddressFromLatLng(props.lat, props.lng);
-      initMap(props.lat, props.lng);
+            await fetchAddressFromLatLng(props.lat, props.lng);
+            initMap(props.lat, props.lng);
+        } else {
+            // CREATE MODE - use current geolocation
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    form.latitude = position.coords.latitude;
+                    form.longitude = position.coords.longitude;
+                    await fetchAddressFromLatLng(form.latitude, form.longitude);
+                    await getVenues(form.latitude, form.longitude);
+                    initMap(form.latitude, form.longitude);
+                });
+            }
+        }
+
+        mapReady.value = true;
     } else {
-      // CREATE MODE - use current geolocation
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          form.latitude = position.coords.latitude;
-          form.longitude = position.coords.longitude;
-          await fetchAddressFromLatLng(form.latitude, form.longitude);
-          await getVenues(form.latitude, form.longitude);
-          initMap(form.latitude, form.longitude);
-        });
-      }
+        mapReady.value = false;
     }
-
-    mapReady.value = true;
-  } else {
-    mapReady.value = false;
-  }
 });
 
 
