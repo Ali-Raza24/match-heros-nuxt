@@ -92,6 +92,8 @@ const loading = ref(false)
 const map = ref(null)
 const marker = ref(null)
 const mapReady = ref(false)
+const venueMarkers = ref([]);
+
 
 const formRef = ref(null)
 const form = reactive({
@@ -229,6 +231,32 @@ const getVenues = async (lat, lng) => {
     store.getVenuesByCoordinates(lat, lng, 20)
 }
 
+const showNearbyVenues = async (lat, lng) => {
+    const venues = await store.getVenuesByCoordinates(lat, lng,1000);
+
+    venueMarkers.value.forEach(marker => marker.setMap(null));
+    venueMarkers.value = [];
+
+     if (venues.data && Array.isArray(venues.data)) {
+    venues.data.forEach((venue) => {
+        const venueMarker = new window.google.maps.Marker({
+            position: {
+                lat: parseFloat(venue.latitude),
+                lng: parseFloat(venue.longitude)
+            },
+            map: map.value,
+            icon: {
+                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            },
+            title: venue.name,
+        });
+
+        venueMarkers.value.push(venueMarker);
+    });
+    }
+}
+
+
 onMounted(() => {
     const loader = document.createElement('script')
     loader.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMapCallback`
@@ -259,6 +287,8 @@ watch(() => props.visible, async (newVal) => {
 
             await fetchAddressFromLatLng(props.lat, props.lng);
             initMap(props.lat, props.lng);
+            showNearbyVenues(props.lat, props.lng)
+
         } else {
             // CREATE MODE - use current geolocation
             if (navigator.geolocation) {
@@ -268,6 +298,8 @@ watch(() => props.visible, async (newVal) => {
                     await fetchAddressFromLatLng(form.latitude, form.longitude);
                     await getVenues(form.latitude, form.longitude);
                     initMap(form.latitude, form.longitude);
+                    showNearbyVenues(form.latitude, form.longitude)
+
                 });
             }
         }
