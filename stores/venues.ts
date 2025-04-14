@@ -29,9 +29,9 @@ export const useVenueStore = defineStore('venues', {
     countriesData: [],
     form: reactive({ ...defaultForm }),
     buttonText: '',
-    searchQuery:'',
-    totalVenues:0,
-    perPage:0
+    searchQuery: '',
+    totalVenues: 0,
+    perPage: 0
 
 
   }),
@@ -42,7 +42,7 @@ export const useVenueStore = defineStore('venues', {
         this.loading = true
         const { data, error } = await get('/venues', {
           page: this.currentPage,
-          query:this.searchQuery
+          query: this.searchQuery
         });
 
         if (error.value) {
@@ -137,6 +137,8 @@ export const useVenueStore = defineStore('venues', {
       } catch (error) {
       }
     },
+
+
     async DeleteVenue(id: any) {
       try {
         const { data, error } = await remove(`/venues/${id}`);
@@ -146,15 +148,15 @@ export const useVenueStore = defineStore('venues', {
             message: error?.value?.data?.message,
             type: 'error',
           })
-          
-        } else {          
+
+        } else {
           ElNotification({
             message: 'Successful',
             type: 'success',
           })
           this.getVenues()
         }
-      } catch (error) {        
+      } catch (error) {
         // Handle any unexpected errors
       }
     },
@@ -169,6 +171,23 @@ export const useVenueStore = defineStore('venues', {
       }
 
     },
+
+    async getVenuesByCoordinates(lat: any, lng: any, radius: any) {
+      try {
+        const { data, error } = await get(`/venues?coordinates=${lat},${lng}&radius=${radius}`);
+
+        if (error.value) {
+          // Handle the error
+        } else {
+         return data.value
+        }
+      } catch (error) {
+        // Handle any unexpected errors
+      }
+
+    },
+
+
     setCurrentPage(page: any) {
       this.currentPage = page;
     },
@@ -184,8 +203,8 @@ export const useVenueStore = defineStore('venues', {
       this.venues = data.data;
       this.links = data.links;
       this.meta = data.meta;
-      this.totalVenues=data.meta.total
-      this.perPage=data.meta.per_page
+      this.totalVenues = data.meta.total
+      this.perPage = data.meta.per_page
     },
     setSearchQuery(query: any) {
       this.searchQuery = query

@@ -1,114 +1,281 @@
-
 <template>
     <div>
-        <el-dialog  :close-on-click-modal="false" class="pt-[35px] px-[30px] pb-[20px] relative" v-model="props.visible" :show-close="false" :append-to-body="true" center style="width: 740px; margin: 2.5rem auto; background:white;">
-            <template #header="{ close, titleId, titleClass }">
+        <el-dialog :close-on-click-modal="false" v-model="props.visible" :show-close="false" append-to-body center
+            style="width: 740px; margin: 2.5rem auto; background:#0f1323"
+            class="pt-[35px] px-[30px] pb-[20px] relative">
+            <template #header>
                 <div class="my-header float-right">
-                    <el-button @click="emit('close')" class="absolute top-3 right-5 !border-0 !bg-transparent !p-0">
-                        <el-icon :size="25" class="closeColor"><Close /></el-icon>
+                    <el-button @click="closeDialog()" class="absolute top-3 right-5 !border-0 !bg-transparent !p-0">
+                        <el-icon :size="25" class="closeColor">
+                            <Close />
+                        </el-icon>
                     </el-button>
                 </div>
             </template>
-            <h2 class="text-[#11172D] text-[25px] font-medium text-center mb-[25px]">Venue Location</h2>
-            <label class="text-sm font-bold mb-2 block">Search location</label>
-        
-            <GoogleMapsCustomeAddress @address="getAddress($event)" :draggedAddress="address"  />
 
-            <GoogleMapsCustomeMap :placeId="placeId" :location="formatedAddress" @draggedAddress="getDraggedAddress" />
+            <h2 class="text-[#ffff] text-[25px] font-medium text-center mb-[25px]">Venue Location</h2>
 
-            <div class="text-right">
-                <el-button @click="submitAddress" :class="'btn-theme test-capitalize'" type="success">
-                Add Location</el-button>
+            <label class="text-sm font-bold mb-2 block text-[#ffff]">Search by</label>
+            <el-radio-group v-model="searchType" class="mb-4">
+                <el-radio label="coordinates">Coordinates</el-radio>
+                <el-radio label="address">Full Address</el-radio>
+            </el-radio-group>
+
+            <el-form :model="form" :rules="rules" ref="formRef" label-position="top" class="mb-4">
+                <div v-if="searchType === 'coordinates'">
+                    <el-form-item label="Latitude" prop="latitude">
+                        <el-input v-model="form.latitude" placeholder="Enter latitude" />
+                    </el-form-item>
+
+                    <el-form-item label="Longitude" prop="longitude">
+                        <el-input v-model="form.longitude" placeholder="Enter longitude" />
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button @click="validateAndSearchCoordinates" class="btn-theme mt-2" type="primary">Search
+                            Location</el-button>
+                    </el-form-item>
+                </div>
+
+                <div v-else>
+                    <el-form-item label="Full Address" prop="addressInput">
+                        <el-input v-model="form.addressInput" placeholder="Enter full address" />
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button @click="validateAndSearchAddress" class="btn-theme mt-2" type="primary">Search
+                            Location</el-button>
+                    </el-form-item>
+                </div>
+            </el-form>
+
+            <div v-if="loading" class="text-center mt-4">
+                <el-icon class="is-loading" style="font-size: 30px;">
+                    <Loading />
+                </el-icon>
+            </div>
+
+            <div v-show="mapReady && !loading" class="mt-4">
+                <div id="map" style="width: 100%; height: 350px; border-radius: 10px;"></div>
+            </div>
+
+            <div class="text-right mt-4">
+                <el-button @click="submitAddress" class="btn-theme" type="success">Add Location</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { ElButton, ElDialog } from 'element-plus'
-import { Close } from '@element-plus/icons-vue'
+import { ref, reactive, onMounted, watch, nextTick } from 'vue'
+import axios from 'axios'
+import { Close, Loading } from '@element-plus/icons-vue'
+import { useVenueStore } from '../../stores/venues'
+
+const store = useVenueStore()
 
 const props = defineProps({
-    visible: {
-        type: Boolean,
-        default: false
-    },
-    address: {
-        type: String,
-        default: ""
+    visible: Boolean,
+    address: String,
+    lat: Number,
+    lng: Number
+})
+
+const emit = defineEmits(['close', 'input-address'])
+
+const apiKey = 'AIzaSyD8M1_FlTzwkv2ZdRBcRUXal39wUSHzSq8'
+
+const searchType = ref('address')
+const loading = ref(false)
+const map = ref(null)
+const marker = ref(null)
+const mapReady = ref(false)
+
+const formRef = ref(null)
+const form = reactive({
+    latitude: '',
+    longitude: '',
+    addressInput: '',
+})
+
+const rules = reactive({
+    latitude: [{ required: true, message: 'Latitude is required', trigger: 'blur' }],
+    longitude: [{ required: true, message: 'Longitude is required', trigger: 'blur' }],
+    addressInput: [{ required: true, message: 'Address is required', trigger: 'blur' }],
+})
+
+const initMap = (lat, lng) => {
+    const location = { lat: parseFloat(lat), lng: parseFloat(lng) }
+
+    if (!map.value) {
+        map.value = new window.google.maps.Map(document.getElementById('map'), {
+            center: location,
+            zoom: 15,
+        })
+
+        marker.value = new window.google.maps.Marker({
+            position: location,
+            map: map.value,
+            draggable: true,
+        })
+
+        marker.value.addListener('dragend', () => {
+            const newPos = marker.value.getPosition()
+            form.latitude = newPos.lat()
+            form.longitude = newPos.lng()
+            fetchAddressFromLatLng(newPos.lat(), newPos.lng())
+        })
+    } else {
+        map.value.setCenter(location)
+        marker.value.setPosition(location)
     }
-});
 
-const emit = defineEmits(['close', 'input-address']);
+    mapReady.value = true
+}
 
-const formatedAddress = ref("");
-const address = ref("");
-const geometryLocation = ref({});
-const placeId = ref(null);
+const validateAndSearchCoordinates = () => {
+    formRef.value.validateField(['latitude', 'longitude'], (valid) => {
+        if (valid) {
+            searchByCoordinates()
+        }
+    })
+}
 
-onMounted(() => {
-    requestUserLocation();
-    console.log('onMounted', props.address);
-});
+const validateAndSearchAddress = () => {
+    formRef.value.validateField('addressInput', (valid) => {
+        if (valid) {
+            searchByAddress()
+        }
+    })
+}
 
-const getDraggedAddress = (draggedAddress) => {
-    address.value = draggedAddress;
-};
+const searchByCoordinates = async () => {
+    if (!form.latitude || !form.longitude) return
+    loading.value = true
+    initMap(form.latitude, form.longitude)
+    await fetchAddressFromLatLng(form.latitude, form.longitude)
+    loading.value = false
+}
 
-const getAddress = (event) => {
-    formatedAddress.value = event.formatted_address;
-    placeId.value = event.place_id;
-    address.value = "";
-    geometryLocation.value = event.geometry.location;
+const searchByAddress = async () => {
+    if (!form.addressInput.trim()) return
+    loading.value = true
+    try {
+        const encoded = encodeURIComponent(form.addressInput)
+        const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encoded}&key=${apiKey}`)
+        const result = data.results[0]
+        if (result) {
+            const loc = result.geometry.location
+            form.latitude = loc.lat
+            form.longitude = loc.lng
+            initMap(loc.lat, loc.lng)
+        }
+    } catch (err) {
+        console.error('Address lookup failed', err)
+    } finally {
+        loading.value = false
+    }
 }
 
 const submitAddress = () => {
-    emit('input-address',  { address: formatedAddress, latLng: geometryLocation }) 
+    formRef.value.validate((valid) => {
+        if (!valid) return
+
+        emit('input-address', {
+            address: form.addressInput || 'Selected Location',
+            latLng: {
+                lat: parseFloat(form.latitude),
+                lng: parseFloat(form.longitude),
+            },
+        })
+    })
 }
 
-const requestUserLocation = () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        geometryLocation.value = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        formatedAddress.value = 'Current Location';
-      },
-      (error) => {
-        console.error('Error getting location:', error);
+const closeDialog = () => {
+    emit('close')
+}
+
+const fetchAddressFromLatLng = async (lat, lng) => {
+    try {
+        const response = await axios.get(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
+        )
+        const result = response.data.results[0]
+        if (result) {
+            form.addressInput = result.formatted_address || 'Address not found'
+        }
+    } catch (err) {
+        console.error('Failed to fetch address from coordinates', err)
+    }
+}
+
+const getVenues = async (lat, lng) => {
+    store.getVenuesByCoordinates(lat, lng, 20)
+}
+
+onMounted(() => {
+    const loader = document.createElement('script')
+    loader.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMapCallback`
+    loader.async = true
+    window.initMapCallback = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                form.latitude = position.coords.latitude
+                form.longitude = position.coords.longitude
+                await fetchAddressFromLatLng(form.latitude, form.longitude)
+                await getVenues(form.latitude, form.longitude)
+                initMap(form.latitude, form.longitude)
+            })
+        }
+    }
+    document.head.appendChild(loader)
+})
+
+watch(() => props.visible, async (newVal) => {
+  if (newVal && window.google?.maps) {
+    await nextTick();
+
+    if (props.lat && props.lng) {
+      // EDIT MODE - use DB values
+      form.latitude = props.lat;
+      form.longitude = props.lng;
+      form.addressInput = props.address || '';
+
+      await fetchAddressFromLatLng(props.lat, props.lng);
+      initMap(props.lat, props.lng);
+    } else {
+      // CREATE MODE - use current geolocation
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          form.latitude = position.coords.latitude;
+          form.longitude = position.coords.longitude;
+          await fetchAddressFromLatLng(form.latitude, form.longitude);
+          await getVenues(form.latitude, form.longitude);
+          initMap(form.latitude, form.longitude);
+        });
       }
-    );
+    }
+
+    mapReady.value = true;
   } else {
-    console.error('Geolocation is not supported by this browser.');
+    mapReady.value = false;
   }
-};
+});
+
 
 </script>
-  
+
 <style scoped>
 .my-header {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
 }
-.modalTitle
-{
-    @apply text-[#11172D] text-[25px] font-medium;
+
+.closeColor svg {
+    @apply text-[#fffff]
 }
-.googleLocationSearch
-{
-    @apply h-[45px] rounded-md border border-[#636C92] font-medium text-[#314164] w-full px-[20px] placeholder-[#11172D] text-sm mb-[25px] focus:ring-0 focus:outline-none;
-}
-.closeColor svg
-{
-    @apply text-[#11172D]
-}
-.closeColor:hover svg
-{
+
+.closeColor:hover svg {
     @apply text-red-700
 }
 </style>
-  
