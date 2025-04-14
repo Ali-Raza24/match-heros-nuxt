@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-dialog :close-on-click-modal="false" v-model="props.visible" :show-close="false" append-to-body center
-            style="width: 740px; margin: 2.5rem auto; background:#0f1323"
+            style="width: 1000px; margin: 2.5rem auto; background:#0f1323"
             class="pt-[35px] px-[30px] pb-[20px] relative">
             <template #header>
                 <div class="my-header float-right">
@@ -56,7 +56,7 @@
             </div>
 
             <div v-show="mapReady && !loading" class="mt-4">
-                <div id="map" style="width: 100%; height: 350px; border-radius: 10px;"></div>
+                <div id="map" style="width: 100%; height: 500px; border-radius: 10px;"></div>
             </div>
 
             <div class="text-right mt-4">
