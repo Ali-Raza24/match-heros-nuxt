@@ -1,8 +1,7 @@
 <template>
     <div>
         <el-dialog :close-on-click-modal="false" v-model="props.visible" :show-close="false" append-to-body center
-            style="width: 1000px; margin: 2.5rem auto; background:#0f1323"
-            class="pt-[35px] px-[30px] pb-[20px] relative">
+            style="width: 1000px; margin: 2.5rem auto; background:#0f1323" class="relative">
             <template #header>
                 <div class="my-header float-right">
                     <el-button @click="closeDialog()" class="absolute top-3 right-5 !border-0 !bg-transparent !p-0">
@@ -13,7 +12,7 @@
                 </div>
             </template>
 
-            <h2 class="text-[#ffff] text-[25px] font-medium text-center mb-[25px]">Venue Location</h2>
+            <h2 class="text-[#ffff] text-[25px] font-medium text-center">Venue Location</h2>
 
             <label class="text-sm font-bold mb-2 block text-[#ffff]">Search by</label>
             <el-radio-group v-model="searchType" class="mb-4">
@@ -24,29 +23,45 @@
             <el-form :model="form" :rules="rules" ref="formRef" label-position="top" class="mb-4"
                 @submit.native.prevent>
                 <div v-if="searchType === 'coordinates'">
-                    <el-form-item label="Latitude" prop="latitude">
-                        <el-input v-model="form.latitude" placeholder="Enter latitude" @blur="form.latitude = form.latitude.trim()" />
-                    </el-form-item>
+                    <el-row :gutter="10">
+                        <el-col :span="9">
+                            <el-form-item label="Latitude" prop="latitude">
+                                <el-input v-model="form.latitude" placeholder="Enter latitude"
+                                    @blur="form.latitude = form.latitude.trim()" />
+                            </el-form-item>
+                        </el-col>
 
-                    <el-form-item label="Longitude" prop="longitude">
-                        <el-input v-model="form.longitude" placeholder="Enter longitude"  @blur="form.longitude = form.longitude.trim()" />
-                    </el-form-item>
+                        <el-col :span="9">
+                            <el-form-item label="Longitude" prop="longitude">
+                                <el-input v-model="form.longitude" placeholder="Enter longitude"
+                                    @blur="form.longitude = form.longitude.trim()" />
+                            </el-form-item>
+                        </el-col>
 
-                    <el-form-item>
-                        <el-button @click="validateAndSearchCoordinates" class="btn-theme mt-2" type="primary">Search
-                            Location</el-button>
-                    </el-form-item>
+                        <el-col :span="4" >
+                            <el-form-item label="&nbsp;">
+                                <el-button @click="validateAndSearchCoordinates"
+                                    style="height: 45px; background-color: #0a7239 !important; border: 0px !important"
+                                    type="success">
+                                    Search Location
+                                </el-button>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </div>
 
                 <div v-else>
                     <el-form-item label="Full Address" prop="addressInput">
                         <el-input v-model="form.addressInput" placeholder="Enter full address"
-                            @keyup.enter.prevent="validateAndSearchAddress" />
-                    </el-form-item>
-
-                    <el-form-item>
-                        <el-button @click="validateAndSearchAddress" class="btn-theme mt-2" type="primary">Search
-                            Location</el-button>
+                            @keyup.enter.prevent="validateAndSearchAddress">
+                            <template #append>
+                                <el-button @click="validateAndSearchAddress"
+                                    style="background-color: #0a7239; color: white; border-radius: 0px !important; height: 48px;"
+                                    type="success">
+                                    Search Location
+                                </el-button>
+                            </template>
+                        </el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -234,27 +249,37 @@ const getVenues = async (lat, lng) => {
 }
 
 const showNearbyVenues = async (lat, lng) => {
-    const venues = await store.getVenuesByCoordinates(lat, lng,1000);
+    const venues = await store.getVenuesByCoordinates(lat, lng, 1000);
 
     venueMarkers.value.forEach(marker => marker.setMap(null));
     venueMarkers.value = [];
 
-     if (venues.data && Array.isArray(venues.data)) {
-    venues.data.forEach((venue) => {
-        const venueMarker = new window.google.maps.Marker({
-            position: {
-                lat: parseFloat(venue.latitude),
-                lng: parseFloat(venue.longitude)
-            },
-            map: map.value,
-            icon: {
-                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-            },
-            title: venue.name,
-        });
+    if (venues.data && Array.isArray(venues.data)) {
+        venues.data.forEach((venue) => {
 
-        venueMarkers.value.push(venueMarker);
-    });
+            const venueLat = parseFloat(venue.latitude);
+            const venueLng = parseFloat(venue.longitude);
+
+            const isSameLocation =
+                parseFloat(form.latitude).toFixed(6) === venueLat.toFixed(6) &&
+                parseFloat(form.longitude).toFixed(6) === venueLng.toFixed(6);
+
+            if (isSameLocation) return;
+
+            const venueMarker = new window.google.maps.Marker({
+                position: {
+                    lat: venueLat,
+                    lng: venueLng
+                },
+                map: map.value,
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                },
+                title: venue.name,
+            });
+
+            venueMarkers.value.push(venueMarker);
+        });
     }
 }
 
