@@ -59,6 +59,7 @@ export const useVenueStore = defineStore('venues', {
       this.loading = true
       const config = useRuntimeConfig();
       try {
+        venueData['_method'] = 'POST';
         await axios.post(config.public.NUXT_PUBLIC_API_BASE + '/venues', venueData, {
           headers: {
             'Content-Type': 'multipart/form-data', // Set the content type for file uploads
