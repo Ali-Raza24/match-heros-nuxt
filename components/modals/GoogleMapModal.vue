@@ -171,6 +171,7 @@ const searchByCoordinates = async () => {
     if (!form.latitude || !form.longitude) return
     loading.value = true
     initMap(form.latitude, form.longitude)
+    showNearbyVenues(form.latitude, form.longitude)
     await fetchAddressFromLatLng(form.latitude, form.longitude)
     loading.value = false
 }
@@ -187,6 +188,7 @@ const searchByAddress = async () => {
             form.latitude = loc.lat
             form.longitude = loc.lng
             initMap(loc.lat, loc.lng)
+            showNearbyVenues(loc.lat, loc.lng)
         }
     } catch (err) {
         console.error('Address lookup failed', err)
