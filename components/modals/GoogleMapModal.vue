@@ -25,11 +25,11 @@
                 @submit.native.prevent>
                 <div v-if="searchType === 'coordinates'">
                     <el-form-item label="Latitude" prop="latitude">
-                        <el-input v-model="form.latitude" placeholder="Enter latitude" />
+                        <el-input v-model="form.latitude" placeholder="Enter latitude" @blur="form.latitude = form.latitude.trim()" />
                     </el-form-item>
 
                     <el-form-item label="Longitude" prop="longitude">
-                        <el-input v-model="form.longitude" placeholder="Enter longitude" />
+                        <el-input v-model="form.longitude" placeholder="Enter longitude"  @blur="form.longitude = form.longitude.trim()" />
                     </el-form-item>
 
                     <el-form-item>
