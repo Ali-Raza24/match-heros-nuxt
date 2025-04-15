@@ -1,46 +1,61 @@
 <template>
   <NuxtLayout>
     <div class="flex lg:flex-row flex-col gap-4 items-center justify-between mb-4">
-          <h6 class="text-white text-base font-regular">Total Number of Venues</h6>
-          <NuxtLink class="btn-theme !mt-0" :to="`/venues/new-venue`">Create a Venue</NuxtLink>
-        </div>
-    <el-table :data="store.venues" v-loading="store.loading">
-      <el-table-column label="Name" prop="name" width="150" />
-      <el-table-column label="Email	" prop="contact.email" width="150" />
-      <el-table-column label="Phone	" prop="contact.phone" width="150" />
-      <!-- <el-table-column label="Country	" prop="country" /> -->
-      <el-table-column label="Address" prop="address" width="200">
+      <h6 class="text-white text-base font-regular">Total Number of Venues</h6>
+      <NuxtLink class="btn-theme !mt-0" :to="`/venues/new-venue`">Create a Venue</NuxtLink>
+    </div>
+    <el-table :data="store.venues" v-loading="store.loading" style="width: 100%;">
+      <el-table-column label="Name" prop="name">
         <template v-slot="{ row }">
-          <el-tooltip class="item" effect="dark" :content="row.address" placement="top">
-            <span>{{ row.address }}</span>
+          <el-tooltip class="item" effect="dark" :content="row.name" placement="top">
+            <span>
+              {{ row.name.length > 15 ? row.name.substring(0, 15) + "..." : row.name }}
+            </span>
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="Open Time" prop="open_time" width="85" />
-      <el-table-column label="Close Time" prop="close_time" width="85" />
-      <el-table-column label="Amount	" prop="balance" width="80" />
-      <el-table-column label="Operations" width="170">
+      <el-table-column label="Email	" prop="contact.email">
+        <template v-slot="{ row }">
+          <el-tooltip class="item" effect="dark" :content="row.contact.email" placement="top">
+            <span>
+              {{ row.contact.email.length > 15 ? row.contact.email.substring(0, 15) + "..." : row.contact.email }}
+            </span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="Phone	" prop="contact.phone" />
+      <!-- <el-table-column label="Country	" prop="country" /> -->
+      <el-table-column label="Address" prop="address">
+        <template v-slot="{ row }">
+          <el-tooltip class="item" effect="dark" :content="row.address" placement="top">
+            <span>
+              {{ row.address.length > 15 ? row.address.substring(0, 15) + "..." : row.address }}
+            </span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="Open Time" prop="open_time" />
+      <el-table-column label="Close Time" prop="close_time" />
+      <el-table-column label="Operations">
         <template #default="scope">
-          <el-button :class="'tableButton'" @click="handleComment(scope.row)"><img class="!min-h-[18px] w-auto min-w-[19px]"
-              src="/assets/images/comment.svg" /></el-button>
-          <NuxtLink :class="'tableButton'" :to="`/venues/${scope.row.id}`"><img class="!min-h-[18px] w-auto min-w-[18px]"
-              src="/assets/images/edit.svg" /></NuxtLink>
-          <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img class="!min-h-[18px] w-auto min-w-[15px]"
-              src="/assets/images/delete.svg" /></el-button>
+          <NuxtLink :class="'tableButton'" :to="`/venues/${scope.row.id}`"><img
+              class="!min-h-[18px] w-auto min-w-[18px]" src="/assets/images/edit.svg" /></NuxtLink>
+          <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img
+              class="!min-h-[18px] w-auto min-w-[15px]" src="/assets/images/delete.svg" /></el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="store.totalVenues" :page-size="store.perPage"  :current-page="currentPage()"
-      @current-change="handleCurrentChange" />
+    <el-pagination background layout="prev, pager, next" :total="store.totalVenues" :page-size="store.perPage"
+      :current-page="currentPage()" @current-change="handleCurrentChange" />
   </NuxtLayout>
 </template>
-  
+
 <script setup>
 import { useVenueStore } from '../../stores/venues';
 import { ref, onMounted } from 'vue';
 
 definePageMeta({
-  middleware: ['auth','profile'],
+  middleware: ['auth', 'profile'],
 })
 
 
@@ -194,13 +209,13 @@ const fetchData = async () => {
   margin-top: 20px;
 }
 
-.el-pagination.is-background .btn-prev:disabled, .el-pagination.is-background .btn-next:disabled {
-    color: #333845 !important;
-    background-color: #141b37 !important;
+.el-pagination.is-background .btn-prev:disabled,
+.el-pagination.is-background .btn-next:disabled {
+  color: #333845 !important;
+  background-color: #141b37 !important;
 }
 
 .el-pagination.is-background .el-pager li.is-active {
   background: linear-gradient(181deg, #0b8140, #0a5229);
 }
 </style>
-  
