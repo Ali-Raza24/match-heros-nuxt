@@ -38,7 +38,7 @@
                             </el-form-item>
                         </el-col>
 
-                        <el-col :span="4" >
+                        <el-col :span="4">
                             <el-form-item label="&nbsp;">
                                 <el-button @click="validateAndSearchCoordinates"
                                     style="height: 45px; background-color: #0a7239 !important; border: 0px !important"
@@ -88,6 +88,8 @@ import { ref, reactive, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { Close, Loading } from '@element-plus/icons-vue'
 import { useVenueStore } from '../../stores/venues'
+import { ElNotification } from 'element-plus'
+
 
 const store = useVenueStore()
 
@@ -197,6 +199,15 @@ const searchByAddress = async () => {
     try {
         const encoded = encodeURIComponent(form.addressInput)
         const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encoded}&key=${apiKey}`)
+        if (isEmpty(data.results)) {
+            ElNotification({
+                title: 'Error',
+                message: 'Location not found. Please make sure the address is correct.',
+                type: 'error',
+            })
+            return;
+
+        }
         const result = data.results[0]
         if (result) {
             const loc = result.geometry.location
@@ -261,8 +272,8 @@ const showNearbyVenues = async (lat, lng) => {
             const venueLng = parseFloat(venue.longitude);
 
             const isSameLocation =
-                parseFloat(form.latitude).toFixed(6) === venueLat.toFixed(6) &&
-                parseFloat(form.longitude).toFixed(6) === venueLng.toFixed(6);
+                parseFloat(form.latitude).toFixed(8) === venueLat.toFixed(8) &&
+                parseFloat(form.longitude).toFixed(8) === venueLng.toFixed(8);
 
             if (isSameLocation) return;
 
