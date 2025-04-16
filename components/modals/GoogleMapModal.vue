@@ -54,6 +54,14 @@
                     <el-form-item label="Full Address" prop="addressInput">
                         <el-input v-model="form.addressInput" placeholder="Enter full address"
                             @keyup.enter.prevent="validateAndSearchAddress">
+                            <!-- Prefix Icon (inside input) -->
+                            <template #suffix>
+                                <el-icon @click="goToMyLocation" class="cursor-pointer" :size="30">
+                                    <Aim />
+                                </el-icon>
+                            </template>
+
+                            <!-- Append Button (outside input) -->
                             <template #append>
                                 <el-button @click="validateAndSearchAddress"
                                     style="background-color: #0a7239; color: white; border-radius: 0px !important; height: 48px;"
@@ -63,6 +71,7 @@
                             </template>
                         </el-input>
                     </el-form-item>
+
                 </div>
             </el-form>
 
@@ -86,7 +95,7 @@
 <script setup>
 import { ref, reactive, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
-import { Close, Loading } from '@element-plus/icons-vue'
+import { Close, Loading, Aim } from '@element-plus/icons-vue'
 import { useVenueStore } from '../../stores/venues'
 import { ElNotification } from 'element-plus'
 import { isEmpty } from 'lodash'
@@ -286,6 +295,8 @@ const showNearbyVenues = async (lat, lng) => {
                 map: map.value,
                 icon: {
                     url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                    scaledSize: new window.google.maps.Size(40, 40),
+                    
                 },
                 title: venue.name,
             });
@@ -348,6 +359,28 @@ watch(() => props.visible, async (newVal) => {
         mapReady.value = false;
     }
 });
+
+const goToMyLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const lat = position.coords.latitude
+            const lng = position.coords.longitude
+
+            form.latitude = lat
+            form.longitude = lng
+
+            await fetchAddressFromLatLng(lat, lng)
+            initMap(lat, lng)
+            showNearbyVenues(lat, lng)
+        })
+    } else {
+        ElNotification({
+            title: 'Unsupported',
+            message: 'Geolocation is not supported by your browser.',
+            type: 'warning',
+        })
+    }
+}
 
 
 </script>
