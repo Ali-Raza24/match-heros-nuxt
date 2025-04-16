@@ -89,6 +89,7 @@ import axios from 'axios'
 import { Close, Loading } from '@element-plus/icons-vue'
 import { useVenueStore } from '../../stores/venues'
 import { ElNotification } from 'element-plus'
+import { isEmpty } from 'lodash'
 
 
 const store = useVenueStore()
