@@ -175,7 +175,7 @@ export const useVenueStore = defineStore('venues', {
 
     async getVenuesByCoordinates(lat: any, lng: any, radius: any) {
       try {
-        const { data, error } = await get(`/venues?coordinates=${lat},${lng}&radius=${radius}`);
+        const { data, error } = await get(`/custom-venues?coordinates=${lat},${lng}&radius=${radius}&isAll=${true}`);
 
         if (error.value) {
           // Handle the error
