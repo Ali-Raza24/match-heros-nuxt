@@ -198,7 +198,7 @@ const searchByCoordinates = async () => {
     if (!form.latitude || !form.longitude) return
     loading.value = true
     initMap(form.latitude, form.longitude)
-    showNearbyVenues(form.latitude, form.longitude)
+    await showNearbyVenues(form.latitude, form.longitude)
     await fetchAddressFromLatLng(form.latitude, form.longitude)
     loading.value = false
 }
@@ -224,7 +224,7 @@ const searchByAddress = async () => {
             form.latitude = loc.lat
             form.longitude = loc.lng
             initMap(loc.lat, loc.lng)
-            showNearbyVenues(loc.lat, loc.lng)
+            await showNearbyVenues(loc.lat, loc.lng)
         }
     } catch (err) {
         console.error('Address lookup failed', err)
@@ -266,7 +266,7 @@ const fetchAddressFromLatLng = async (lat, lng) => {
 }
 
 const getVenues = async (lat, lng) => {
-    store.getVenuesByCoordinates(lat, lng, 20)
+    await store.getVenuesByCoordinates(lat, lng, 1000)
 }
 
 const showNearbyVenues = async (lat, lng) => {
@@ -337,7 +337,7 @@ watch(() => props.visible, async (newVal) => {
 
             await fetchAddressFromLatLng(props.lat, props.lng);
             initMap(props.lat, props.lng);
-            showNearbyVenues(props.lat, props.lng)
+            await showNearbyVenues(props.lat, props.lng)
 
         } else {
             // CREATE MODE - use current geolocation
@@ -348,7 +348,7 @@ watch(() => props.visible, async (newVal) => {
                     await fetchAddressFromLatLng(form.latitude, form.longitude);
                     await getVenues(form.latitude, form.longitude);
                     initMap(form.latitude, form.longitude);
-                    showNearbyVenues(form.latitude, form.longitude)
+                    await showNearbyVenues(form.latitude, form.longitude)
 
                 });
             }
@@ -371,7 +371,7 @@ const goToMyLocation = () => {
 
             await fetchAddressFromLatLng(lat, lng)
             initMap(lat, lng)
-            showNearbyVenues(lat, lng)
+           await showNearbyVenues(lat, lng)
         })
     } else {
         ElNotification({
