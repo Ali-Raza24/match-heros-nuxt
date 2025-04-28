@@ -64,6 +64,7 @@ const menus = [
   { label: 'Reports', route: '/reports', icon: 'icon-notifications'},
   { label: 'Settings', route: '/settings', icon: 'icon-notifications'},
   { label: 'Broadcast Notifications', route: '/broadcasts', icon: 'icon-notifications'},
+  { label: 'Queries', route: '/queries', icon: 'icon-notifications'},
 ]
 
 const errorMsg = ref('');
