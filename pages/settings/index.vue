@@ -4,21 +4,14 @@
             <h6 class="text-white text-base font-regular">Total Number of Settings ({{ store.totalSettings }})</h6>
             <!-- <NuxtLink class="btn-theme !mt-0" :to="`/settings/new-setting`">Create a Setting</NuxtLink> -->
         </div>
-        <el-table :data="store.settings" v-loading="store.loading" style="width: 100%;">
+        <el-table :data="store.settings.filter(item => !['merchant_available_balance'].includes(item.key))" v-loading="store.loading" style="width: 100%;">
             <el-table-column label="Key" prop="key"/>
-            <!-- <el-table-column label="Key" prop="key">
-                <template #default="scope">
-                    {{scope.row.key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}}
-                </template>
-            </el-table-column> -->
             <el-table-column label="Value" prop="value" />
             <el-table-column label="Operations">
                 <template #default="scope">
 
                     <NuxtLink :class="'tableButton'" :to="`/settings/${scope.row.id}`"><img
                             class="!min-h-[18px] w-auto min-w-[18px]" src="/assets/images/edit.svg" /></NuxtLink>
-                    <!-- <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img
-                            class="!min-h-[18px] w-auto min-w-[15px]" src="/assets/images/delete.svg" /></el-button> -->
                 </template>
             </el-table-column>
         </el-table>
@@ -35,30 +28,6 @@ definePageMeta({
     middleware: ['auth', 'profile'],
 })
 const store = useSettingsStore();
-
-
-const handleDelete = (id) => {
-
-    ElMessageBox.confirm(
-        'Are you sure, you want to delete?',
-        'Warning',
-        {
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
-        }
-    )
-        .then(() => {
-            store.DeleteSettings(id)
-        })
-        .catch(() => {
-            ElNotification({
-                title: 'Info',
-                message: 'Operation successful',
-                type: 'info',
-            })
-        })
-}
 
 const currentPage = () => store.getCurrentPage();
 
