@@ -10,18 +10,22 @@
       <el-table-column label="Name" prop="user.name" />
       <el-table-column label="Subject">
         <template #default="{ row }">
-          <el-tooltip class="item" effect="dark" :content="row.subject" placement="top">
+          <el-tooltip class="item" effect="dark"
+            :content="row.subject.length > 40 ? row.subject.substring(0, 40) + '...' : row.subject" placement="top">
             <span>
-              {{ row.subject.length > 20 ? row.subject.substring(0, 20) + "..." : row.subject }}
+              {{ row.subject.length > 40 ? row.subject.substring(0, 40) + "..." : row.subject }}
             </span>
           </el-tooltip>
         </template>
       </el-table-column>
+
       <el-table-column label="Description">
         <template #default="{ row }">
-          <el-tooltip class="item" effect="dark" :content="row.description" placement="top">
+          <el-tooltip class="item" effect="dark"
+            :content="row.description.length > 40 ? row.description.substring(0, 40) + '...' : row.description"
+            placement="top">
             <span>
-              {{ row.description.length > 20 ? row.description.substring(0, 20) + "..." : row.description }}
+              {{ row.description.length > 40 ? row.description.substring(0, 40) + "..." : row.description }}
             </span>
           </el-tooltip>
         </template>
@@ -39,11 +43,11 @@
       :current-page="currentPage()" @current-change="handleCurrentChange" />
 
     <el-dialog v-model="dialogVisible" title="Query Details" width="500px" class="query-dialog">
-      <el-descriptions :column="1" border >
-        <el-descriptions-item label="Subject">
+      <el-descriptions :column="1" border>
+        <el-descriptions-item label="Subject" label-class-name="bold-label">
           {{ selectedQuery?.subject }}
         </el-descriptions-item>
-        <el-descriptions-item label="Description">
+        <el-descriptions-item label="Description" label-class-name="bold-label">
           {{ selectedQuery?.description }}
         </el-descriptions-item>
       </el-descriptions>
@@ -93,6 +97,9 @@ const fetchData = async () => {
 </script>
 
 <style lang="scss">
+.bold-label {
+  font-weight: bold !important;
+}
 .query-dialog .el-descriptions__content {
   word-break: break-word;
   white-space: pre-wrap;
