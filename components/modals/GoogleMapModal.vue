@@ -316,9 +316,9 @@ onMounted(() => {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 form.latitude = position.coords.latitude
                 form.longitude = position.coords.longitude
-                await fetchAddressFromLatLng(form.latitude, form.longitude)
-                await getVenues(form.latitude, form.longitude)
-                initMap(form.latitude, form.longitude)
+                // await fetchAddressFromLatLng(form.latitude, form.longitude)
+                // await getVenues(form.latitude, form.longitude)
+                // initMap(form.latitude, form.longitude)
             })
         }
     }
