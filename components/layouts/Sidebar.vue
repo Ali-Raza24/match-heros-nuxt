@@ -61,10 +61,10 @@ const menus = [
   { label: 'Games', route: '/games', icon: 'icon-games'},
   // { label: 'Teams', route: '/teams', icon: 'icon-teams'},
   { label: 'Notifications', route: '/notifications', icon: 'icon-notifications'},
-  { label: 'Reports', route: '/reports', icon: 'icon-notifications'},
-  { label: 'Settings', route: '/settings', icon: 'icon-notifications'},
-  { label: 'Broadcast Notifications', route: '/broadcasts', icon: 'icon-notifications'},
-  { label: 'Queries', route: '/queries', icon: 'icon-notifications'},
+  { label: 'Reports', route: '/reports', icon: 'icon-report'},
+  { label: 'Settings', route: '/settings', icon: 'icon-settings'},
+  { label: 'Broadcast Notifications', route: '/broadcasts', icon: 'icon-broadcast'},
+  { label: 'Queries', route: '/queries', icon: 'icon-queries'},
 ]
 
 const errorMsg = ref('');
