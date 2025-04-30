@@ -8,12 +8,13 @@
 
     <el-table :data="store.queries" v-loading="store.loading" style="width: 100%;">
       <el-table-column label="Name" prop="user.name" />
+      <el-table-column label="Email" prop="user.email" />
       <el-table-column label="Subject">
         <template #default="{ row }">
           <el-tooltip class="item" effect="dark"
-            :content="row.subject.length > 40 ? row.subject.substring(0, 40) + '...' : row.subject" placement="top">
+            :content="row.subject.length > 20 ? row.subject.substring(0, 20) + '...' : row.subject" placement="top">
             <span>
-              {{ row.subject.length > 40 ? row.subject.substring(0, 40) + "..." : row.subject }}
+              {{ row.subject.length > 20 ? row.subject.substring(0, 20) + "..." : row.subject }}
             </span>
           </el-tooltip>
         </template>
@@ -22,13 +23,18 @@
       <el-table-column label="Description">
         <template #default="{ row }">
           <el-tooltip class="item" effect="dark"
-            :content="row.description.length > 40 ? row.description.substring(0, 40) + '...' : row.description"
+            :content="row.description.length > 20 ? row.description.substring(0, 20) + '...' : row.description"
             placement="top">
             <span>
-              {{ row.description.length > 40 ? row.description.substring(0, 40) + "..." : row.description }}
+              {{ row.description.length > 20 ? row.description.substring(0, 20) + "..." : row.description }}
             </span>
           </el-tooltip>
         </template>
+      </el-table-column>
+
+      <el-table-column label="Date & Time">
+        <template #default="scope">{{ formatDate(scope.row.created_at) }} {{ formatTime(scope.row.created_at)
+          }}</template>
       </el-table-column>
       <el-table-column label="Operations">
         <template #default="{ row }">
@@ -100,6 +106,7 @@ const fetchData = async () => {
 .bold-label {
   font-weight: bold !important;
 }
+
 .query-dialog .el-descriptions__content {
   word-break: break-word;
   white-space: pre-wrap;
