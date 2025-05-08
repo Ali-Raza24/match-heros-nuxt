@@ -13,7 +13,7 @@
                         <el-radio label="now">Now</el-radio>
                         <el-radio label="scheduled">Scheduled</el-radio>
                     </el-radio-group>
-                </el-form-item>
+                </el-form-item> 
             </el-col>
             <el-col :span="24">
                 <el-form-item label="Message" prop="message">
