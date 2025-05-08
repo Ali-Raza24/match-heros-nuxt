@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      NUXT_PUBLIC_API_BASE: process.env.NUXT_API_BASE_URL,
+      NUXT_PUBLIC_API_BASE: process.env.NUXT_PUBLIC_API_BASE,
       GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY,
  
     },

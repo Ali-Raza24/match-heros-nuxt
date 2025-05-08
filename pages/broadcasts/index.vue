@@ -8,16 +8,15 @@
         <el-table :data="store.broadcasts" v-loading="store.loading" style="width: 100%;">
             <el-table-column label="Message" prop="message" width="170">
                 <template v-slot="{ row }">
-                    <el-tooltip class="item" effect="dark" :content="row.message" placement="top">
-                        <span>
-                            {{ row.message.length > 20 ? row.message.substring(0, 20) + "..." : row.message }}
-                        </span>
+                    <el-tooltip class="item" effect="dark" :content="truncateHtml(row.message)" placement="top">
+                        <span class="message-content" v-html="row.message"></span>
                     </el-tooltip>
                 </template>
             </el-table-column>
             <el-table-column label="Scheduled" prop="broadcast_timing" width="100">
                 <template v-slot="{ row }">
-                    <el-tag v-if="row.broadcast_timing === 'now'" type="success"> <span class="font-bold">False</span> </el-tag>
+                    <el-tag v-if="row.broadcast_timing === 'now'" type="success"> <span class="font-bold">False</span>
+                    </el-tag>
                     <el-tag v-else type="warning"><span class="font-bold">True</span></el-tag>
                 </template>
             </el-table-column>
@@ -33,7 +32,7 @@
             <el-table-column label="Category" prop="category" width="130">
                 <template v-slot="{ row }">
                     <el-tag>
-                        <span class="font-bold">{{ row.category }}</span> 
+                        <span class="font-bold">{{ row.category }}</span>
                     </el-tag>
                 </template>
             </el-table-column>
@@ -70,11 +69,11 @@
                 </template>
             </el-table-column>
             <el-table-column label="Operations" width="100">
-        <template #default="scope">
-          <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img class="!min-h-[18px] w-auto min-w-[15px]"
-              src="/assets/images/delete.svg" /></el-button>
-        </template>
-      </el-table-column>
+                <template #default="scope">
+                    <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img
+                            class="!min-h-[18px] w-auto min-w-[15px]" src="/assets/images/delete.svg" /></el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <el-pagination background layout="prev, pager, next" :total="store.totalBroadcasts" :page-size="store.perPage"
             :current-page="currentPage()" @current-change="handleCurrentChange" />
@@ -105,6 +104,12 @@ onMounted(async () => {
 const fetchData = async () => {
     await store.getBroadcasts();
 }
+function truncateHtml(html, limit) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const text = div.textContent || div.innerText || '';
+    return text.length > limit ? text.substring(0, limit) + '...' : text;
+}
 
 const handleDelete = (id) => {
     ElMessageBox.confirm(
@@ -131,6 +136,12 @@ const handleDelete = (id) => {
 </script>
 
 <style lang="scss">
+.message-content a {
+    color: #409EFF;
+    /* Element Plus primary color */
+    text-decoration: underline;
+    cursor: pointer;
+}
 .el-table {
     background-color: transparent !important;
 

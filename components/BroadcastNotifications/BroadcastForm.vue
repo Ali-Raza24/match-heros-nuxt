@@ -4,7 +4,6 @@
             class="text-white text-base font-bold inline-flex items-center gap-2 py-1 mb-3 outline-none"><img
                 class=" max-h-[14px] w-auto" src="/assets/images/backArrow.svg" /> Back</NuxtLink>
     </div>
-
     <el-form :class="'xl:max-w-[700px] max-w-full xl:pr-20 block mx-auto'" :model="store.form" label-position="top"
         :rules="store.basicRules" ref="ruleFormRef">
         <el-row :gutter="30">
@@ -18,8 +17,12 @@
             </el-col>
             <el-col :span="24">
                 <el-form-item label="Message" prop="message">
-                    <el-input v-model="store.form.message"  maxlength="255" type="textarea"  :autosize="{ minRows:4}"
-                    />
+                    <!-- <el-input v-model="store.form.message"  maxlength="255" type="textarea"  :autosize="{ minRows:4}"
+                    /> -->
+                    <client-only>
+                        <TiptapEditor v-model="store.form.message"></TiptapEditor>
+                    </client-only>
+
                 </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -33,7 +36,7 @@
             <el-col :span="12" v-if="store.form.notification_types.includes('broadcast')">
                 <el-form-item label="Broadcast End Date & Time" prop="broadcast_end_date">
                     <el-date-picker v-model="store.form.broadcast_end_date" format="YYYY-MM-DD HH:mm:ss"
-                        value-format="YYYY-MM-DD HH:mm:ss" type="datetime"  :disabled-date="store.disablePastDates"/>
+                        value-format="YYYY-MM-DD HH:mm:ss" type="datetime" :disabled-date="store.disablePastDates" />
                 </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -43,7 +46,7 @@
                             :value="type.value" />
                     </el-select> </el-form-item>
             </el-col>
-            <el-col :span="24" v-if="store.form.broadcast_timing === 'scheduled'">  
+            <el-col :span="24" v-if="store.form.broadcast_timing === 'scheduled'">
                 <el-form-item label="Schedule Date & Time" prop="schedule_start_date">
                     <el-date-picker class="custom-date-picker" v-model="store.form.schedule_start_date"
                         format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" type="datetime"
@@ -55,7 +58,7 @@
                     <el-select v-model="store.form.slection_type">
                         <el-option v-for="recipient in store.filterUsers" :key="recipient.value"
                             :label="recipient.label" :value="recipient.value" />
-                    </el-select>    
+                    </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="24" v-if="store.form.slection_type === 'specific'">
@@ -93,7 +96,7 @@ const props = defineProps({
     }
 });
 const store = useBroadcastStore();
-
+const content = ref('<p>Start editing here...</p>')
 const { form } = store
 const ruleFormRef = ref()
 const loading = ref(false)
@@ -126,10 +129,17 @@ const handleBroadcastTimingChange = () => {
 
 </script>
 <style lang="scss">
+.preview {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+}
 
 .el-textarea__inner {
-    @apply bg-transparent p-5 border-none ring-0 outline-none shadow-none rounded-md overflow-hidden bg-[#1E2646] text-white text-[16px] ;
-} 
+    @apply bg-transparent p-5 border-none ring-0 outline-none shadow-none rounded-md overflow-hidden bg-[#1E2646] text-white text-[16px];
+}
+
 .el-picker-panel__body .el-date-picker__time-header .el-date-picker__editor-wrap .el-input__wrapper input {
     color: black !important;
 }
