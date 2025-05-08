@@ -20,7 +20,9 @@
                     <!-- <el-input v-model="store.form.message"  maxlength="255" type="textarea"  :autosize="{ minRows:4}"
                     /> -->
                     <client-only>
-                        <TiptapEditor v-model="store.form.message"></TiptapEditor>
+
+                        <TiptapCKEditorInput v-model="store.form.message" />
+                        <!-- <TiptapEditor></TiptapEditor> -->
                     </client-only>
 
                 </el-form-item>
