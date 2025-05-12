@@ -13,24 +13,37 @@
                         <el-radio label="now">Now</el-radio>
                         <el-radio label="scheduled">Scheduled</el-radio>
                     </el-radio-group>
-                </el-form-item> 
-            </el-col>
-            <el-col :span="24">
-                <el-form-item label="Message" prop="message">
-                    <!-- <el-input v-model="store.form.message"  maxlength="255" type="textarea"  :autosize="{ minRows:4}"
-                    /> -->
-                    <client-only>
-
-                        <TiptapCKEditorInput v-model="store.form.message" />
-                        <!-- <TiptapEditor></TiptapEditor> -->
-                    </client-only>
-
                 </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+                <QuillEditor v-model:content="store.form.message" content-type="html" theme="snow"
+                    style="height: 200px;margin-bottom: 10px;" ref="quillEditorRef" />
+
+                <el-button type="primary" @click="openInsertLinkDialog">Insert Link</el-button>
+
+                <!-- Insert Link Dialog -->
+                <el-dialog v-model="linkDialogVisible" :title="linkForm._original ? 'Update Link' : 'Insert Link'"
+                    width="30%" style="background:#0f1323">
+                    <el-form :model="linkForm" :rules="linkRules" ref="linkFormRef">
+                        <el-form-item label="Text to Display" prop="word">
+                            <el-input v-model="linkForm.word" />
+                        </el-form-item>
+                        <el-form-item label="URL" prop="url">
+                            <el-input v-model="linkForm.url" />
+                        </el-form-item>
+                    </el-form>
+                    <template #footer>
+                        <el-button @click="linkDialogVisible = false">Cancel</el-button>
+                        <el-button type="primary" @click="insertLink">{{ linkForm._original ? 'Update' : 'Insert'
+                            }}</el-button>
+                    </template>
+                </el-dialog>
             </el-col>
             <el-col :span="12">
                 <el-form-item label="Notification Types" prop="notification_types">
                     <el-select v-model="store.form.notification_types" multiple>
-                        <el-option v-for="type in store.notificationTypes" :key="type.value" :label="type.label"
+                        <el-option v-for="type in filteredNotificationTypes" :key="type.value" :label="type.label"
                             :value="type.value" />
                     </el-select>
                 </el-form-item>
@@ -98,16 +111,81 @@ const props = defineProps({
     }
 });
 const store = useBroadcastStore();
-const content = ref('<p>Start editing here...</p>')
 const { form } = store
 const ruleFormRef = ref()
 const loading = ref(false)
 const isSubmit = ref(false)
+const linkFormRef = ref()
+const quillEditorRef = ref();
 
+const linkRules = {
+    word: [{ required: true, message: 'Text is required', trigger: 'blur' }],
+    url: [
+        { required: true, message: 'URL is required', trigger: 'blur' },
+        {
+            type: 'url',
+            message: 'Enter a valid URL (must start with http:// or https://)',
+            trigger: 'blur'
+        }
+    ]
+}
+const linkDialogVisible = ref(false)
+const linkForm = reactive({
+    word: '',
+    url: ''
+})
+
+const openInsertLinkDialog = () => {
+    linkForm.word = ''
+    linkForm.url = ''
+    linkDialogVisible.value = true
+}
+
+
+
+const insertLink = () => {
+  linkFormRef.value.validate((valid) => {
+    if (!valid) return;
+
+    const quill = quillEditorRef.value.getQuill();
+    let range = quill.getSelection();
+
+    // Ensure the editor is focused
+    quill.focus();
+
+    if (linkForm._original) {
+      // Edit mode - replace the original anchor
+      store.form.message = store.form.message.replace(linkForm._original, `<a href="${linkForm.url}" target="_blank">${linkForm.word}</a>`);
+      delete linkForm._original;
+    } else {
+      // Insert mode
+      if (range) {
+        // Insert link at the current cursor position
+        quill.insertText(range.index, linkForm.word, { link: linkForm.url });
+        // Set cursor position after the inserted link
+        quill.setSelection(range.index + linkForm.word.length, 0);
+      } else {
+        // If no selection, append to the end
+        const length = quill.getLength();
+        quill.insertText(length - 1, linkForm.word, { link: linkForm.url }); // -1 to avoid trailing newline
+        quill.setSelection(length - 1 + linkForm.word.length, 0);
+      }
+    }
+
+    linkDialogVisible.value = false;
+  });
+};
 onMounted(() => {
     store.getPlayers()
     isSubmit.value = props.isEditSubmit;
 })
+
+const filteredNotificationTypes = computed(() => {
+    const hasLink = /<a\s+href=/i.test(store.form.message || '');
+    return hasLink
+        ? store.notificationTypes.filter((type) => type.value !== 'push_notification')
+        : store.notificationTypes;
+});
 
 const onSubmit = (formEl) => {
     const formData = new FormData();
@@ -125,17 +203,33 @@ const onSubmit = (formEl) => {
     })
 };
 
+watch(() => store.form.message, (newVal) => {
+    const hasLink = /<a\s+href=/i.test(newVal || '');
+    if (hasLink && store.form.notification_types.includes('push_notification')) {
+        store.form.notification_types = store.form.notification_types.filter(
+            (type) => type !== 'push_notification'
+        );
+    }
+});
+
 const handleBroadcastTimingChange = () => {
     store.form.notification_types = []
 }
 
 </script>
 <style lang="scss">
-.preview {
-    margin-top: 20px;
-    padding: 16px;
-    border: 1px solid #dcdfe6;
-    border-radius: 4px;
+/* White text inside the editor */
+.ql-editor {
+    color: white;
+}
+
+/* Optional: white placeholder */
+.ql-editor.ql-blank::before {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.el-dialog__title {
+    color: white !important;
 }
 
 .el-textarea__inner {
