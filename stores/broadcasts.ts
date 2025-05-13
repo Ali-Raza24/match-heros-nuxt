@@ -198,24 +198,77 @@ export const useBroadcastStore = defineStore('broadcast', {
 
         async DeleteBroadcast(id: any) {
             try {
-              const { data, error } = await remove(`/broadcasting-notifications/${id}`);
-      
-              if (error.value) {
-                ElNotification({
-                  message: error?.value?.data?.message,
-                  type: 'error',
-                })
-                
-              } else {          
-                ElNotification({
-                  message: 'Broadcast deleted successfully',
-                  type: 'success',
-                })
-                this.getBroadcasts()
-              }
-            } catch (error) {        
+                const { data, error } = await remove(`/broadcasting-notifications/${id}`);
+
+                if (error.value) {
+                    ElNotification({
+                        message: error?.value?.data?.message,
+                        type: 'error',
+                    })
+
+                } else {
+                    ElNotification({
+                        message: 'Broadcast deleted successfully',
+                        type: 'success',
+                    })
+                    this.getBroadcasts()
+                }
+            } catch (error) {
             }
-          },
+        },
+        async getSingleBroadcast(id: any) {
+            try {
+                const { data, error } = await get(`/broadcasting-notifications/${id}`);
+                if (error.value) {
+                } else {
+                    this.form = data.value.data;
+                    this.form.slection_type = this.form.recipients && this.form.recipients.length > 0 ? 'specific' : 'all';
+                    this.form.recipients = this.form.recipients.map((recipient: any) => 
+                        typeof recipient === 'object' ? recipient.id : recipient
+                    );                    
+                }
+            } catch (error) {
+
+            }
+        },
+        async updateBroadcast(broadcastData: any, id: any) {
+            this.loading = true
+
+            const config = useRuntimeConfig();
+            try {
+                broadcastData['_method'] = 'PATCH';
+                await axios.patch(config.public.NUXT_PUBLIC_API_BASE + `/broadcasting-notifications/${id}`, broadcastData, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },
+                })
+                    .then(res => {
+                        if (res.status == 200) {
+                            this.loading = false
+
+                            ElNotification({
+                                message: 'Broadcast updated',
+                                type: 'success',
+                            })
+                            navigateTo('/broadcasts')
+                            this.resetForm()
+
+                        }
+                    })
+                    .catch(error => {
+                        this.loading = false
+                        ElNotification({
+
+                            dangerouslyUseHTMLString: true,
+                            message: `<strong>${error.response.data.error['message']}</strong>`,
+                            type: 'error',
+                        })
+
+                    });
+            } catch (error) {
+            }
+        },
 
 
         setCurrentPage(page: any) {
