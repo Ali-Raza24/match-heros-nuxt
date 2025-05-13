@@ -93,7 +93,7 @@
         </el-row>
         <el-form-item>
             <el-button :class="'btn-theme'" type="success" :disabled="store.loading" v-loading="store.loading"
-                @click=" store.buttonText === 'UPDATE A SETTING' ? updateForm(ruleFormRef) : onSubmit(ruleFormRef)"> {{
+                @click=" store.buttonText === 'UPDATE A BROADCAST' ? updateForm(ruleFormRef) : onSubmit(ruleFormRef)"> {{
                     store.buttonText
                 }} </el-button>
         </el-form-item>
@@ -142,7 +142,9 @@ const openInsertLinkDialog = () => {
 }
 
 
-
+onBeforeUnmount(() => {
+    store.resetForm()
+})
 const insertLink = () => {
   linkFormRef.value.validate((valid) => {
     if (!valid) return;
@@ -150,22 +152,16 @@ const insertLink = () => {
     const quill = quillEditorRef.value.getQuill();
     let range = quill.getSelection();
 
-    // Ensure the editor is focused
     quill.focus();
 
     if (linkForm._original) {
-      // Edit mode - replace the original anchor
       store.form.message = store.form.message.replace(linkForm._original, `<a href="${linkForm.url}" target="_blank">${linkForm.word}</a>`);
       delete linkForm._original;
     } else {
-      // Insert mode
       if (range) {
-        // Insert link at the current cursor position
         quill.insertText(range.index, linkForm.word, { link: linkForm.url });
-        // Set cursor position after the inserted link
         quill.setSelection(range.index + linkForm.word.length, 0);
       } else {
-        // If no selection, append to the end
         const length = quill.getLength();
         quill.insertText(length - 1, linkForm.word, { link: linkForm.url }); // -1 to avoid trailing newline
         quill.setSelection(length - 1 + linkForm.word.length, 0);
@@ -215,6 +211,24 @@ watch(() => store.form.message, (newVal) => {
 const handleBroadcastTimingChange = () => {
     store.form.notification_types = []
 }
+
+const updateForm = (formEl) => {
+    const formData = new FormData();
+    Object.keys(store.form).forEach((key) => {
+        formData.append(key, store.form[key]);
+    })
+
+    if (!formEl) return
+    formEl.validate((valid, fields) => {
+        if (valid) {
+            store.updateBroadcast(store.form, store.form.id);
+            loading.value = false
+        } else {
+            loading.value = false
+            return
+        }
+    })
+};
 
 </script>
 <style lang="scss">
