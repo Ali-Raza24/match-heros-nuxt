@@ -73,8 +73,10 @@
                     <el-button :class="'tableButton'" @click="handleDelete(scope.row.id)"><img
                             class="!min-h-[18px] w-auto min-w-[15px]" src="/assets/images/delete.svg" /></el-button>
 
-                            <NuxtLink :class="'tableButton'" :to="`/broadcasts/${scope.row.id}`" v-if="scope.row.broadcast_timing === 'scheduled'"><img
-                                class="!min-h-[18px] w-auto min-w-[18px]" src="/assets/images/icon-settings.svg" /></NuxtLink>
+                    <NuxtLink :class="'tableButton'" :to="`/broadcasts/${scope.row.id}`"
+                        v-if="scope.row.broadcast_timing === 'scheduled' && new Date(scope.row.schedule_start_date) > new Date()">
+                        <img class="!min-h-[18px] w-auto min-w-[18px]" src="/assets/images/icon-settings.svg" />
+                    </NuxtLink>
                 </template>
             </el-table-column>
         </el-table>
@@ -146,6 +148,7 @@ const handleDelete = (id) => {
     text-decoration: underline;
     cursor: pointer;
 }
+
 .el-table {
     background-color: transparent !important;
 
